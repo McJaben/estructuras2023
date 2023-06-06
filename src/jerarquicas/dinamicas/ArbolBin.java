@@ -85,7 +85,7 @@ public class ArbolBin {
      * Devuelve la altura del árbol, es decir, la longitud del camino más largo
      * desde la raíz hasta una hoja
      */
-    public int altura() { // FUNCIONA!!!! (Nota: Ver si se puede mejorar y comentar de forma clara)
+    public int altura() {
         int altura;
 
         if (this.raiz == null) {
@@ -120,9 +120,7 @@ public class ArbolBin {
                 altura++; // Incrementamos la altura en 1
                 elementosEnNivel = elementosSigNivel; //Actualizamos el num de elementos
             }
-
         }
-
         return altura;
     }
 
@@ -444,7 +442,7 @@ public class ArbolBin {
 
         return ancestros;
     }
-    
+
     /*
      * Devuelve una lista de los descendientes de la primera aparición de un elemento.
      * Si hay elementos duplicados, obtiene los descendientes de la primer aparición de elem.
