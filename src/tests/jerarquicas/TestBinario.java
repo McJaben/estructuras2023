@@ -1,15 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package tests.jerarquicas;
 
 import jerarquicas.dinamicas.ArbolBin;
 
 /**
  *
- * @author Agus
+ * @author Profe Agus. Yo (Benja) agregué algunos tests para obtenerAncestros y
+ * obtenerDescendientes
  */
 public class TestBinario {
 
@@ -58,12 +54,12 @@ public class TestBinario {
         System.out.println("Altura de arbol vacio (debe dar -1):  " + a.altura());
         System.out.println("Intento vaciar arbol vacio ");
         a.vaciar();
-        System.out.println("Intento obtener padre de un elemento cualquiera (debe dar null): "+ ((a.padre(10)) == null? sOk : sErr));
-        System.out.println("Intento obtener nivel de un elemento cualquiera (debe dar -1): "+ ((a.nivel(10)) == -1 ? sOk : sErr));
+        System.out.println("Intento obtener padre de un elemento cualquiera (debe dar null): " + ((a.padre(10)) == null ? sOk : sErr));
+        System.out.println("Intento obtener nivel de un elemento cualquiera (debe dar -1): " + ((a.nivel(10)) == -1 ? sOk : sErr));
         System.out.println("toString de arbol vacío: " + a.toString());
         System.out.println();
         System.out.println();
-        
+
         System.out.println("****************************************");
         System.out.println("*          Insercion - altura          *");
         System.out.println("****************************************");
@@ -197,23 +193,73 @@ public class TestBinario {
         System.out.println("\n");
         System.out.println("Listar por niveles.\n Tiene que dar: [ 10 - 9 - 15 - 7 - 3 - 12 - 20 - 10 ]  " + a.listarPorNiveles().toString());
         System.out.println("\n\n");
-//        System.out.println(ANSI_YELLOW_BACKGROUND + "----------------------------------------------------------------------------------------------------------"
-//                + "----------------------------------------------------------------------------------------" + RESET);
-//        System.out.println();
-//        System.out.println("\n\n**********************************");
-//        System.out.println("*      Test de FRONTERA          *");
-//        System.out.println("**********************************\n");
-//        System.out.println("Frontera de original.\n Tiene que dar: [ 7 - 10 - 12 - 20 ]  " + a.frontera().toString());
-//        System.out.println("");
-//        System.out.println("Inserto el 40 como hijo D de 12 " + ((a.insertar(40, 12, 'D')) ? sOk : sErr));
-//        System.out.println("");
-//        System.out.println("Frontera de original modificado.\n Tiene que dar: [ 7 - 10 - 40 - 20 ]  " + a.frontera().toString());
-//        System.out.println("");
-//        System.out.println("Frontera de clon que está vacio.\n Tiene que dar: [ ]  " + b.frontera().toString());
-//        System.out.println("");
-//        System.out.println("Inserto el 50 en el clon " + ((b.insertar(50, null, 'D')) ? sOk : sErr));
-//        System.out.println("");
-//        System.out.println("Frontera de clon con solo raiz.\n Tiene que dar: [ 50 ]  " + b.frontera().toString());
+        System.out.println(ANSI_YELLOW_BACKGROUND + "----------------------------------------------------------------------------------------------------------"
+                + "----------------------------------------------------------------------------------------" + RESET);
+        System.out.println();
+        System.out.println("\n\n**********************************");
+        System.out.println("*      Test de FRONTERA          *");
+        System.out.println("**********************************\n");
+        System.out.println("Frontera de original.\n Tiene que dar: [ 7 - 10 - 12 - 20 ]  " + a.frontera().toString());
+        System.out.println("");
+        System.out.println("Inserto el 40 como hijo D de 12 " + ((a.insertar(40, 12, 'D')) ? sOk : sErr));
+        System.out.println("");
+        System.out.println("Frontera de original modificado.\n Tiene que dar: [ 7 - 10 - 40 - 20 ]  " + a.frontera().toString());
+        System.out.println("");
+        System.out.println("Frontera de clon que está vacio.\n Tiene que dar: [ ]  " + b.frontera().toString());
+        System.out.println("");
+        System.out.println("Inserto el 50 en el clon " + ((b.insertar(50, null, 'D')) ? sOk : sErr));
+        System.out.println("");
+        System.out.println("Frontera de clon con solo raiz.\n Tiene que dar: [ 50 ]  " + b.frontera().toString());
+
+        System.out.println("\n\n");
+        System.out.println(ANSI_YELLOW_BACKGROUND + "----------------------------------------------------------------------------------------------------------"
+                + "----------------------------------------------------------------------------------------" + RESET);
+        System.out.println();
+        System.out.println("\n\n*****************************************");
+        System.out.println("*      Test de OBTENER ANCESTROS        *");
+        System.out.println("*****************************************\n");
+        System.out.println("toString del árbol: \n" + a.toString());
+        System.out.println("ObtenerAncestros de 9 en original. \n Tiene que dar: [10]" + " --> " + a.obtenerAncestros(9).toString());
+        System.out.println("");
+        System.out.println("ObtenerAncestros de cualquiera en original. \n Tiene que dar: []" + " --> " + a.obtenerAncestros(85).toString());
+        System.out.println("");
+        System.out.println("ObtenerAncestros de 7 en original. \n Tiene que dar: [9 - 10]" + " --> " + a.obtenerAncestros(7).toString());
+        System.out.println("");
+        System.out.println("ObtenerAncestros de 3 en original. \n Tiene que dar: [9 - 10]" + " --> " + a.obtenerAncestros(3).toString());
+        System.out.println("");
+        System.out.println("Inserto el 50 como hijo D de 20 " + ((a.insertar(50, 20, 'D')) ? sOk : sErr));
+        System.out.println("");
+        System.out.println("ObtenerAncestros de 50 en original. \n Tiene que dar: [20 - 15 - 10]" + " --> " + a.obtenerAncestros(50).toString());
+        System.out.println("");
+        System.out.println("ObtenerAncestros de raíz. \n Tiene que dar: []" + " --> " + a.obtenerAncestros(10).toString());
+        System.out.println("");
+        System.out.println("ObtenerAncestros de 12 en original. \n Tiene que dar: [15 - 10]" + " --> " + a.obtenerAncestros(12).toString());
+        System.out.println("");
+        System.out.println("\n\n");
+        System.out.println(ANSI_YELLOW_BACKGROUND + "----------------------------------------------------------------------------------------------------------"
+                + "----------------------------------------------------------------------------------------" + RESET);
+        System.out.println();
+        System.out.println("\n\n*****************************************");
+        System.out.println("*     Test de OBTENER DESCENDIENTES       *");
+        System.out.println("*****************************************\n");
+        System.out.println("toString del árbol: \n" + a.toString());
+        System.out.println("Obtener descendientes de 9. \n Tiene que dar: [7 - 3 - 10]" + " --> " + a.obtenerDescendientes(9).toString());
+        System.out.println("");
+        System.out.println("Obtener descendientes de cualquiera. \n Tiene que dar: []" + " --> " + a.obtenerDescendientes(85).toString());
+        System.out.println("");
+        System.out.println("Obtener descendientes de 7. \n Tiene que dar: []" + " --> " + a.obtenerDescendientes(7).toString());
+        System.out.println("");
+        System.out.println("Obtener descendientes de 3. \n Tiene que dar: [10]" + " --> " + a.obtenerDescendientes(3).toString());
+        System.out.println("");
+        System.out.println("Inserto el 75 como hijo I de 20 " + ((a.insertar(75, 20, 'I')) ? sOk : sErr));
+        System.out.println("");
+        System.out.println("Obtener descendientes de 20. \n Tiene que dar: [75 - 50]" + " --> " + a.obtenerDescendientes(20).toString());
+        System.out.println("");
+        System.out.println("Otener descendientes de raíz. \n Tiene que dar: [9 - 15 - 7 - 3 - 12 - 20 - 10 - 40 - 75 - 50]"
+                + " --> " + a.obtenerDescendientes(10).toString());
+        System.out.println("");
+        System.out.println("Obtener descendientes de 12. \n Tiene que dar: [40]" + " --> " + a.obtenerDescendientes(12).toString());
+        System.out.println("");
     }
 
 }
