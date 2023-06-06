@@ -417,7 +417,7 @@ public class ArbolBin {
     }
 
     /*
-     * Método público para obtener los ancestros de la primera aparición de un elemento.
+     * Devuelva una lista de los ancestros de la primera aparición de un elemento.
      * Si hay elementos duplicados, va a devolver los ancestros de la primera aparición.
      */
     public Lista obtenerAncestros(Object elem) {
@@ -444,7 +444,11 @@ public class ArbolBin {
 
         return ancestros;
     }
-
+    
+    /*
+     * Devuelve una lista de los descendientes de la primera aparición de un elemento.
+     * Si hay elementos duplicados, obtiene los descendientes de la primer aparición de elem.
+     */
     public Lista obtenerDescendientes(Object elem) {
         Lista descendientes = new Lista();
         if (this.raiz != null) {
