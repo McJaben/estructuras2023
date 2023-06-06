@@ -9,10 +9,10 @@ import lineales.dinamicas.Lista;
  */
 public class ArbolBin {
 
-    //atributos
+    // atributos
     private NodoArbol raiz;
 
-    //constructor
+    // constructor vacío
     public ArbolBin() {
         this.raiz = null;
     }
