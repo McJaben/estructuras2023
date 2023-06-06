@@ -194,7 +194,11 @@ public class ArbolBin {
     }
 
     /*
-     * Devuelve una lista con los elementos del árbol binario en el recorrido en preorden. 
+     * Devuelve una lista con los elementos del árbol binario en el recorrido en preorden.
+     * Recorrido en preorden:
+     * (1) visitar la raíz del subárbol(nodo)
+     * (2) recorrer hijo_izquierdo(nodo) en Preorden
+     * (3) recorrer hijo_derecho(nodo) en Preorden
      */
     public Lista listarPreorden() {
         Lista lisPre = new Lista();
@@ -217,7 +221,11 @@ public class ArbolBin {
     }
 
     /*
-     * Devuelve una lista con los elementos del árbol binario en el recorrido en posorden 
+     * Devuelve una lista con los elementos del árbol binario en el recorrido en posorden.
+     * Recorrido en posorden:
+     * (1) recorrer hijo_izquierdo(nodo) en Posorden
+     * (2) recorrer hijo_derecho(nodo) en Posorden
+     * (3) visitar la raíz del subárbol(nodo)
      */
     public Lista listarPosorden() {
         Lista lisPos = new Lista();
@@ -243,7 +251,11 @@ public class ArbolBin {
     }
 
     /*
-     * Devuelve una lista con los elementos del árbol binario en el recorrido en inorden 
+     * Devuelve una lista con los elementos del árbol binario en el recorrido en inorden.
+     * Recorrido en inorden:
+     * (1) recorrer hijo_izquierdo(nodo) en Inorden
+     * (2) visitar la raíz del subárbol(nodo)
+     * (3) recorrer hijo_derecho(nodo) en Inorden
      */
     public Lista listarInorden() {
         Lista lisIn = new Lista();
@@ -379,14 +391,103 @@ public class ArbolBin {
         return s;
     }
 
-//    private String toStringAux(NodoArbol nodo) {
-//        String s = "";
-//        if (nodo != null) {
-//            s = nodo.getElem().toString() + " ("
-//                    + "HI: " + toStringAux(nodo.getIzquierdo()) + ", "
-//                    + "HD: " + toStringAux(nodo.getDerecho()) + ") \n";
-//        }
-//        return s;
-//    }
-    // Me falta agregar los métodos que guardé en el archivo del pendrive
+    public Lista frontera() {
+        Lista lis = new Lista();
+        fronteraAux(this.raiz, lis);
+        return lis;
+    }
+
+    private void fronteraAux(NodoArbol nodo, Lista lis) {
+        // método recursivo PRIVADO que recorre el árbol en posorden y almacena sus
+        // hojas en una lista. Es privado porque uno de los parámetros es un nodo.
+
+        if (nodo != null) {
+
+            // recorre el subarbol izquierdo
+            fronteraAux(nodo.getIzquierdo(), lis);
+
+            // recorre el subarbol derecho
+            fronteraAux(nodo.getDerecho(), lis);
+
+            // visita la raíz del subárbol
+            if ((nodo.getIzquierdo() == null) && (nodo.getDerecho() == null)) {
+                lis.insertar(nodo.getElem(), lis.longitud() + 1);
+            }
+        }
+    }
+
+    /*
+     * Método público para obtener los ancestros de la primera aparición de un elemento.
+     * Si hay elementos duplicados, va a devolver los ancestros de la primera aparición.
+     */
+    public Lista obtenerAncestros(Object elem) {
+        Lista ancestros = new Lista();
+
+        // Verificar si el árbol está vacío
+        if (this.raiz != null) {
+            // Verifico si el elemento se encuentra en el árbol
+            NodoArbol nodo = obtenerNodo(this.raiz, elem);
+            if (nodo != null && nodo != this.raiz) {
+                // Busco el padre del elemento en cuestión
+                NodoArbol nPadre = obtenerPadre(this.raiz, elem);
+                while (nPadre != null) {
+                    ancestros.insertar(nPadre.getElem(), ancestros.longitud() + 1);
+                    //System.out.println(ancestros.toString());
+                    if (nPadre == this.raiz) {
+                        nPadre = null;
+                    } else {
+                        nPadre = obtenerPadre(this.raiz, nPadre.getElem());
+                    }
+                }
+            }
+        }
+
+        return ancestros;
+    }
+
+    public Lista obtenerDescendientes(Object elem) {
+        Lista descendientes = new Lista();
+        if (this.raiz != null) {
+            NodoArbol nodo = obtenerNodo(this.raiz, elem);
+            if (nodo != null) {
+                descendientesAux(nodo, descendientes);
+            }
+        }
+        return descendientes;
+    }
+
+    private void descendientesAux(NodoArbol nodo, Lista lis) {
+        if (nodo != null) {
+            int elementosEnNivel = 1; // Número de elementos en el nivel actual
+            Cola q = new Cola();
+            q.poner(nodo);
+
+            while (!q.esVacia()) {
+                int elementosSigNivel = 0; // Número de elementos en el siguiente nivel
+
+                // Recorremos todos los nodos del nivel actual y los insertamos en la lista
+                for (int i = 0; i < elementosEnNivel; i++) {
+                    // Obtengo el nodo actual de la cola
+                    NodoArbol actual = (NodoArbol) q.obtenerFrente();
+
+                    // Sacamos el nodo actual de la cola
+                    q.sacar();
+
+                    // Agregamos los hijos del nodo actual a la cola, si existen
+                    if (actual.getIzquierdo() != null) {
+                        q.poner(actual.getIzquierdo());
+                        lis.insertar(actual.getIzquierdo().getElem(), lis.longitud() + 1);
+                        elementosSigNivel++;
+                    }
+                    if (actual.getDerecho() != null) {
+                        q.poner(actual.getDerecho());
+                        lis.insertar(actual.getDerecho().getElem(), lis.longitud() + 1);
+                        elementosSigNivel++;
+                    }
+                }
+                // Actualizamos el número de elementos
+                elementosEnNivel = elementosSigNivel;
+            }
+        }
+    }
 }
