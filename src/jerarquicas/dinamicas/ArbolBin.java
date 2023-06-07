@@ -71,7 +71,8 @@ public class ArbolBin {
         return resultado;
     }
 
-    // Devuelve falso si hay al menos un elemento cargado en el árbol, verdadero en caso contrario.
+    // Devuelve falso si hay al menos un elemento cargado en el árbol, verdadero en
+    // caso contrario.
     public boolean esVacio() {
         return this.raiz == null;
     }
@@ -118,15 +119,15 @@ public class ArbolBin {
                     }
                 }
                 altura++; // Incrementamos la altura en 1
-                elementosEnNivel = elementosSigNivel; //Actualizamos el num de elementos
+                elementosEnNivel = elementosSigNivel; // Actualizamos el num de elementos
             }
         }
         return altura;
     }
 
     /*
-     * Devuelve el nivel de un elemento cargado en el árbol. Si el elemento no existe,
-     * devuelve -1.
+     * Devuelve el nivel de un elemento cargado en el árbol. Si el elemento no
+     * existe, devuelve -1.
      */
     public int nivel(Object elemento) {
         return nivelAux(this.raiz, elemento, 0);
@@ -154,8 +155,9 @@ public class ArbolBin {
         return nivel;
     }
 
-    //Dado un elemento, devuelve el valor almacenado en su nodo padre (primer aparición).
-    public Object padre(Object elemento) { //CORREGIIIIIR
+    // Dado un elemento, devuelve el valor almacenado en su nodo padre (primer
+    // aparición).
+    public Object padre(Object elemento) {
         Object elemPadre = null;
         if (this.raiz != null && this.raiz.getElem().equals(elemento)) {
             // el elemento es la raíz, y ésta no tiene padre
@@ -192,8 +194,8 @@ public class ArbolBin {
     }
 
     /*
-     * Devuelve una lista con los elementos del árbol binario en el recorrido en preorden.
-     * Recorrido en preorden:
+     * Devuelve una lista con los elementos del árbol binario en el recorrido en
+     * preorden. Algoritmo del recorrido en preorden:
      * (1) visitar la raíz del subárbol(nodo)
      * (2) recorrer hijo_izquierdo(nodo) en Preorden
      * (3) recorrer hijo_derecho(nodo) en Preorden
@@ -212,15 +214,15 @@ public class ArbolBin {
             // visita el elemento en el nodo
             lis.insertar(nodo.getElem(), lis.longitud() + 1); // (1)
 
-            //recorre a sus hijos en preorden
+            // recorre a sus hijos en preorden
             listarPreordenAux(nodo.getIzquierdo(), lis); // (2)
             listarPreordenAux(nodo.getDerecho(), lis); // (3)
         }
     }
 
     /*
-     * Devuelve una lista con los elementos del árbol binario en el recorrido en posorden.
-     * Recorrido en posorden:
+     * Devuelve una lista con los elementos del árbol binario en el recorrido en
+     * posorden. Algoritmo del recorrido en posorden:
      * (1) recorrer hijo_izquierdo(nodo) en Posorden
      * (2) recorrer hijo_derecho(nodo) en Posorden
      * (3) visitar la raíz del subárbol(nodo)
@@ -249,8 +251,8 @@ public class ArbolBin {
     }
 
     /*
-     * Devuelve una lista con los elementos del árbol binario en el recorrido en inorden.
-     * Recorrido en inorden:
+     * Devuelve una lista con los elementos del árbol binario en el recorrido en
+     * inorden. Algoritmo del recorrido en inorden:
      * (1) recorrer hijo_izquierdo(nodo) en Inorden
      * (2) visitar la raíz del subárbol(nodo)
      * (3) recorrer hijo_derecho(nodo) en Inorden
@@ -278,7 +280,8 @@ public class ArbolBin {
     }
 
     /*
-     * Devuelve una lista con los elementos del árbol binario en el recorrido por niveles.
+     * Devuelve una lista con los elementos del árbol binario en el recorrido por
+     * niveles.
      */
     public Lista listarPorNiveles() {
         Lista lis = new Lista();
@@ -319,7 +322,7 @@ public class ArbolBin {
         }
         return lis;
     }
-    
+
     /*
      * Genera y devuelve un árbol binario equivalente (igual estructura y contenido
      * de los nodos) que el árbol original.
@@ -332,7 +335,7 @@ public class ArbolBin {
     }
 
     private NodoArbol cloneAux(NodoArbol nodo) {
-        // método PRIVADO que recorre el árbol mientras va creando nodos con los 
+        // método PRIVADO que recorre el árbol mientras va creando nodos con los
         // hijos del original para insertarlos en el clon
         NodoArbol newNodo = null;
         if (nodo != null) {
@@ -342,7 +345,7 @@ public class ArbolBin {
         }
         return newNodo;
     }
-    
+
     /*
      * Genera y devuelve una cadena de caracteres que indica cuál es la raíz del
      * árbol y quiénes son los hijos de cada nodo.
@@ -359,7 +362,7 @@ public class ArbolBin {
     }
 
     private String toStringAux(NodoArbol nodo) {
-        // método Privado que recorre el árbol por niveles y va guardando los 
+        // método Privado que recorre el árbol por niveles y va guardando los
         // elementos de cada nodo y sus hijos en un String para luego retornarlo
         String s = "";
         // si el arbol está vacío, esto no se ejecuta y devuelve una cadena vacía
@@ -400,7 +403,7 @@ public class ArbolBin {
         }
         return s;
     }
-    
+
     /*
      * Devuelve una lista con todos los elementos almacenados en las hojas del
      * árbol listadas de izquierda a derecha.
@@ -431,8 +434,9 @@ public class ArbolBin {
     }
 
     /*
-     * Devuelva una lista de los ancestros de la primera aparición de un elemento.
-     * Si hay elementos duplicados, va a devolver los ancestros de la primera aparición.
+     * Devuelve una lista de los ancestros de la primera aparición de un elemento.
+     * Si hay elementos duplicados, va a devolver los ancestros de la primera
+     * aparición.
      */
     public Lista obtenerAncestros(Object elem) {
         Lista ancestros = new Lista();
@@ -446,7 +450,7 @@ public class ArbolBin {
                 NodoArbol nPadre = obtenerPadre(this.raiz, elem);
                 while (nPadre != null) {
                     ancestros.insertar(nPadre.getElem(), ancestros.longitud() + 1);
-                    //System.out.println(ancestros.toString());
+                    // System.out.println(ancestros.toString());
                     if (nPadre == this.raiz) {
                         nPadre = null;
                     } else {
@@ -460,8 +464,9 @@ public class ArbolBin {
     }
 
     /*
-     * Devuelve una lista de los descendientes de la primera aparición de un elemento.
-     * Si hay elementos duplicados, obtiene los descendientes de la primer aparición de elem.
+     * Devuelve una lista de los descendientes de la primera aparición de un
+     * elemento. Si hay elementos duplicados, obtiene los descendientes de la
+     * primer aparición de elem.
      */
     public Lista obtenerDescendientes(Object elem) {
         Lista descendientes = new Lista();
@@ -476,7 +481,7 @@ public class ArbolBin {
 
     private void descendientesAux(NodoArbol nodo, Lista lis) {
         // método recursivo PRIVADO que recorre el árbol por niveles y almacena los
-        // hijos del nodo pasado por parámetro en una lista. Es privado porque 
+        // hijos del nodo pasado por parámetro en una lista. Es privado porque
         // uno de los parámetros es un nodo.
         if (nodo != null) {
             int elementosEnNivel = 1; // Número de elementos en el nivel actual
