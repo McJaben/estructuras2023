@@ -319,7 +319,11 @@ public class ArbolBin {
         }
         return lis;
     }
-
+    
+    /*
+     * Genera y devuelve un árbol binario equivalente (igual estructura y contenido
+     * de los nodos) que el árbol original.
+     */
     @Override
     public ArbolBin clone() {
         ArbolBin newArbol = new ArbolBin();
@@ -328,6 +332,8 @@ public class ArbolBin {
     }
 
     private NodoArbol cloneAux(NodoArbol nodo) {
+        // método PRIVADO que recorre el árbol mientras va creando nodos con los 
+        // hijos del original para insertarlos en el clon
         NodoArbol newNodo = null;
         if (nodo != null) {
             newNodo = new NodoArbol(nodo.getElem(), null, null);
@@ -336,7 +342,11 @@ public class ArbolBin {
         }
         return newNodo;
     }
-
+    
+    /*
+     * Genera y devuelve una cadena de caracteres que indica cuál es la raíz del
+     * árbol y quiénes son los hijos de cada nodo.
+     */
     @Override
     public String toString() {
         String cadena;
@@ -349,6 +359,8 @@ public class ArbolBin {
     }
 
     private String toStringAux(NodoArbol nodo) {
+        // método Privado que recorre el árbol por niveles y va guardando los 
+        // elementos de cada nodo y sus hijos en un String para luego retornarlo
         String s = "";
         // si el arbol está vacío, esto no se ejecuta y devuelve una cadena vacía
         if (nodo != null) {
@@ -388,7 +400,11 @@ public class ArbolBin {
         }
         return s;
     }
-
+    
+    /*
+     * Devuelve una lista con todos los elementos almacenados en las hojas del
+     * árbol listadas de izquierda a derecha.
+     */
     public Lista frontera() {
         Lista lis = new Lista();
         fronteraAux(this.raiz, lis);
@@ -459,6 +475,9 @@ public class ArbolBin {
     }
 
     private void descendientesAux(NodoArbol nodo, Lista lis) {
+        // método recursivo PRIVADO que recorre el árbol por niveles y almacena los
+        // hijos del nodo pasado por parámetro en una lista. Es privado porque 
+        // uno de los parámetros es un nodo.
         if (nodo != null) {
             int elementosEnNivel = 1; // Número de elementos en el nivel actual
             Cola q = new Cola();
