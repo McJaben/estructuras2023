@@ -20,7 +20,6 @@ public class TestingCola {
         System.out.println("COMIENZO TEST COLA");
         Cola q1 = new Cola();
         System.out.println("Cola vacia: \t\t\t\t\t\t\t--> " + q1.toString());
-        boolean exito = true;
 
         System.out.println("Si es cola estatica tamaño <= 10 se debe llenar");
         int num = 1;
@@ -33,18 +32,22 @@ public class TestingCola {
             num++;
             System.out.println("\t--> " + q1.toString());
         }
-        System.out.println("Recupera frente espera 1 recupera: " + (int) q1.obtenerFrente() + "\t\t\t" + (((int) q1.obtenerFrente() == 1) ? sOk : sErr));
+        System.out.println("Recupera frente espera 1 recupera: " + (int) q1.obtenerFrente() + "\t\t\t"
+                + (((int) q1.obtenerFrente() == 1) ? sOk : sErr));
         System.out.print("Saca espera true : \t\t\t\t\t" + ((q1.sacar() == true) ? sOk : sErr));
         System.out.println("\t--> " + q1.toString());
-        System.out.println("Recupera frente espera 2 recupera: " + (int) q1.obtenerFrente() + "\t\t\t" + (((int) q1.obtenerFrente() == 2) ? sOk : sErr));
+        System.out.println("Recupera frente espera 2 recupera: " + (int) q1.obtenerFrente() + "\t\t\t"
+                + (((int) q1.obtenerFrente() == 2) ? sOk : sErr));
         System.out.print("Saca espera true: \t\t\t\t\t" + ((q1.sacar() == true) ? sOk : sErr));
         System.out.println("\t--> " + q1.toString());
-        System.out.println("Recupera frente espera 3 recupera: " + (int) q1.obtenerFrente() + "\t\t\t" + (((int) q1.obtenerFrente() == 3) ? sOk : sErr));
+        System.out.println("Recupera frente espera 3 recupera: " + (int) q1.obtenerFrente() + "\t\t\t"
+                + (((int) q1.obtenerFrente() == 3) ? sOk : sErr));
         System.out.print("Pone 23 espera true: \t\t\t\t\t" + ((q1.poner(23) == true) ? sOk : sErr));
         System.out.println("\t--> " + q1.toString());
         System.out.print("Pone 24 espera true: \t\t\t\t\t" + ((q1.poner(24) == true) ? sOk : sErr));
         System.out.println("\t--> " + q1.toString());
-        System.out.println("Recupera frente espera 3 recupera: " + (int) q1.obtenerFrente() + "\t\t\t" + (((int) q1.obtenerFrente() == 3) ? sOk : sErr));
+        System.out.println("Recupera frente espera 3 recupera: " + (int) q1.obtenerFrente() + "\t\t\t"
+                + (((int) q1.obtenerFrente() == 3) ? sOk : sErr));
 
         Cola q2 = q1.clone();
         System.out.println("Copia espera [3 4 5 6 7 8 9 <10 11> 23 24]: \t\t\t--> " + q2.toString());
@@ -61,7 +64,8 @@ public class TestingCola {
         System.out.print("Se vacio la cola q1");
         System.out.println("\t\t\t\t\t\t--> " + q1.toString());
         System.out.println("Sacar en cola vacia espera false: \t\t\t" + ((q1.sacar() == false) ? sOk : sErr));
-        System.out.println("Recupera frente en cola vacia espera null: \t\t" + ((q1.obtenerFrente() == null) ? sOk : sErr));
+        System.out.println(
+                "Recupera frente en cola vacia espera null: \t\t" + ((q1.obtenerFrente() == null) ? sOk : sErr));
 
         System.out.println("Verifica copia guardada espera [3 4 5 6 7 8 9 <10 11> 23 24]: \t--> " + q2.toString());
         System.out.println(

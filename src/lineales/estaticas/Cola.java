@@ -43,7 +43,7 @@ public class Cola {
             exito = false;
         } else {
             this.arreglo[this.frente] = null;
-            this.frente = (this.frente + 1) % this.TAMANIO;
+            this.frente = (this.frente + 1) % TAMANIO;
         }
 
         return exito;
