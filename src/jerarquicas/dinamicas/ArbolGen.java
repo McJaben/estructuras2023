@@ -93,15 +93,19 @@ public class ArbolGen {
         return perteneceAux(this.raiz, elemento);
     }
 
-    private boolean perteneceAux(NodoGen nodo, Object elemento) {
+    private boolean perteneceAux(NodoGen nodo, Object buscado) {
+        // método recursivo privado que recorre el árbol para verificar si
+        // algún nodo contiene al elemento buscado. Devuelve true si lo encontró.
+        // False en caso contrario
         boolean exito = false;
         if (nodo != null) {
-            if (nodo.getElem().equals(elemento)) {
+            // Hace la visita al nodo y compara su elemento con el buscado
+            if (nodo.getElem().equals(buscado)) {
                 exito = true;
             } else {
                 NodoGen hijo = nodo.getHijoIzquierdo();
                 while (hijo != null && !exito) {
-                    if (perteneceAux(hijo, elemento)) {
+                    if (perteneceAux(hijo, buscado)) { // llamado recursivo
                         exito = true;
                     } else {
                         hijo = hijo.getHermanoDerecho();
@@ -139,7 +143,7 @@ public class ArbolGen {
                 }
 
                 if (encontrado) {
-                    lis.insertar(nodo.getElem(), lis.longitud() +1);
+                    lis.insertar(nodo.getElem(), lis.longitud() + 1);
                 }
             }
         }
@@ -411,6 +415,32 @@ public class ArbolGen {
         return s;
     }
 
+    /*
+     * Devuelve un número que representa el grado del árbol (el mayor
+     * grado de los nodos que contiene el árbol)
+     * Nota: el grado de un nodo es la cantidad de hijos que tiene
+     */
+    public int grado() {
+        return gradoAux(this.raiz);
+    }
+
+    private int gradoAux(NodoGen nodo) {
+        // método recursivo privado
+        int grado = 0;
+        // Agregar código
+        return grado;
+    }
+
+    public int gradoSubArbol() {
+        return gradoSubArbolAux(this.raiz);
+    }
+
+    private int gradoSubArbolAux(NodoGen nodo) {
+        int grado = 0;
+        // Agregar código
+        return grado;
+    }
+
     public Lista listaQueJustificaLaAltura() {
         Lista actual = new Lista();
         Lista resultado = new Lista();
@@ -427,6 +457,8 @@ public class ArbolGen {
          * Ver si actual es más larga que la otra lista...
          * Si actual es más larga, devolver un clon de actual
          */
+
+        // Agregar código
 
         /*
          * CASO RECURSIVO: n tiene hijos
