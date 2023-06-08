@@ -308,21 +308,22 @@ public class ArbolGen {
     }
 
     private NodoGen cloneAux(NodoGen nodo) {
+        // método recursivo PRIVADO que recorre el árbol mientras va creando nodos con
+        // los hijos (y hermanos derechos) del original para insertarlos en el clon
         NodoGen nodoClonado = new NodoGen(nodo.getElem(), null, null);
-    
+
         // Clonar los hijos del nodo
         if (nodo.getHijoIzquierdo() != null) {
             nodoClonado.setHijoIzquierdo(cloneAux(nodo.getHijoIzquierdo()));
         }
-    
+
         // Clonar los hermanos del nodo
         if (nodo.getHermanoDerecho() != null) {
             nodoClonado.setHermanoDerecho(cloneAux(nodo.getHermanoDerecho()));
         }
-    
+
         return nodoClonado;
     }
-
 
     // Quita todos los elementos de la estructura.
     public void vaciar() {
