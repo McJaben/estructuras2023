@@ -445,7 +445,8 @@ public class ArbolGen {
     /*
      * Devuelve un número que representa el grado del árbol (el mayor
      * grado de los nodos que contiene el árbol)
-     * Nota: el grado de un nodo es la cantidad de hijos que tiene
+     * Nota: el grado de un nodo es la cantidad de hijos que tiene.
+     * Si el árbol está vacío, devuelve -1.
      */
     public int grado() {
         return gradoAux(this.raiz);
@@ -453,21 +454,58 @@ public class ArbolGen {
 
     private int gradoAux(NodoGen nodo) {
         // método recursivo privado
-        int grado = 0;
-        // Agregar código
+        int gradoHijo = 0;
+        int aux = 0;
+        int resultado = -1;
+
+        if (nodo != null) {
+            NodoGen hijo = nodo.getHijoIzquierdo();
+            while (hijo != null) {
+                gradoHijo = gradoSubarbol(hijo.getElem());
+                if (gradoHijo > resultado) {
+                    resultado = gradoHijo;
+                }
+                hijo = hijo.getHermanoDerecho();
+            }
+
+            // Comienza a recorrer los hijos
+            hijo = nodo.getHijoIzquierdo();
+            while (hijo != null) {
+                aux = gradoAux(hijo);
+                if (aux > resultado) {
+                    resultado = aux;
+                }
+                hijo = hijo.getHermanoDerecho();
+            }
+        }
+
+        return resultado;
+    }
+
+    /*
+     * Devuelve un número que representa el grado del nodo o subarbol,
+     * es decir, la cantidad de hijos que tiene. En caso de no existir
+     * tal nodo, devuelve -1.
+     */
+    public int gradoSubarbol(Object elemento) {
+        NodoGen nodo = obtenerNodo(this.raiz, elemento);
+        int grado = -1;
+
+        if (nodo != null) {
+            grado++;
+            NodoGen hijo = nodo.getHijoIzquierdo();
+            while (hijo != null) {
+                grado++;
+                hijo = hijo.getHermanoDerecho();
+            }
+        }
+
         return grado;
     }
 
-    public int gradoSubArbol() {
-        return gradoSubArbolAux(this.raiz);
-    }
-
-    private int gradoSubArbolAux(NodoGen nodo) {
-        int grado = 0;
-        // Agregar código
-        return grado;
-    }
-
+    /*
+     * dasdasdas
+     */
     public Lista listaQueJustificaLaAltura() {
         Lista actual = new Lista();
         Lista resultado = new Lista();
