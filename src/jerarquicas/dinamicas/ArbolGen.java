@@ -112,15 +112,38 @@ public class ArbolGen {
         return exito;
     }
 
-    // ancestros (elemento): lista de elementos
     /*
      * Si el elemento se encuentra en el árbol, devuelve una lista con los ancestros
      * del elemento. Si el elemento no está en el árbol, devuelve la lista vacía.
      */
     public Lista ancestros(Object elem) {
-        Lista lis = new Lista();
-        // Agregar código
-        return lis;
+        Lista ancestros = new Lista();
+        ancestrosAux(this.raiz, elem, ancestros);
+        return ancestros;
+    }
+
+    private boolean ancestrosAux(NodoGen nodo, Object buscado, Lista lis) {
+        // método privado recursivo que recorre el árbol buscando los ancestros
+        // del elemento pasado por parámetro y los inserta en una lista
+        boolean encontrado = false;
+
+        if (nodo != null) {
+            if (nodo.getElem().equals(buscado)) {
+                encontrado = true;
+            } else {
+                NodoGen hijo = nodo.getHijoIzquierdo();
+                while (hijo != null && !encontrado) {
+                    // Busco mientras hayan hijos y no haya encontrado al elemento
+                    encontrado = ancestrosAux(hijo, buscado, lis);
+                    hijo = hijo.getHermanoDerecho();
+                }
+
+                if (encontrado) {
+                    lis.insertar(nodo.getElem(), lis.longitud() +1);
+                }
+            }
+        }
+        return encontrado;
     }
 
     // Devuelve true si el árbol es vacío, falso en caso contrario.
@@ -158,8 +181,34 @@ public class ArbolGen {
 
     // Devuelve el nivel de un elemento en el árbol. Si este no existe, devuelve -1.
     public int nivel(Object elemento) {
+        return nivelAux(this.raiz, elemento, 0);
+    }
+
+    private int nivelAux(NodoGen nodo, Object buscado, int nivelActual) {
+        // método PRIVADO que busca un elemento y devuelve el nivel del nodo que
+        // lo contiene. Si no se encuentra el elemento buscado, devuelve -1.
+
         int nivel = -1;
-        // Agregar código
+
+        if (nodo != null) {
+            if (nodo.getElem().equals(buscado)) {
+                // si encuentro buscado en el nodo, devuelvo el nivel actual
+                nivel = nivelActual;
+            } else {
+                // no es el buscado: busca primero en el HEI y luego en HD
+                NodoGen hijo = nodo.getHijoIzquierdo();
+                boolean exito = false;
+                while (hijo != null && !exito) {
+                    nivel = nivelAux(hijo, buscado, nivelActual + 1);
+                    if (nivel == -1) {
+                        hijo = hijo.getHermanoDerecho(); // avanza al HD si no encue
+                    } else {
+                        exito = true;
+                    }
+                }
+
+            }
+        }
         return nivel;
     }
 
