@@ -138,14 +138,18 @@ public class TestGenerico {
        System.out.println("\n\n********************************");
        System.out.println("*      Test de Busqueda         *");
        System.out.println("********************************\n");
-    //    System.out.println("Busco al padre de 55. Tiene que dar " + sOk + " --> " + (((int) a.padre(55) == 30) ? sOk : sErr));
-    //    System.out.println("Busco al padre de 20. Tiene que dar " + sOk + " --> " + (((int) a.padre(20) == 15) ? sOk : sErr));
-    //    System.out.println("Busco al padre de raiz. Tiene que dar " + sOk + " --> " + ((a.padre(10) == null) ? sOk : sErr));
-    //    System.out.println("Busco al padre de elemento inexistente. Tiene que dar " + sErr + " --> " + ((a.padre(1011) != null) ? sOk : sErr));
-       System.out.println("Busco a raiz con pertenece. Tiene que dar " + sOk + " ---> " + ((a.pertenece(10)) ? sOk : sErr));
-       System.out.println("Busco a 55 con pertenece. Tiene que dar " + sOk + " ---> " + ((a.pertenece(55)) ? sOk : sErr));
-       System.out.println("Busco a 7 con pertenece. Tiene que dar " + sOk + " ---> " + ((a.pertenece(7)) ? sOk : sErr));
-       System.out.println("Busco elemento inexistente con pertenece. Tiene que dar " + sOk + " ---> " + ((!a.pertenece(200)) ? sOk : sErr));
+       System.out.println("Busco al padre de 55. Tiene que dar 30: " + sOk + " --> " + (((int) a.padre(55) == 30) ? sOk : sErr));
+       System.out.println("Busco al padre de 45. Tiene que dar 30: " + sOk + " --> " + (((int) a.padre(45) == 30) ? sOk : sErr));
+       System.out.println("Busco al padre de 9. Tiene que dar 10: " + sOk + " --> " + (((int) a.padre(9) == 10) ? sOk : sErr));
+       System.out.println("Busco al padre de 12. Tiene que dar 15: " + sOk + " --> " + (((int) a.padre(12) == 15) ? sOk : sErr));
+       System.out.println("Busco al padre de 20. Tiene que dar 15: " + sOk + " --> " + (((int) a.padre(20) == 15) ? sOk : sErr));
+       System.out.println("Busco al padre de 3. Tiene que dar 9: " + sOk + " --> " + (((int) a.padre(3) == 9) ? sOk : sErr));
+       System.out.println("Busco al padre de raiz. Tiene que dar null: " + sOk + " --> " + ((a.padre(10) == null) ? sOk : sErr));
+       System.out.println("Busco al padre de elemento inexistente. Tiene que dar: " + sErr + " --> " + ((a.padre(1011) != null) ? sOk : sErr));
+       System.out.println("Busco a raiz con pertenece. Tiene que dar: " + sOk + " ---> " + ((a.pertenece(10)) ? sOk : sErr));
+       System.out.println("Busco a 55 con pertenece. Tiene que dar: " + sOk + " ---> " + ((a.pertenece(55)) ? sOk : sErr));
+       System.out.println("Busco a 7 con pertenece. Tiene que dar: " + sOk + " ---> " + ((a.pertenece(7)) ? sOk : sErr));
+       System.out.println("Busco elemento inexistente con pertenece. Tiene que dar: " + sOk + " ---> " + ((!a.pertenece(200)) ? sOk : sErr));
 
        System.out.println("Busco ancentros de raiz deberia dar vacio: " + a.ancestros(10).toString());
        System.out.println("Busco ancentros de 3 deberia dar 10 - 9: " + a.ancestros(3).toString());

@@ -222,8 +222,35 @@ public class ArbolGen {
      */
     public Object padre(Object elemento) {
         Object elemPadre = null;
-        // Agregar código
+
+        if (this.raiz != null && this.raiz.getElem().equals(elemento)) {
+            // el elemento es la raíz y ésta no tiene padre
+            elemPadre = null;
+        } else {
+            NodoGen nPadre = obtenerPadre(this.raiz, elemento);
+            if (nPadre != null) {
+                elemPadre = nPadre.getElem();
+            }
+        }
+
         return elemPadre;
+    }
+
+    private NodoGen obtenerPadre(NodoGen nodo, Object elemento) {
+        NodoGen nPadre = null;
+
+        if (nodo != null) {
+            NodoGen hijo = nodo.getHijoIzquierdo();
+            while (hijo != null && nPadre == null) {
+                if (hijo.getElem().equals(elemento)) {
+                    nPadre = nodo;
+                } else {
+                    nPadre = obtenerPadre(hijo, elemento);
+                    hijo = hijo.getHermanoDerecho();
+                }
+            }
+        }
+        return nPadre;
     }
 
     /*
