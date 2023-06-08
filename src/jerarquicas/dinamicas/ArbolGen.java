@@ -6,6 +6,7 @@
 package jerarquicas.dinamicas;
 
 import lineales.dinamicas.Lista;
+import lineales.dinamicas.Cola;
 
 /**
  *
@@ -28,19 +29,86 @@ public class ArbolGen {
      * elemNuevo a la estructura y falso en caso contrario.
      */
     public boolean insertar(Object elemNuevo, Object elemPadre) {
-        boolean exito = true;
-        // Agregar código
+        boolean exito = false;
+
+        if (this.raiz == null) {
+            // si el árbol está vacío, inserta elemNuevo como raíz del mismo
+            this.raiz = new NodoGen(elemNuevo, null, null);
+            exito = true;
+        } else {
+            // Busca al nodo con la primera aparición de elemPadre
+            NodoGen nodoPadre = obtenerNodo(this.raiz, elemPadre);
+            if (nodoPadre != null) {
+                // si encontró al nodo padre, entonces puede insertar elemNuevo
+                // Crea nuevoNodo con elemNuevo y enlaces null
+                NodoGen nuevoNodo = new NodoGen(elemNuevo, null, null);
+                if (nodoPadre.getHijoIzquierdo() == null) {
+                    // si el nodo padre no tenía hijos, inserta nuevoNodo como hijo izquierdo
+                    nodoPadre.setHijoIzquierdo(nuevoNodo);
+                    exito = true;
+                } else {
+                    // si nodoPadre tiene hijoIzquierdo, entonces recorre los hermanos derechos
+                    // de HI hasta que llega al último hermano
+                    NodoGen ultimoHermano = nodoPadre.getHijoIzquierdo();
+                    while (ultimoHermano.getHermanoDerecho() != null) {
+                        ultimoHermano = ultimoHermano.getHermanoDerecho();
+                    }
+                    ultimoHermano.setHermanoDerecho(nuevoNodo);
+                    exito = true;
+                }
+            }
+        }
+
         return exito;
     }
 
-    // pertenece(elemento): boolean
+    private NodoGen obtenerNodo(NodoGen nodo, Object buscado) {
+        // metodo PRIVADO que busca un elemento y devuelve el nodo que
+        // lo contiene. Si no se encuentra el elemento buscado, devuelve null
+        NodoGen resultado = null;
+
+        if (nodo != null) {
+            if (nodo.getElem().equals(buscado)) {
+                // si el buscado es nodo, lo devuelve
+                resultado = nodo;
+            } else {
+                // obtengo el hijo izquierdo del nodo
+                NodoGen hijo = nodo.getHijoIzquierdo();
+                while (hijo != null && resultado == null) {
+                    // recorre los hijos de nodo hasta que no tenga más hijos
+                    // o encuentre al nodo con el elemento buscado
+                    resultado = obtenerNodo(hijo, buscado);
+                    hijo = hijo.getHermanoDerecho();
+                }
+            }
+        }
+        return resultado;
+    }
+
     /*
      * Devuelve verdadero si el elemento pasado por parámetro está en el árbol.
      * Falso en caso contrario.
      */
     public boolean pertenece(Object elemento) {
+        return perteneceAux(this.raiz, elemento);
+    }
+
+    private boolean perteneceAux(NodoGen nodo, Object elemento) {
         boolean exito = false;
-        // Agregar código
+        if (nodo != null) {
+            if (nodo.getElem().equals(elemento)) {
+                exito = true;
+            } else {
+                NodoGen hijo = nodo.getHijoIzquierdo();
+                while (hijo != null && !exito) {
+                    if (perteneceAux(hijo, elemento)) {
+                        exito = true;
+                    } else {
+                        hijo = hijo.getHermanoDerecho();
+                    }
+                }
+            }
+        }
         return exito;
     }
 
@@ -60,16 +128,32 @@ public class ArbolGen {
         return this.raiz == null;
     }
 
-    // altura():int
     /*
      * Devuelve la altura del árbol, es decir la longitud del camino más largo
      * desde la raíz hasta una hoja.
      * Nota: un árbol vacío tiene altura -1 y una hoja tiene altura 0.
      */
     public int altura() {
-        int altura = -1;
-        // Agregar código
-        return altura;
+        return alturaAux(this.raiz);
+    }
+
+    private int alturaAux(NodoGen nodo) {
+        // método PRIVADO que recorre el árbol y calcula la longitud del camino más
+        // largo desde la raíz hasta una hoja
+        int aux = -1;
+        int resultado = -1;
+        if (nodo != null) {
+            NodoGen hijo = nodo.getHijoIzquierdo();
+            while (hijo != null) {
+                aux = alturaAux(hijo);
+                if (aux > resultado) {
+                    resultado = aux;
+                }
+                hijo = hijo.getHermanoDerecho();
+            }
+            resultado++;
+        }
+        return resultado;
     }
 
     // Devuelve el nivel de un elemento en el árbol. Si este no existe, devuelve -1.
@@ -100,8 +184,23 @@ public class ArbolGen {
      */
     public Lista listarPreorden() {
         Lista lis = new Lista();
-        // Agregar código.
+        listarPreordenAux(this.raiz, lis);
         return lis;
+    }
+
+    private void listarPreordenAux(NodoGen nodo, Lista lis) {
+        // método recursivo PRIVADO que recorre el árbol en preorden y almacena sus
+        // elementos en una lista. Es privado porque uno de los parámetros es un nodo.
+
+        if (nodo != null) {
+            lis.insertar(nodo.getElem(), lis.longitud() + 1); // (1)
+            // continúo con los hijos del nodo
+            NodoGen hijo = nodo.getHijoIzquierdo();
+            while (hijo != null) { // (2)
+                listarPreordenAux(hijo, lis); // (2.1)
+                hijo = hijo.getHermanoDerecho();
+            }
+        }
     }
 
     /*
@@ -115,8 +214,23 @@ public class ArbolGen {
      */
     public Lista listarPosorden() {
         Lista lis = new Lista();
-        // Agregar código.
+        listarPosordenAux(this.raiz, lis);
         return lis;
+    }
+
+    private void listarPosordenAux(NodoGen nodo, Lista lis) {
+        // método recursivo PRIVADO que recorre el árbol en posorden y almacena sus
+        // elementos en una lista. Es privado porque uno de los parámetros es un nodo.
+
+        if (nodo != null) {
+            NodoGen hijo = nodo.getHijoIzquierdo();
+            while (hijo != null) { // (1)
+                listarPosordenAux(hijo, lis);
+                ; // (1.1)
+                hijo = hijo.getHermanoDerecho();
+            }
+            lis.insertar(nodo.getElem(), lis.longitud() + 1); // (2)
+        }
     }
 
     /*
@@ -136,20 +250,22 @@ public class ArbolGen {
     }
 
     private void listarInordenAux(NodoGen n, Lista ls) {
+        // método recursivo PRIVADO que recorre el árbol en inorden y almacena sus
+        // elementos en una lista. Es privado porque uno de los parámetros es un nodo.
         if (n != null) {
-            // llamado recursivo con primer hijo de n
+            // llamado recursivo con primer hijo de n (1)
             if (n.getHijoIzquierdo() != null) {
                 listarInordenAux(n.getHijoIzquierdo(), ls);
             }
 
-            // visita del nodo n
+            // visita del nodo n (2)
             ls.insertar(n.getElem(), ls.longitud() + 1);
 
-            // llamados recursivos con los otros hijos de n
+            // llamados recursivos con los otros hijos de n (3)
             if (n.getHijoIzquierdo() != null) {
                 NodoGen hijo = n.getHijoIzquierdo().getHermanoDerecho();
                 while (hijo != null) {
-                    listarInordenAux(hijo, ls);
+                    listarInordenAux(hijo, ls); // (3.1)
                     hijo = hijo.getHermanoDerecho();
                 }
             }
@@ -159,34 +275,54 @@ public class ArbolGen {
     /*
      * Devuelve una lista con los elementos del árbol en el recorrido por niveles.
      * Si el árbol es vacío, devuelve una lista vacía.
-     * Algoritmo PorNivel()
-     * (1) Cola Q = nueva cola
-     * (2) poner en Q el nodo raíz
-     * (3) mientras not cola.vacía hacer
-     * nodo = obtener el frente de Q
-     * sacar el frente de Q
-     * visitar(nodo)
-     * Para cada hijo i de nodo
-     * (3.1) poner el hijo i de nodo en la cola Q
-     * fin mientras
-     * Fin algoritmo
      */
     public Lista listarPorNiveles() {
         Lista lis = new Lista();
-        // Agregar código.
+
+        Cola q = new Cola();
+        q.poner(this.raiz);
+
+        while (!q.esVacia()) {
+            NodoGen nodo = (NodoGen) q.obtenerFrente();
+            q.sacar();
+            lis.insertar(nodo.getElem(), lis.longitud() + 1);
+            NodoGen hijo = nodo.getHijoIzquierdo();
+            while (hijo != null) {
+                q.poner(hijo);
+                hijo = hijo.getHermanoDerecho();
+            }
+        }
+
         return lis;
     }
 
-    // clone (): ArbolGenerico
     /*
      * Genera y devuelve un árbol genérico que es equivalente (igual estructura
      * y contenido de los nodos) que el árbol original.
      */
+    @Override
     public ArbolGen clone() {
         ArbolGen clon = new ArbolGen();
-        // Agregar código
+        clon.raiz = cloneAux(this.raiz);
         return clon;
     }
+
+    private NodoGen cloneAux(NodoGen nodo) {
+        NodoGen nodoClonado = new NodoGen(nodo.getElem(), null, null);
+    
+        // Clonar los hijos del nodo
+        if (nodo.getHijoIzquierdo() != null) {
+            nodoClonado.setHijoIzquierdo(cloneAux(nodo.getHijoIzquierdo()));
+        }
+    
+        // Clonar los hermanos del nodo
+        if (nodo.getHermanoDerecho() != null) {
+            nodoClonado.setHermanoDerecho(cloneAux(nodo.getHermanoDerecho()));
+        }
+    
+        return nodoClonado;
+    }
+
 
     // Quita todos los elementos de la estructura.
     public void vaciar() {
@@ -197,6 +333,7 @@ public class ArbolGen {
      * Genera y devuelve una cadena de caracteres que indica cuál es la raíz del
      * árbol y quienes son los hijos de cada nodo.
      */
+    @Override
     public String toString() {
         return toStringAux(this.raiz);
     }
@@ -226,14 +363,14 @@ public class ArbolGen {
 
     public Lista listaQueJustificaLaAltura() {
         Lista actual = new Lista();
-        Lista res = new Lista();
+        Lista resultado = new Lista();
         if (this.raiz != null) {
-            res = listaQueJustificaLaAlturaAux(this.raiz, actual, res);
+            resultado = listaQueJustificaLaAlturaAux(this.raiz, actual, resultado);
         }
-        return res;
+        return resultado;
     }
 
-    private Lista listaQueJustificaLaAlturaAux(NodoGen n, Lista actual, Lista res) {
+    private Lista listaQueJustificaLaAlturaAux(NodoGen n, Lista actual, Lista resultado) {
         Lista blablabla = new Lista(); // cambiar luego
         /*
          * CASO BASE: n es hoja
@@ -243,7 +380,7 @@ public class ArbolGen {
 
         /*
          * CASO RECURSIVO: n tiene hijos
-         * Llamar con todos los hijos de n recibiendo la lista res
+         * Llamar con todos los hijos de n recibiendo la lista resultado
          * enviada por sus hijos... luego retornar la última lista
          * recibida de sus hijos
          */
