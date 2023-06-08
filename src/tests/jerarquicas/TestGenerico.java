@@ -230,6 +230,24 @@ public class TestGenerico {
        System.out.println(a.toString());
        System.out.println("Grado de subárbol con raíz 30: Tiene que dar: 5" + sOk + " --> " + (((int) a.gradoSubarbol(30) == 5) ? sOk : sErr));
        System.out.println("Grado de árbol completo: Tiene que dar 5: " + sOk + " --> " + (((int) a.grado() == 5) ? sOk : sErr));
+
+       System.out.println("\n\n");
+       System.out.println(ANSI_YELLOW_BACKGROUND + "----------------------------------------------------------------------------------------------------------"
+               + "----------------------------------------------------------------------------------------" + RESET);
+       System.out.println("\n\n*****************************************************");
+       System.out.println("*      Test de Lista que justifica la altura        *");
+       System.out.println("*****************************************************\n");
+
+       System.out.println("El árbol está así: \n\n" + a.toString() + "\n");
+       System.out.println("La altura del árbol debería dar 3:" + sOk + " --> " + a.altura() + ((a.altura() == 3) ? sOk : sErr));
+       System.out.println("La lista que justifica la altura es: " + a.listaQueJustificaLaAltura().toString());
+       System.out.println("Inserto 17 como hijo de 20 y 8 como hijo de 17");
+       System.out.println("Inserto el 17 como hijo de 20 " + ((a.insertar(17, 20)) ? sOk : sErr));
+       System.out.println("Inserto el 8 como hijo de 17 " + ((a.insertar(8, 17)) ? sOk : sErr));
+       System.out.println("El árbol está así: \n\n" + a.toString() + "\n");
+       System.out.println("La altura del árbol debería dar 4:" + sOk + " --> " + a.altura() + ((a.altura() == 4) ? sOk : sErr));
+       System.out.println("La lista que justifica la altura es: " + a.listaQueJustificaLaAltura().toString());
+       System.out.println("La lista que justifica la altura de árbol vacío es: " + vacio.listaQueJustificaLaAltura().toString());
    }
 
 }

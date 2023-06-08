@@ -237,6 +237,9 @@ public class ArbolGen {
     }
 
     private NodoGen obtenerPadre(NodoGen nodo, Object elemento) {
+        // método recursivo privado que recorre los hijos de nodo en busca
+        // aquel que contiene el elemento pasado por parámetro
+        
         NodoGen nPadre = null;
 
         if (nodo != null) {
@@ -420,7 +423,8 @@ public class ArbolGen {
     }
 
     private String toStringAux(NodoGen n) {
-        // Método privado
+        // Método privado que recorre el árbol y concatena cada nodo con sus hijos.
+        // Nota: El primer elemento es la raíz del árbol
         String s = "";
         if (n != null) {
             // visita del nodo n
@@ -453,7 +457,8 @@ public class ArbolGen {
     }
 
     private int gradoAux(NodoGen nodo) {
-        // método recursivo privado
+        // método recursivo privado que recorre el árbol y retorna el grado máximo de
+        // los nodos que contiene
         int gradoHijo = 0;
         int aux = 0;
         int resultado = -1;
@@ -504,33 +509,42 @@ public class ArbolGen {
     }
 
     /*
-     * dasdasdas
+     * Devuelve la lista con el recorrido que justifica la altura del árbol.
+     * En caso de tener un árbol vacío, devuelve una lista vacía.
      */
     public Lista listaQueJustificaLaAltura() {
-        Lista actual = new Lista();
         Lista resultado = new Lista();
         if (this.raiz != null) {
-            resultado = listaQueJustificaLaAlturaAux(this.raiz, actual, resultado);
+            resultado = listaQueJustificaLaAlturaAux(this.raiz, new Lista(), resultado);
         }
         return resultado;
     }
 
     private Lista listaQueJustificaLaAlturaAux(NodoGen n, Lista actual, Lista resultado) {
-        Lista blablabla = new Lista(); // cambiar luego
         /*
-         * CASO BASE: n es hoja
-         * Ver si actual es más larga que la otra lista...
-         * Si actual es más larga, devolver un clon de actual
+         * método recursivo privado que recorre el árbol y devuelve la lista que
+         * justifica su altura
          */
+        actual.insertar(n.getElem(), actual.longitud() + 1); // inserta el elemento actual en la lista
 
-        // Agregar código
+        if (gradoSubarbol(n.getElem()) == 0) { // Caso base: n es hoja
+            if (actual.longitud() > resultado.longitud()) {
+                // si la lista actual es más larga, devuelve un clon de actual
+                resultado = actual.clone();
+            }
+        } else { // Caso recursivo: n tiene hijos
+            NodoGen hijo = n.getHijoIzquierdo();
+            while (hijo != null) {
+                // Llama con todos los hijos de n recibiendo la lista resultado
+                // enviada por sus hijos. Luego retorna la última lista recibida
+                resultado = listaQueJustificaLaAlturaAux(hijo, actual, resultado);
+                hijo = hijo.getHermanoDerecho();
+            }
+        }
 
-        /*
-         * CASO RECURSIVO: n tiene hijos
-         * Llamar con todos los hijos de n recibiendo la lista resultado
-         * enviada por sus hijos... luego retornar la última lista
-         * recibida de sus hijos
-         */
-        return blablabla; // cambiar
+        // elimina el último elemento agregado antes de retroceder en el arbol
+        actual.eliminar(actual.longitud());
+        return resultado; // cambiar
     }
+
 }
