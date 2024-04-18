@@ -9,33 +9,35 @@ package lineales.dinamicas;
  */
 public class Pila {
 
-    private Nodo tope;
+    Nodo tope;
 
     public Pila() {
         // crea y devuelve la pila vacía
         this.tope = null;
     }
 
-    //de aplicacion
+    // de aplicacion
     public boolean apilar(Object nuevoElem) {
-        // Pone el elemento nuevoElem en el tope de la pila. 
-        //Crea un nuevo nodo delante de la antigua cabecera o frente
+        // Pone el elemento nuevoElem en el tope de la pila.
+        // Crea un nuevo nodo delante de la antigua cabecera o frente
         Nodo nuevo = new Nodo(nuevoElem, this.tope);
 
-        //actualiza el tope para que apunte al nodo nuevo
+        // actualiza el tope para que apunte al nodo nuevo
         this.tope = nuevo;
 
-        //Como no hay error de pila llena, al ser ésta dinámica, devuelve true. 
+        // Como no hay error de pila llena, al ser ésta dinámica, devuelve true.
         return true;
     }
 
     public boolean desapilar() {
-        /* Saca el elemento del tope de la pila. Devuelve true si la pila tenía
+        /*
+         * Saca el elemento del tope de la pila. Devuelve true si la pila tenía
          * elementos al momento de desapilar y falso en caso de que esté vacía.
          */
         boolean exito = false;
         if (this.tope != null) {
-            /*Enlazo el tope al siguiente nodo, como si fuera un puente. De esta
+            /*
+             * Enlazo el tope al siguiente nodo, como si fuera un puente. De esta
              * manera, el garbage collector se lleva al antiguo frente al no estar apuntado.
              */
             this.tope = this.tope.getEnlace();
@@ -45,10 +47,8 @@ public class Pila {
     }
 
     public Object obtenerTope() {
-        Object elemento;
-        if (this.tope == null) {
-            elemento = null;
-        } else {
+        Object elemento = null;
+        if (this.tope != null) {
             elemento = this.tope.getElem();
         }
         return elemento;
@@ -61,14 +61,17 @@ public class Pila {
     }
 
     public void vaciar() {
-        //Saca todos los elementos de la pila hasta que queda vacía.
+        // Saca todos los elementos de la pila hasta que queda vacía.
         this.tope = null;
     }
 
     @Override
     public Pila clone() {
-        /* Devuelve una copia exacta de los datos en la estructura original, y
+        /*
+         * Devuelve una copia exacta de los datos en la estructura original, y
          * respetando el orden de los mismos en otra estructura del mismo tipo.
+         * En la pila clon siempre voy recorriendo desde un elemento atrás que 
+         * en la pila original, copiando desde el tope y respetando el orden.
          */
 
         Pila clon = new Pila();
@@ -76,16 +79,17 @@ public class Pila {
         Nodo nuevo;
         Nodo ultimo = null;
 
-        //Manipulo la estructura de manera directa y eficiente.
-        while (aux != null) {
+        // Manipulo la estructura de manera directa y eficiente.
+        if (this.tope != null) { // Se ejecuta si la pila no esté vacía
             nuevo = new Nodo(aux.getElem(), null);
-            if (ultimo == null) {
-                clon.tope = nuevo;
-            } else {
+            clon.tope = nuevo;
+
+            while (aux.getEnlace() != null) {
+                ultimo = nuevo; // recorro la pila clon
+                aux = aux.getEnlace(); // recorre la pila original
+                nuevo = new Nodo(aux.getElem(), null);
                 ultimo.setEnlace(nuevo);
             }
-            aux = aux.getEnlace();
-            ultimo = nuevo;
         }
         return clon;
     }
@@ -94,12 +98,12 @@ public class Pila {
     public String toString() {
         String s = "";
 
-        if (this.tope == null) { //Verifica que la pila no esté vacía
+        if (this.tope == null) { // Verifica que la pila no esté vacía
             s = "Pila vacía";
         } else {
             s = "[";
             Nodo aux = this.tope;
-            //llamada recursiva que recorre toda la pila
+            // llamada recursiva que recorre toda la pila
             s += cadenaNodoRecursivo(aux);
             s += "]";
         }
@@ -109,17 +113,18 @@ public class Pila {
 
     public String cadenaNodoRecursivo(Nodo nodo) {
         String cadena = "";
-        //Verifica si hay sólo 1 elemento en la pila, para no imprimir una coma de más. 
+        // Verifica si hay sólo 1 elemento en la pila, para no imprimir una coma de más.
         if (this.tope.getEnlace() == null) {
             cadena = nodo.getElem().toString();
-        } else { //Si hay más de 1 elemento, se ejecuta esta alternativa
+        } else { // Si hay más de 1 elemento, se ejecuta esta alternativa
             if (nodo == this.tope) {
-                //Si estoy en el tope, hago el llamado recursivo dejando el tope a la derecha.
-                //Se ejecuta sólo una vez (cuando estoy en el tope).
+                // Si estoy en el tope, hago el llamado recursivo dejando el tope a la derecha.
+                // Se ejecuta sólo una vez (cuando estoy en el tope).
                 cadena += cadenaNodoRecursivo(nodo.getEnlace()) + nodo.getElem().toString();
             } else {
                 if (nodo.getEnlace() != null) {
-                    /* Si hay nodos después del actual, sigo con el llamado recursivo
+                    /*
+                     * Si hay nodos después del actual, sigo con el llamado recursivo
                      * y voy concatenando los elementos seguidos de una coma
                      */
                     cadena += cadenaNodoRecursivo(nodo.getEnlace()) + nodo.getElem().toString() + ",";
@@ -131,4 +136,32 @@ public class Pila {
         }
         return cadena;
     }
+
+    /*
+     * public static boolean esCapicua(Pila p) {
+     * boolean esCapicua = true;
+     * boolean vacia;
+     * Pila p1 = new Pila();
+     * Pila p2 = new Pila();
+     * 
+     * p2 = p.clone();
+     * 
+     * while(p2.esVacia()==false){
+     * p1.apilar(p2.obtenerTope());
+     * p2.desapilar();
+     * 
+     * }
+     * 
+     * 
+     * while (p.esVacia()==false && esCapicua == true) {
+     * if (p.obtenerTope() != p1.obtenerTope()) {
+     * esCapicua = false;
+     * 
+     * }
+     * p.desapilar();
+     * p1.desapilar();
+     * }
+     * return esCapicua;
+     * }
+     */
 }
