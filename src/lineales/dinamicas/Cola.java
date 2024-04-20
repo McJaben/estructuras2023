@@ -9,13 +9,14 @@ public class Cola {
     private Nodo frente;
     private Nodo fin;
 
-    //Crea y devuelve una cola vacía.
+    // Crea y devuelve una cola vacía.
     public Cola() {
         frente = null;
         fin = null;
     }
 
-    /* Pone el elemento al final de la cola. Devuelve verdadero si el elemento
+    /*
+     * Pone el elemento al final de la cola. Devuelve verdadero si el elemento
      * se pudo agregar en la estructura y falso en caso contrario
      */
     public boolean poner(Object nuevoElem) {
@@ -28,12 +29,14 @@ public class Cola {
             this.fin.setEnlace(nuevoNodo);
             this.fin = nuevoNodo;
         }
-        //nunca hay error de cola llena
+        // nunca hay error de cola llena
         return true;
     }
 
-    /*Saca el elemento que está en el frente de la cola. Devuelve verdadero 
-        si el elemento se pudo sacar y falso en caso contrario. */
+    /*
+     * Saca el elemento que está en el frente de la cola. Devuelve verdadero
+     * si el elemento se pudo sacar y falso en caso contrario.
+     */
     public boolean sacar() {
         boolean exito = false;
 
@@ -42,7 +45,7 @@ public class Cola {
             // Quita el elemento del frente y actualiza frente
             this.frente = this.frente.getEnlace();
             if (this.frente == null) {
-                //Si la cola quedó vacía, actualiza fin
+                // Si la cola quedó vacía, actualiza fin
                 this.fin = null;
             }
             exito = true;
@@ -50,7 +53,7 @@ public class Cola {
         return exito;
     }
 
-    //Retorna el elemento que está en el frente de la cola.
+    // Retorna el elemento que está en el frente de la cola.
     public Object obtenerFrente() {
         Object elementoFrente = null;
         if (this.frente != null) {
@@ -72,8 +75,10 @@ public class Cola {
         this.fin = null;
     }
 
-
-    /*Devuelve una copia exacta de los datos en la estructura original, y respetando el orden de los mismos, en otras estructuras del mismo tipo.*/
+    /*
+     * Devuelve una copia exacta de los datos en la estructura original, y
+     * respetando el orden de los mismos, en otras estructuras del mismo tipo.
+     */
     @Override
     public Cola clone() {
         Cola clon = new Cola();
@@ -81,7 +86,7 @@ public class Cola {
         Nodo nuevo;
         Nodo ultimo = null;
 
-        //Manipulo la estructura de manera directa y eficiente.
+        // Manipulo la estructura de manera directa y eficiente.
         while (aux != null) {
             nuevo = new Nodo(aux.getElem(), null);
             if (ultimo == null) {
@@ -97,17 +102,19 @@ public class Cola {
         return clon;
     }
 
-    /* Crea y devuelve una cadena de caracteres formada por todos los elementos
-    de la cola para poder mostrarla por pantalla. */
+    /*
+     * Crea y devuelve una cadena de caracteres formada por todos los elementos
+     * de la cola para poder mostrarla por pantalla.
+     */
     @Override
     public String toString() {
         String s = "";
         Nodo aux = this.frente;
-        if (aux == null) { //Verifica si la cola está vacía.
+        if (aux == null) { // Verifica si la cola está vacía.
             s = "Cola vacía.";
         } else {
             s = "[";
-            while (aux != null) { //bucle que recorre toda la estructura
+            while (aux != null) { // bucle que recorre toda la estructura
                 s += aux.getElem();
                 if (aux.getEnlace() != null) {
                     s += ",";
