@@ -105,7 +105,7 @@ public class Cola {
         String cadena = "";
 
         if (this.esVacia()) {
-            cadena = "Cola vacía";
+            cadena = "[]";
         } else {
             cadena = "["; // Comienzo con un corchete
             while (((i + 1) % TAMANIO) != this.fin) { // Recorro hasta el anteúltimo elemento y coloco una coma al final

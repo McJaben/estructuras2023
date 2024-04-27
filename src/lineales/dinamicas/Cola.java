@@ -111,7 +111,7 @@ public class Cola {
         String s = "";
         Nodo aux = this.frente;
         if (aux == null) { // Verifica si la cola está vacía.
-            s = "Cola vacía.";
+            s = "[]";
         } else {
             s = "[";
             while (aux != null) { // bucle que recorre toda la estructura
