@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package jerarquicas.dinamicas;
+package jerarquicas.dinamicas2023;
 
 import lineales.dinamicas.Lista;
 import lineales.dinamicas.Cola;

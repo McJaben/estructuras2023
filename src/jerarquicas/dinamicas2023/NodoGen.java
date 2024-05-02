@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package jerarquicas.dinamicas;
+package jerarquicas.dinamicas2023;
 
 /**
  * 
