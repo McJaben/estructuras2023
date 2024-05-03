@@ -81,32 +81,32 @@ public class ArbolBin {
 
         if (this.raiz != null) {
             int elementosEnNivel = 1; // nro de elementos en nivel actual
-            Cola q = new Cola();
-            q.poner(this.raiz);
+            Cola cola = new Cola();
+            cola.poner(this.raiz);
 
-            while (!q.esVacia()) {
+            while (!cola.esVacia()) {
                 int elementosSigNivel = 0; // número de elementos del siguiente nivel
                 // Recorro la totalidad de los nodos en el nivel actual individualmente
                 for (int i = 0; i < elementosEnNivel; i++) {
-                    // Obtengo el nodo del frente de la colsa (el actual)
-                    NodoArbol actual = (NodoArbol) q.obtenerFrente();
+                    // Obtengo el nodo del frente de la cola (el actual)
+                    NodoArbol actual = (NodoArbol) cola.obtenerFrente();
 
                     // Quito el nodo actual del frente de la cola
-                    q.sacar();
+                    cola.sacar();
 
-                    // Si HI no vacío, lo agrego a la cola para ser visitado luego
+                    // Si HI no nulo, lo agrego a la cola para ser visitado luego
                     if (actual.getIzquierdo() != null) {
-                        q.poner(actual.getIzquierdo());
+                        cola.poner(actual.getIzquierdo());
                         elementosSigNivel++;
                     }
-                    // Si HD no vacío, lo agrego a la cola para ser visitado luego
+                    // Si HD no nulo, lo agrego a la cola para ser visitado luego
                     if (actual.getDerecho() != null) {
-                        q.poner(actual.getDerecho());
+                        cola.poner(actual.getDerecho());
                         elementosSigNivel++;
                     }
                 }
                 altura++; // Al pasar de nivel, la altura aumenta en una unidad
-                elementosEnNivel = elementosSigNivel; // Actualizo números al avanzar de nivel
+                elementosEnNivel = elementosSigNivel; // Actualizo cant elementos al avanzar de nivel
             }
         }
 
@@ -250,10 +250,227 @@ public class ArbolBin {
 
             // Visita la raíz
             lis.insertar(nodo.getElem(), lis.longitud() + 1); // (2)
-            
+
             // Recorre subárbol derecho
             listarInordenAux(nodo.getDerecho(), lis); // (3)
         }
     }
 
+    /**
+     * Devuelve una lista con los elementos del árbol en el recorrido por niveles.
+     * Las variables 'elemEnNivel' y 'elemSigNivel' sirven para controlar la
+     * iteración y poder recorrer individualmente todos los nodos de cada nivel,
+     * sin que falten o se repitan.
+     */
+    public Lista listarNiveles() {
+        Lista list = new Lista();
+
+        if (this.raiz != null) {
+            int elemEnNivel = 1; // Existe sólo 1 elemento en el primer nivel: la raíz
+            Cola cola = new Cola();
+            cola.poner(this.raiz); // Agrego la raíz a la cola
+            list.insertar(this.raiz.getElem(), list.longitud() + 1); // Inserto elemento de la raíz en la lista
+
+            // Con la estructura cola como auxiliar voy visitando cada nivel del árbol, nodo
+            // a nodo y voy insertando sus elementos en ese mismo orden a la lista
+            while (!cola.esVacia()) {
+                int elemSigNivel = 0; // nro de elementos en siguiente nivel
+
+                // Recorro la totalidad de los nodos en el nivel actual individualmente
+                for (int i = 0; i < elemEnNivel; i++) {
+                    // Obtengo el nodo del frente de la cola
+                    NodoArbol actual = (NodoArbol) cola.obtenerFrente();
+
+                    // Quito el frente de la cola porque ya visité el nodo
+                    cola.sacar();
+
+                    // Si hijo izquierdo no nulo, lo agrego a la cola e inserto en la lista
+                    if (actual.getIzquierdo() != null) {
+                        cola.poner(actual.getIzquierdo());
+                        list.insertar(actual.getIzquierdo().getElem(), list.longitud() + 1);
+                        elemSigNivel++;
+                    }
+                    // Si hijo derecho no nulo, lo agrego a la cola e inserto en la lista
+                    if (actual.getDerecho() != null) {
+                        cola.poner(actual.getDerecho());
+                        list.insertar(actual.getDerecho().getElem(), list.longitud() + 1);
+                        elemSigNivel++;
+                    }
+                }
+                elemEnNivel = elemSigNivel; // Actualizo cantidad de elementos al avanzar de nivel
+            }
+        }
+        return list;
+    }
+
+    /**
+     * Genera y devuelve un árbol binario equivalente (igual estructura y contenido
+     * de los nodos) que el árbol original
+     */
+    @Override
+    public ArbolBin clone() {
+        ArbolBin clon = new ArbolBin();
+        clon.raiz = cloneAux(this.raiz);
+        return clon;
+    }
+
+    /**
+     * Método PRIVADO que recorre el árbol original recursivamente mientras va
+     * creando
+     * nuevos nodos con los hijos del original para insertarlos en el clon.
+     */
+    private NodoArbol cloneAux(NodoArbol nodo) {
+        NodoArbol nuevoNodo = null;
+
+        if (nodo != null) {
+            // Creo el nuevo nodo con el elemento del nodo actual, por ahora sin hijos
+            nuevoNodo = new NodoArbol(nodo.getElem(), null, null);
+
+            // Seteo como hijo izquierdo el subárbol izquierdo del nodo pasado por parámetro
+            nuevoNodo.setIzquierdo(cloneAux(nodo.getIzquierdo()));
+
+            // Seteo como hijo derecho el subárbol derecho del nodo pasado por parámetro
+            nuevoNodo.setDerecho(cloneAux(nodo.getDerecho()));
+        }
+
+        return nuevoNodo;
+    }
+
+    /**
+     * Quita todos los elementos de la estructura.
+     */
+    public void vaciar() {
+        this.raiz = null;
+    }
+
+    /*
+     * Genera y devuelve una cadena de caracteres que indica cuál es la raíz del
+     * árbol y quiénes son los hijos de cada nodo.
+     */
+    @Override
+    public String toString() {
+        String cadena;
+        if (this.raiz != null) {
+            cadena = toStringAux(this.raiz);
+        } else {
+            cadena = "Árbol vacío";
+        }
+        return cadena;
+    }
+
+    private String toStringAux(NodoArbol nodo) {
+        // método Privado que recorre el árbol por niveles y va guardando los
+        // elementos de cada nodo y sus hijos en un String para luego retornarlo
+        String cadena = "";
+        // si el arbol está vacío, esto no se ejecuta y devuelve una cadena vacía
+        if (nodo != null) {
+            int elementosEnNivel = 1; // Número de elementos en el nivel actual
+            Cola cola = new Cola();
+            cola.poner(this.raiz);
+
+            // Mientras la cola no sea vacía
+            while (!cola.esVacia()) {
+                int elementosSigNivel = 0; // Número de elementos en el siguiente nivel
+                // Recorremos todos los nodos del nivel actual y los insertamos en la lista
+                for (int i = 0; i < elementosEnNivel; i++) {
+                    // Obtengo el nodo actual de la cola
+                    NodoArbol actual = (NodoArbol) cola.obtenerFrente();
+                    // Sacamos el nodo actual de la cola
+                    cola.sacar();
+                    cadena += actual.getElem();
+                    // Agregamos los hijos del nodo actual a la cola, si existen
+                    if (actual.getIzquierdo() != null) {
+                        cola.poner(actual.getIzquierdo());
+                        cadena += " HI: " + actual.getIzquierdo().getElem();
+                        elementosSigNivel++;
+                    } else {
+                        cadena += " HI: -";
+                    }
+                    if (actual.getDerecho() != null) {
+                        cola.poner(actual.getDerecho());
+                        cadena += " HD: " + actual.getDerecho().getElem() + "\n";
+                        elementosSigNivel++;
+                    } else {
+                        cadena += " HD: - \n";
+                    }
+                }
+                // Actualizamos el número de elementos
+                elementosEnNivel = elementosSigNivel;
+            }
+        }
+        return cadena;
+    }
+
+    /**
+     * Devuelve una lista con todos los elementos almacenados en las hojas del árbol
+     * listadas de izquierda a derecha.
+     */
+    public Lista frontera() {
+        Lista list = new Lista();
+        fronteraAux(this.raiz, list);
+        return list;
+    }
+
+    /**
+     * Método PRIVADO que recorre el árbol en preorden y almacena las hojas del
+     * mismo
+     * en una lista.
+     */
+    private void fronteraAux(NodoArbol nodo, Lista list) {
+        if (nodo != null) {
+            // Recorre primero los subárboles izquierdo y derecho en posorden
+            fronteraAux(nodo.getIzquierdo(), list); // (1)
+            fronteraAux(nodo.getDerecho(), list); // (2)
+
+            // Inserta el elemento del nodo sólo si es una hoja
+            if (nodo.getIzquierdo() == null && nodo.getDerecho() == null) {
+                list.insertar(nodo.getElem(), list.longitud() + 1); // (3)
+            }
+        }
+    }
+
+    /**
+     * Devuelve una lista con todos los ancestros del elemento pasado por parámetro
+     * (Si el elemento no está, devuelve una lista vacía)
+     */
+    public Lista obtenerAncestros(Object elem) {
+        Lista list = new Lista();
+        NodoArbol nodoElemento = obtenerNodo(this.raiz, elem);
+        if (nodoElemento != null) { // si el elemento está en el árbol
+            obtenerAncestrosAux(this.raiz, nodoElemento);
+        }
+        return list;
+    }
+
+    private void obtenerAncestrosAux(NodoArbol nodo, NodoArbol buscado) {
+
+    }
+
+    // Método que pasó un compañero por Discord. No funciona del todo bien.
+    // public boolean verificarPatron(Lista patron) {
+    //     boolean coincide = false;
+    //     int pos = 2;
+    //     if (patron.recuperar(1).equals(this.raiz.getElem())) {
+    //         coincide = verificarPatronAux(this.raiz, patron, pos, true);
+    //     }
+    //     return coincide;
+    // }
+
+    // public boolean verificarPatronAux(NodoArbol nodo, Lista patron, int pos, boolean coincide) {
+    //     if (nodo != null && coincide && pos <= patron.longitud()) {
+    //         if (nodo.getIzquierdo() != null && nodo.getIzquierdo().getElem().equals(patron.recuperar(pos))
+    //                 || nodo.getDerecho() != null && nodo.getDerecho().getElem().equals(patron.recuperar(pos))) {
+    //             if (nodo.getIzquierdo() != null && nodo.getIzquierdo().getElem().equals(patron.recuperar(pos))) {
+    //                 coincide = verificarPatronAux(nodo.getIzquierdo(), patron, pos + 1, coincide);
+    //             }
+    //             if ((nodo.getDerecho() != null && nodo.getDerecho().getElem().equals(patron.recuperar(pos)))) {
+    //                 coincide = verificarPatronAux(nodo.getDerecho(), patron, pos + 1, coincide);
+    //             }
+
+    //         } else {
+    //             coincide = false;
+    //         }
+    //     }
+    //     return coincide;
+    // }
 }

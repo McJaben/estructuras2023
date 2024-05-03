@@ -15,7 +15,7 @@ public class Lista {
         cabecera = null;
     }
 
-    /*
+    /**
      * Adds the element passed as a parameter at the position 'pos',
      * such that the quantity of elements in the list increases by 1.
      * For a succesful insertion, the received position must be
@@ -49,7 +49,7 @@ public class Lista {
         return exito;
     }
 
-    /*
+    /**
      * Deletes the element at the position 'pos'. Preconditions: list not empty and
      * valid position (pos >= 1 and pos <= length(list) + 1).
      * Returns true if the deletion was succesful, false otherwise.
@@ -79,7 +79,7 @@ public class Lista {
         return exito;
     }
 
-    /*
+    /**
      * Returns the element in the 'pos' position. Precondition: valid position.
      */
 
@@ -101,7 +101,7 @@ public class Lista {
         return elem;
     }
 
-    /*
+    /**
      * Returns the position where the first ocurrence of 'elem' is in the list.
      * If it is not found, it returns -1.
      */
@@ -141,7 +141,7 @@ public class Lista {
         return this.cabecera == null;
     }
 
-    /*
+    /**
      * Returns an exact copy of the data in the original structure, respecting
      * its order, in another structure of the same type.
      */
@@ -169,7 +169,7 @@ public class Lista {
         return clon;
     }
 
-    /*
+    /**
      * Returns the quantity of elements in the list.
      */
     public int longitud() {
@@ -186,7 +186,7 @@ public class Lista {
         return count;
     }
 
-    /*
+    /**
      * Creates and returns a String formed by all the elements of the list, so
      * that it can print it. This method is for testing purposes only.
      */
@@ -207,6 +207,38 @@ public class Lista {
         }
 
         return cadena;
+    }
+
+    // Resolving exercise 1 from "Simulation of the first partial exam".
+    /*
+     * a) Add to the ADD Lista the operation obenerMultiplos(int num) that receives
+     * a number and returns a new list that contains all the elements of the
+     * multiples of NUM, in the same order found, making a single route of the
+     * original structures and copy ; and without using other TDA operations.
+     */
+    public Lista obtenerMultiplos(int num) {
+        Lista copy = new Lista();
+
+        // Verifies that list is not empty and the position 'num' is valid
+        if (this.cabecera != null && num >= 1 && num <= this.longitud()) {
+            int pos = num;
+            int i = 1;
+            Nodo actual = this.cabecera; // Auxiliary node, used to travel the original list
+            while (pos <= this.longitud()) {
+                while (i < pos) {
+                    actual = actual.getEnlace();
+                    i++;
+                }
+                // Insert the element of the position that is a multiple of 'num' in the copy
+                copy.insertar(actual.getElem(), copy.longitud() + 1);
+
+                // Increase the 'pos' position in 'num' times to travel only what is necessary
+                // and thus guarantee that it is always in the correct position
+                pos += num;
+            }
+        }
+
+        return copy;
     }
 
 }
