@@ -1,13 +1,11 @@
 package tests.lineales;
 
-import java.util.Scanner;
 import lineales.dinamicas.Pila;
 //import lineales.estaticas.Pila;
 
 public class TestPila {
 
     public static void main(String args[]) {
-        Scanner sc = new Scanner(System.in);
         // Probando constructor vacío
         System.out.println("Creando nueva pila...");
         Pila p = new Pila();

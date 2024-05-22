@@ -2,6 +2,7 @@ package jerarquicas.dinamicas2023;
 
 import lineales.dinamicas.Lista;
 import lineales.dinamicas.Cola;
+import lineales.dinamicas.Pila;
 
 /**
  *
@@ -118,6 +119,7 @@ public class ArbolGen {
     public Lista ancestros(Object elem) {
         Lista ancestros = new Lista();
         ancestrosAux(this.raiz, elem, ancestros);
+        ancestros = invertirLista(ancestros);
         return ancestros;
     }
 
@@ -143,6 +145,20 @@ public class ArbolGen {
             }
         }
         return encontrado;
+    }
+
+    private Lista invertirLista(Lista lis) {
+        Lista nueva = new Lista();
+        Pila q = new Pila();
+        int i = lis.longitud();
+        int k = 1;
+        while (i > 0) {
+            nueva.insertar(lis.recuperar(i), k);
+            q.desapilar();
+            i--;
+            k++;
+        }
+        return nueva;
     }
 
     // Devuelve true si el árbol es vacío, falso en caso contrario.
@@ -234,7 +250,7 @@ public class ArbolGen {
     private NodoGen obtenerPadre(NodoGen nodo, Object elemento) {
         // método recursivo privado que recorre los hijos de nodo en busca
         // aquel que contiene el elemento pasado por parámetro
-        
+
         NodoGen nPadre = null;
 
         if (nodo != null) {

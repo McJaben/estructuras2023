@@ -19,11 +19,11 @@ public class TestArbolGen {
                 System.out.println(sBlue + "********************************");
                 System.out.println("*     TEST ÁRBOL GENÉRICO      *");
                 System.out.println("********************************" + sReset);
-                
+
                 System.out.println(sYellow
                                 + "\n---------------------------------------------------------------------------------------------------------------\n"
                                 + sReset);
-                
+
                 System.out.println(sMagenta + "********************************");
                 System.out.println("*      Constructor vacío       *");
                 System.out.println("********************************" + sReset);
@@ -146,6 +146,53 @@ public class TestArbolGen {
                 System.out.println(sMagenta + "********************************");
                 System.out.println("* Probando métodos de búsqueda *");
                 System.out.println("********************************" + sReset);
+
+                System.out.println(sBlue + "\nMétodo padre():\n" + sReset);
+                System.out.println("Busco al padre de 55. Tiene que dar 30: " + sOk + " ---> "
+                                + (((int) arbol.padre(55) == 30) ? sOk : sErr));
+                System.out.println("Busco al padre de 13. Tiene que dar 19: " + sOk + " ---> "
+                                + (((int) arbol.padre(13) == 19) ? sOk : sErr));
+                System.out.println("Busco al padre de 35. Tiene que dar 25: " + sOk + " ---> "
+                                + (((int) arbol.padre(35) == 25) ? sOk : sErr));
+                System.out.println("Busco al padre de 40. Tiene que dar 30: " + sOk + " ---> "
+                                + (((int) arbol.padre(40) == 30) ? sOk : sErr));
+                System.out.println("Busco al padre de raiz. Tiene que dar null: " + sOk + " ---> "
+                                + ((arbol.padre(10) == null) ? sOk : sErr));
+                System.out.println("Busco al padre de elemento inexistente. Tiene que dar: " + sErr + " ---> "
+                                + ((arbol.padre(2024) != null) ? sOk : sErr));
+
+                System.out.println(sBlue + "\nMétodo pertenece():\n" + sReset);
+                System.out.println("Busco a raíz con pertenece(). Tiene que dar" + sOk + "--->"
+                                + ((arbol.pertenece(20)) ? sOk : sErr));
+                System.out.println("Busco al elemento 45 con pertenece(). Tiene que dar" + sOk + "--->"
+                                + ((arbol.pertenece(45) ? sOk : sErr)));
+                System.out.println("Busco al elemento 17 con pertenece(). Tiene que dar" + sOk + "--->"
+                                + ((arbol.pertenece(17) ? sOk : sErr)));
+                System.out.println("Busco a elemento inexistente con pertenece(). Tiene que dar" + sErr + "--->"
+                                + ((arbol.pertenece(2024) ? sOk : sErr)));
+
+                System.out.println(sBlue + "\nMétodo ancestros():\n" + sReset);
+                System.out.println(
+                                "Busco ancentros de raiz debería dar lista vacía: " + arbol.ancestros(20).toString());
+                System.out.println("Busco ancentros de 13 deberia dar [20, 19]: " + arbol.ancestros(13).toString());
+                System.out.println("Busco ancentros de 55 deberia dar [20, 25, 30]: " + arbol.ancestros(55).toString());
+                System.out.println("Busco ancentros de elemento inexistente, debería dar lista vacía: "
+                                + arbol.ancestros(3333).toString());
+
+                System.out.println(sYellow
+                                + "\n---------------------------------------------------------------------------------------------------------------\n"
+                                + sReset);
+                System.out.println(sMagenta + "********************************");
+                System.out.println("* Probando método nivel() *");
+                System.out.println("********************************" + sReset);
+                System.out.println("Consulto el nivel de raíz. Tiene que dar 0 y" + sOk + "--->"
+                                + (((int) arbol.nivel(20) == 0) ? sOk : sErr));
+                System.out.println("Consulto el nivel de elemento 45. Tiene que dar 3 y" + sOk + "--->"
+                                + (((int) arbol.nivel(45) == 3) ? sOk : sErr));
+                System.out.println("Consulto el nivel de elemento 17. Tiene que dar 2 y" + sOk + "--->"
+                                + (((int) arbol.nivel(17) == 2) ? sOk : sErr));
+                System.out.println("Consulto el nivel de elemento inexistente. Tiene que dar -1 y" + sOk + "--->"
+                                + (((int) arbol.nivel(2024) == -1) ? sOk : sErr));
 
         }
 
