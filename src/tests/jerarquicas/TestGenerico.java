@@ -1,6 +1,6 @@
 package tests.jerarquicas;
 
-import jerarquicas.dinamicas.ArbolGen;
+import jerarquicas.dinamicas2023.ArbolGen;
 
 public class TestGenerico {
 
@@ -46,7 +46,7 @@ public class TestGenerico {
        a.vaciar();
        System.out.println("Altura de arbol vacio:  " + a.altura());
        System.out.println("Busco elemento inexistente en arbol vacio con pertenece."
-               + "Tiene que dar " + sOk + " ---> " + ((!b.pertenece(20)) ? sOk : sErr));
+               + "Tiene que dar " + sErr + " ---> " + ((b.pertenece(20)) ? sOk : sErr));
 
        System.out.println("Inserto el 10 en raiz " + ((a.insertar(10, 1)) ? sOk : sErr));
        System.out.println("\n toString()  deberia dar:\n"
@@ -125,12 +125,12 @@ public class TestGenerico {
        System.out.println("Inserto el 27 como hijo de 20 en CLON" + ((b.insertar(27, 20)) ? sOk : sErr));
        System.out.println("Inserto el 35 como hijo de 20 en CLON" + ((b.insertar(35, 20)) ? sOk : sErr));
        System.out.println("\n" + AZUL + "CLON toString() \t\t\n" + b.toString() + "\n\n");
-       System.out.println(VERDE + "ORIGINAL toString()\t\t\n " + a.toString() + "\n\n");
+       System.out.println("\n" + VERDE + "ORIGINAL toString() \t\t\n" + a.toString() + "\n\n" + RESET);
 
        System.out.println("Vacio el CLON");
        b.vaciar();
-       System.out.println("Busco al padre 20 en Arbol vacio. Tiene que dar " + sOk + " --> " + ((b.padre(20) == null) ? sOk : sErr));
-       System.out.println("Busco a 25 con pertenece. Tiene que dar " + sErr + " ---> " + ((b.pertenece(20)) ? sOk : sErr));
+       System.out.println("Busco al padre de 20 en Arbol vacio. Tiene que dar " + sErr + " --> " + ((b.padre(20) != null) ? sOk : sErr));
+       System.out.println("Busco a 25 en clon con pertenece. Tiene que dar " + sErr + " ---> " + ((b.pertenece(20)) ? sOk : sErr));
 
        System.out.println("\n\n");
        System.out.println(ANSI_YELLOW_BACKGROUND + "----------------------------------------------------------------------------------------------------------"
@@ -149,7 +149,7 @@ public class TestGenerico {
        System.out.println("Busco a raiz con pertenece. Tiene que dar: " + sOk + " ---> " + ((a.pertenece(10)) ? sOk : sErr));
        System.out.println("Busco a 55 con pertenece. Tiene que dar: " + sOk + " ---> " + ((a.pertenece(55)) ? sOk : sErr));
        System.out.println("Busco a 7 con pertenece. Tiene que dar: " + sOk + " ---> " + ((a.pertenece(7)) ? sOk : sErr));
-       System.out.println("Busco elemento inexistente con pertenece. Tiene que dar: " + sOk + " ---> " + ((!a.pertenece(200)) ? sOk : sErr));
+       System.out.println("Busco elemento inexistente con pertenece. Tiene que dar: " + sErr + " ---> " + ((a.pertenece(200)) ? sOk : sErr));
 
        System.out.println("Busco ancentros de raiz deberia dar vacio: " + a.ancestros(10).toString());
        System.out.println("Busco ancentros de 3 deberia dar 10 - 9: " + a.ancestros(3).toString());

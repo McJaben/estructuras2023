@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package jerarquicas.dinamicas2023;
 
 import lineales.dinamicas.Lista;
@@ -442,6 +437,8 @@ public class ArbolGen {
                 s += "\n" + toStringAux(hijo);
                 hijo = hijo.getHermanoDerecho();
             }
+        } else {
+            s = "Árbol vacío";
         }
         return s;
     }

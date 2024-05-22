@@ -343,7 +343,7 @@ public class ArbolBin {
         this.raiz = null;
     }
 
-    /*
+    /**
      * Genera y devuelve una cadena de caracteres que indica cuál es la raíz del
      * árbol y quiénes son los hijos de cada nodo.
      */
@@ -430,47 +430,86 @@ public class ArbolBin {
     }
 
     /**
-     * Devuelve una lista con todos los ancestros del elemento pasado por parámetro
-     * (Si el elemento no está, devuelve una lista vacía)
+     * Devuelve una lista con todos los ancestros de la primera aparición del
+     * elemento pasado por parámetro (si no está, devuelve una lista vacía)
      */
     public Lista obtenerAncestros(Object elem) {
-        Lista list = new Lista();
-        NodoArbol nodoElemento = obtenerNodo(this.raiz, elem);
-        if (nodoElemento != null) { // si el elemento está en el árbol
-            obtenerAncestrosAux(this.raiz, nodoElemento);
+        Lista ancestros = new Lista();
+
+        // Verificar si el árbol está vacío
+        if (this.raiz != null) {
+            // Verifico si el elemento se encuentra en el árbol
+            NodoArbol nodo = obtenerNodo(this.raiz, elem);
+            if (nodo != null && nodo != this.raiz) {
+                // Busco el padre del elemento en cuestión
+                NodoArbol nPadre = obtenerPadre(this.raiz, elem);
+                while (nPadre != null) {
+                    ancestros.insertar(nPadre.getElem(), ancestros.longitud() + 1);
+                    // System.out.println(ancestros.toString());
+                    if (nPadre == this.raiz) {
+                        nPadre = null;
+                    } else {
+                        nPadre = obtenerPadre(this.raiz, nPadre.getElem());
+                    }
+                }
+            }
         }
-        return list;
+
+        return ancestros;
     }
 
-    private void obtenerAncestrosAux(NodoArbol nodo, NodoArbol buscado) {
-
+    /**
+     * Devuelve una lista de los descendientes de la primera aparición de un
+     * elemento. Si hay elementos duplicados, obtiene los descendientes de la
+     * primer aparición de elem.
+     */
+    public Lista obtenerDescendientes(Object elem) {
+        Lista descendientes = new Lista();
+        if (this.raiz != null) {
+            NodoArbol nodo = obtenerNodo(this.raiz, elem);
+            if (nodo != null) {
+                descendientesAux(nodo, descendientes);
+            }
+        }
+        return descendientes;
     }
 
-    // Método que pasó un compañero por Discord. No funciona del todo bien.
-    // public boolean verificarPatron(Lista patron) {
-    //     boolean coincide = false;
-    //     int pos = 2;
-    //     if (patron.recuperar(1).equals(this.raiz.getElem())) {
-    //         coincide = verificarPatronAux(this.raiz, patron, pos, true);
-    //     }
-    //     return coincide;
-    // }
+    private void descendientesAux(NodoArbol nodo, Lista lis) {
+        // método recursivo PRIVADO que recorre el árbol por niveles y almacena los
+        // hijos del nodo pasado por parámetro en una lista. Es privado porque
+        // uno de los parámetros es un nodo.
+        if (nodo != null) {
+            int elementosEnNivel = 1; // Número de elementos en el nivel actual
+            Cola q = new Cola();
+            q.poner(nodo);
 
-    // public boolean verificarPatronAux(NodoArbol nodo, Lista patron, int pos, boolean coincide) {
-    //     if (nodo != null && coincide && pos <= patron.longitud()) {
-    //         if (nodo.getIzquierdo() != null && nodo.getIzquierdo().getElem().equals(patron.recuperar(pos))
-    //                 || nodo.getDerecho() != null && nodo.getDerecho().getElem().equals(patron.recuperar(pos))) {
-    //             if (nodo.getIzquierdo() != null && nodo.getIzquierdo().getElem().equals(patron.recuperar(pos))) {
-    //                 coincide = verificarPatronAux(nodo.getIzquierdo(), patron, pos + 1, coincide);
-    //             }
-    //             if ((nodo.getDerecho() != null && nodo.getDerecho().getElem().equals(patron.recuperar(pos)))) {
-    //                 coincide = verificarPatronAux(nodo.getDerecho(), patron, pos + 1, coincide);
-    //             }
+            while (!q.esVacia()) {
+                int elementosSigNivel = 0; // Número de elementos en el siguiente nivel
 
-    //         } else {
-    //             coincide = false;
-    //         }
-    //     }
-    //     return coincide;
-    // }
+                // Recorremos todos los nodos del nivel actual y los insertamos en la lista
+                for (int i = 0; i < elementosEnNivel; i++) {
+                    // Obtengo el nodo actual de la cola
+                    NodoArbol actual = (NodoArbol) q.obtenerFrente();
+
+                    // Sacamos el nodo actual de la cola
+                    q.sacar();
+
+                    // Agregamos los hijos del nodo actual a la cola, si existen
+                    if (actual.getIzquierdo() != null) {
+                        q.poner(actual.getIzquierdo());
+                        lis.insertar(actual.getIzquierdo().getElem(), lis.longitud() + 1);
+                        elementosSigNivel++;
+                    }
+                    if (actual.getDerecho() != null) {
+                        q.poner(actual.getDerecho());
+                        lis.insertar(actual.getDerecho().getElem(), lis.longitud() + 1);
+                        elementosSigNivel++;
+                    }
+                }
+                // Actualizamos el número de elementos
+                elementosEnNivel = elementosSigNivel;
+            }
+        }
+    }
+
 }
