@@ -2,7 +2,6 @@ package jerarquicas.dinamicas2023;
 
 import lineales.dinamicas.Lista;
 import lineales.dinamicas.Cola;
-import lineales.dinamicas.Pila;
 
 /**
  *
@@ -41,7 +40,6 @@ public class ArbolGen {
                 if (nodoPadre.getHijoIzquierdo() == null) {
                     // si el nodo padre no tenía hijos, inserta nuevoNodo como hijo izquierdo
                     nodoPadre.setHijoIzquierdo(nuevoNodo);
-                    exito = true;
                 } else {
                     // si nodoPadre tiene hijoIzquierdo, entonces recorre los hermanos derechos
                     // de HI hasta que llega al último hermano
@@ -50,8 +48,8 @@ public class ArbolGen {
                         ultimoHermano = ultimoHermano.getHermanoDerecho();
                     }
                     ultimoHermano.setHermanoDerecho(nuevoNodo);
-                    exito = true;
                 }
+                exito = true;
             }
         }
 
@@ -68,7 +66,7 @@ public class ArbolGen {
                 // si el buscado es nodo, lo devuelve
                 resultado = nodo;
             } else {
-                // obtengo el hijo izquierdo del nodo
+                // obtiene el hijo izquierdo del nodo
                 NodoGen hijo = nodo.getHijoIzquierdo();
                 while (hijo != null && resultado == null) {
                     // recorre los hijos de nodo hasta que no tenga más hijos
@@ -78,6 +76,70 @@ public class ArbolGen {
                 }
             }
         }
+        return resultado;
+    }
+
+    /*
+     * Inserta un elemento 'elemNuevo' como hijo del nodo padre que se encuentra
+     * en la posición 'posPadre' del árbol en preorden. Precondición: debe existir
+     * un nodo en el árbol en la posición dada. Devuelve verdadero si puedo agregar
+     * al elemento y falso en caso contrario.
+     */
+    public boolean insertarPorPosicion(Object elemNuevo, int posPadre) {
+        boolean exito = false;
+        // Verifica árbol no vacío y posición válida (mayor o igual a 1)
+        if (this.raiz != null && posPadre >= 1) {
+            int[] posActual = { 1 };
+            NodoGen nodoBuscado = obtenerNodoPos(raiz, posPadre, posActual);
+            if (nodoBuscado != null) {
+                // probando que encontró al nodo adecuado
+                Object elem = nodoBuscado.getElem();
+                System.out.println(elem.toString());
+                // Crea un nuevo nodo con el elemento a insertar y enlaces nulos
+                NodoGen nuevoNodo = new NodoGen(elemNuevo, null, null);
+
+                // Inserta al elemNuevo como hijo del nodoBuscado
+                if (nodoBuscado.getHijoIzquierdo() == null) {
+                    // Si no tiene hijos, inserto el elemNuevo como HEI
+                    nodoBuscado.setHijoIzquierdo(nuevoNodo);
+                } else {
+                    // Si el nodoBuscado tiene hijos, recorre los hermanos derechos del HEI
+                    // hasta el último
+                    NodoGen ultimoHermano = nodoBuscado.getHijoIzquierdo();
+                    while (ultimoHermano.getHermanoDerecho() != null) {
+                        ultimoHermano = ultimoHermano.getHermanoDerecho();
+                    }
+                    // Inserto al nuevoNodo al final de los hermanos derechos del nodoBuscado
+                    ultimoHermano.setHermanoDerecho(nuevoNodo);
+                }
+                exito = true;
+            }
+        }
+
+        return exito;
+    }
+
+    private NodoGen obtenerNodoPos(NodoGen nodo, int posBuscada, int[] posActual) {
+        // Método PRIVADO que busca un nodo que se encuentre en la posición dada del
+        // árbol en preorden. Utilizo un arreglo para almacenar el valor correcto de la
+        // posición actual, dado que se pasa por referencia. Inicia en 1. Aumenta en 1
+        // con cada llamado recursivo del árbol. Precondición: posBuscada >= 1.
+        NodoGen resultado = null;
+        if (nodo != null) {
+            if (posBuscada == posActual[0]) { // Caso base
+                resultado = nodo;
+            } else {
+                NodoGen hijo = nodo.getHijoIzquierdo();
+                while (hijo != null && resultado == null) { // Caso recursivo
+                    // Recorre hasta que nodo no tenga más hijos o encuentre al nodo
+                    // en la posición buscada
+                    posActual[0]++; // Incrementa posActual antes del llamado recursivo para los hijos
+                    resultado = obtenerNodoPos(hijo, posBuscada, posActual);
+                    hijo = hijo.getHermanoDerecho();
+                }
+            }
+        }
+
         return resultado;
     }
 
@@ -149,12 +211,10 @@ public class ArbolGen {
 
     private Lista invertirLista(Lista lis) {
         Lista nueva = new Lista();
-        Pila q = new Pila();
         int i = lis.longitud();
         int k = 1;
         while (i > 0) {
             nueva.insertar(lis.recuperar(i), k);
-            q.desapilar();
             i--;
             k++;
         }

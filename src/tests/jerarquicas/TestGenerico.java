@@ -248,6 +248,54 @@ public class TestGenerico {
        System.out.println("La altura del árbol debería dar 4:" + sOk + " --> " + a.altura() + ((a.altura() == 4) ? sOk : sErr));
        System.out.println("La lista que justifica la altura es: " + a.listaQueJustificaLaAltura().toString());
        System.out.println("La lista que justifica la altura de árbol vacío es: " + vacio.listaQueJustificaLaAltura().toString());
+
+        System.out.println(ANSI_YELLOW_BACKGROUND + "----------------------------------------------------------------------------------------------------------"
+                + "----------------------------------------------------------------------------------------" + RESET);
+        System.out.println("\n\n*****************************************************");
+        System.out.println("*      Test de InsertarPorPosición (en preorden)        *");
+        System.out.println("*****************************************************\n");
+        System.out.println("\n toString()  deberia dar: \n"
+        + "\n                                10"
+        + "\n                +---------------+-------------+"
+        + "\n                |                             |"
+        + "\n                9                             15"
+        + "\n            +---+---+              +-------+---+---+--------+"
+        + "\n            |       |              |       |       |        |"
+        + "\n            7       3              12     20       22       30"
+        + "\n                    +                      +           +-----+-----+----+----+"
+        + "\n                    |                      |           |     |     |    |    |"
+        + "\n                   10                     17           40    45    55   60   65"
+        + "\n                                           +"
+        + "\n                                           |"
+        + "\n                                           8"
+        + "\n" + a.toString());
+        System.out.println("\n");
+       
+        System.out.println("Recorrido en preOrden.\n Tiene que dar: "
+                + "\n [ 10 - 9 - 7 - 3 - 10 - 15 - 12 - 20 - 17 - 8 - 22 - 30 - 40 - 45 - 55 - 60 - 65]"
+                + "\n --> " + a.listarPreorden().toString());
+        System.out.println("Inserta elemento 99 como hijo del elemento en posición 4 en preorden (que es el elemento 3) \n" 
+                + "debería dar " + sOk + "--->" + ((a.insertarPorPosicion(99, 4)) ? sOk : sErr));
+        
+        System.out.println("\n toString()  deberia dar: \n"
+        + "\n                                10"
+        + "\n                +---------------+-------------+"
+        + "\n                |                             |"
+        + "\n                9                             15"
+        + "\n            +---+---+              +-------+---+---+--------+"
+        + "\n            |       |              |       |       |        |"
+        + "\n            7       3              12     20       22       30"
+        + "\n                ----+-----                +            +-----+-----+----+----+"
+        + "\n                |        |                |            |     |     |    |    |"
+        + "\n                10       99               17          40    45    55   60   65"
+        + "\n                                          +"
+        + "\n                                          |"
+        + "\n                                          8"
+        + "\n" + a.toString());
+        System.out.println("\n");
+        System.out.println("Recorrido en preOrden.\n Tiene que dar: "
+        + "\n [ 10 - 9 - 7 - 3 - 10 - 99 - 15 - 12 - 20 - 17 - 8 - 22 - 30 - 40 - 45 - 55 - 60 - 65]"
+        + "\n --> " + a.listarPreorden().toString());
    }
 
 }

@@ -45,7 +45,7 @@ public class TestArbolGen {
                                 + "\n---------------------------------------------------------------------------------------------------------------\n"
                                 + sReset);
                 System.out.println(sMagenta + "********************************");
-                System.out.println("*  Probando método insertar    *");
+                System.out.println("*   Probando método insertar   *");
                 System.out.println("********************************" + sReset);
 
                 System.out.println("Inserto 20 en la raíz " + ((arbol.insertar(20, 1)) ? sOk : sErr));
@@ -107,7 +107,7 @@ public class TestArbolGen {
                                 + "\n---------------------------------------------------------------------------------------------------------------\n"
                                 + sReset);
                 System.out.println(sMagenta + "********************************");
-                System.out.println("*      Probando clone()        *");
+                System.out.println("*       Probando clone()       *");
                 System.out.println("********************************" + sReset);
                 System.out.println("Clonando el árbol");
                 ArbolGen clon = arbol.clone();
@@ -182,9 +182,9 @@ public class TestArbolGen {
                 System.out.println(sYellow
                                 + "\n---------------------------------------------------------------------------------------------------------------\n"
                                 + sReset);
-                System.out.println(sMagenta + "********************************");
-                System.out.println("* Probando método nivel() *");
-                System.out.println("********************************" + sReset);
+                System.out.println(sMagenta + "*******************************");
+                System.out.println("*   Probando método nivel()   *");
+                System.out.println("*******************************" + sReset);
                 System.out.println("Consulto el nivel de raíz. Tiene que dar 0 y" + sOk + "--->"
                                 + (((int) arbol.nivel(20) == 0) ? sOk : sErr));
                 System.out.println("Consulto el nivel de elemento 45. Tiene que dar 3 y" + sOk + "--->"
@@ -194,6 +194,43 @@ public class TestArbolGen {
                 System.out.println("Consulto el nivel de elemento inexistente. Tiene que dar -1 y" + sOk + "--->"
                                 + (((int) arbol.nivel(2024) == -1) ? sOk : sErr));
 
+                System.out.println(sYellow
+                                + "\n---------------------------------------------------------------------------------------------------------------\n"
+                                + sReset);
+                System.out.println(sMagenta + "*******************************");
+                System.out.println("*     Probando recorridos     *");
+                System.out.println("*******************************" + sReset);
+
+                System.out.println("\n toString()  deberia dar: \n"
+                                + "\n                              20"
+                                + "\n                 +------------+----------+"
+                                + "\n                 |                       |"
+                                + "\n                 19                      25"
+                                + "\n             +---+---+           +-------+-----+"
+                                + "\n             |       |           |       |      |"
+                                + "\n             13      17          30      35     39"
+                                + "\n             +             +-----+-----+"
+                                + "\n             |             |     |     |"
+                                + "\n             20            40    45    55"
+                                + "\n" + arbol.toString());
+                System.out.println("\n");
+                System.out.println("\n");
+                System.out.println("Recorrido en preOrden.\n Tiene que dar: "
+                                + "\n [20, 19, 13, 20, 17, 25, 30, 40, 45, 55, 35, 39]"
+                                + "\n --> " + arbol.listarPreorden().toString());
+                System.out.println("\n");
+                System.out.println("Recorrido en posOrden.\n Tiene que dar: "
+                                + "\n [20, 13, 17, 19, 40, 45, 55, 30, 35, 39, 25, 20]"
+                                + "\n --> " + arbol.listarPosorden().toString());
+                System.out.println("\n");
+                System.out.println("Recorrido en InOrden.\n Tiene que dar: "
+                                + "\n [20, 13, 19, 17, 20, 40, 30, 45, 55, 25, 35, 39]"
+                                + "\n --> " + arbol.listarInorden().toString());
+                System.out.println("\n");
+                System.out.println("Recorrido por Niveles.\n Tiene que dar: "
+                                + "\n [20, 19, 25, 13, 17, 30, 35, 39, 20, 40, 45, 55]"
+                                + "\n --> " + arbol.listarPorNiveles().toString());
+                System.out.println("\n");
         }
 
 }
