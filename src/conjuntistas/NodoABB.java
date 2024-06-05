@@ -1,24 +1,28 @@
-package jerarquicas.dinamicas2023;
+package conjuntistas;
 
 /**
- *
- * @author Benjamín Morales <benjamin.morales at est.fi.uncoma.edu.ar> 
+ * @author Benjamín Morales <benjamin.morales at est.fi.uncoma.edu.ar>
  */
-public class NodoABB implements Comparable {
-    
-    //atributos
+
+public class NodoABB {
+
+    // Atributos
     private Comparable elem;
     private NodoABB izquierdo;
     private NodoABB derecho;
-    
-    //constructor
-    public NodoABB(Comparable elemento, NodoABB izq, NodoABB der) {
-        this.elem = elemento;
+
+    // Constructores
+    public NodoABB(Comparable nuevoElem, NodoABB izq, NodoABB der) {
+        this.elem = nuevoElem;
         this.izquierdo = izq;
         this.derecho = der;
     }
-    
-    //Observadores y modificadores
+
+    public NodoABB(Comparable nuevoElem) {
+        this.elem = nuevoElem;
+    }
+
+    // Observadores y modificadores
 
     public Comparable getElem() {
         return elem;
@@ -44,10 +48,4 @@ public class NodoABB implements Comparable {
         this.derecho = derecho;
     }
 
-    @Override
-    public int compareTo(Object o) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'compareTo'");
-    }
-    
 }
