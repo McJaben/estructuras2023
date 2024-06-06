@@ -7,7 +7,7 @@ package conjuntistas;
 public class NodoABB {
 
     // Atributos
-    private Comparable elem;
+    private Comparable elem; // para poder ordenar elementos en el árbol
     private NodoABB izquierdo;
     private NodoABB derecho;
 

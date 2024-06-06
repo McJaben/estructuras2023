@@ -17,6 +17,49 @@ public class ArbolBB {
     }
 
     /*
+     * Recibe un elemento y lo agrega en el árbol de manera ordenada.
+     * Si el elemento ya se encuentra en el árbol no realiza la inserción.
+     * Devuelve verdadero si el elemento se agrega a la estructura y
+     * falso en caso contrario (si está repetido).
+     */
+    public boolean insertar(Comparable elem) {
+        boolean exito = true;
+        if (this.raiz == null) {
+            this.raiz = new NodoABB(elem);
+        } else {
+            exito = insertarAux(this.raiz, elem);
+        }
+        return exito;
+    }
+
+    private boolean insertarAux(NodoABB n, Comparable elemento) {
+        // precondicion: n no es nulo
+        boolean exito = true;
+
+        if ((elemento.compareTo(n.getElem()) == 0)) {
+            // Reportar error: Elemento repetido
+            exito = false;
+        } else if (elemento.compareTo(n.getElem()) < 0) {
+            // el elemento es menor que n.getElem()
+            // si tiene HI baja a la izquierda, sino agrega elemento
+            if (n.getIzquierdo() != null) {
+                exito = insertarAux(n.getIzquierdo(), elemento);
+            } else {
+                n.setIzquierdo(new NodoABB(elemento));
+            }
+        } else {
+            // el elemento es mayor que n.getElem()
+            // si tiene HD baja a la derecha, sino agrega elemento
+            if (n.getDerecho() != null) {
+                exito = insertarAux(n.getDerecho(), elemento);
+            } else {
+                n.setDerecho(new NodoABB(elemento));
+            }
+        }
+        return exito;
+    }
+    
+    /*
      * Devuelve verdadero si el elemento recibido por parámetro
      * está en el árbol y falso en caso contrario.
      */
@@ -74,49 +117,6 @@ public class ArbolBB {
     }
     
 
-    /*
-     * Recibe un elemento y lo agrega en el árbol de manera ordenada.
-     * Si el elemento ya se encuentra en el árbol no realiza la inserción.
-     * Devuelve verdadero si el elemento se agrega a la estructura y
-     * falso en caso contrario (si está repetido).
-     */
-    public boolean insertar(Comparable elem) {
-        boolean exito = true;
-        if (this.raiz == null) {
-            this.raiz = new NodoABB(elem);
-        } else {
-            exito = insertarAux(this.raiz, elem);
-        }
-        return exito;
-    }
-
-    private boolean insertarAux(NodoABB n, Comparable elemento) {
-        // precondicion: n no es nulo
-        boolean exito = true;
-
-        if ((elemento.compareTo(n.getElem()) == 0)) {
-            // Reportar error: Elemento repetido
-            exito = false;
-        } else if (elemento.compareTo(n.getElem()) < 0) {
-            // el elemento es menor que n.getElem()
-            // si tiene HI baja a la izquierda, sino agrega elemento
-            if (n.getIzquierdo() != null) {
-                exito = insertarAux(n.getIzquierdo(), elemento);
-            } else {
-                n.setIzquierdo(new NodoABB(elemento));
-            }
-        } else {
-            // el elemento es mayor que n.getElem()
-            // si tiene HD baja a la derecha, sino agrega elemento
-            if (n.getDerecho() != null) {
-                exito = insertarAux(n.getDerecho(), elemento);
-            } else {
-                n.setDerecho(new NodoABB(elemento));
-            }
-        }
-
-        return exito;
-    }
 
     /*
      * 
