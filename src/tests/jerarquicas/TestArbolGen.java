@@ -1,6 +1,7 @@
 package tests.jerarquicas;
 
 import jerarquicas.dinamicas2023.ArbolGen;
+import lineales.dinamicas.Lista;
 
 /**
  *
@@ -231,6 +232,76 @@ public class TestArbolGen {
                                 + "\n [20, 19, 25, 13, 17, 30, 35, 39, 20, 40, 45, 55]"
                                 + "\n --> " + arbol.listarPorNiveles().toString());
                 System.out.println("\n");
+                
+                System.out.println(sMagenta + "********************************");
+                System.out.println("*  Probando verificarCamino()  *");
+                System.out.println("********************************" + sReset);
+
+                System.out.println("Inserto 17 como hijo de 25 en el árbol");
+                arbol.insertar(17, 25);
+                System.out.println("\n toString()  deberia dar: \n"
+                                + "\n                              20"
+                                + "\n                 +------------+----------+"
+                                + "\n                 |                       |"
+                                + "\n                 19                      25"
+                                + "\n             +---+---+           +-------+-----+-----"
+                                + "\n             |       |           |       |     |    |"
+                                + "\n             13      17          30      35    39   17"
+                                + "\n             +             +-----+-----+"
+                                + "\n             |             |     |     |"
+                                + "\n             20            40    45    55"
+                                + "\n" + arbol.toString());
+
+                Lista prueba = new Lista();
+                prueba.insertar(20, prueba.longitud()+1);
+                prueba.insertar(19, prueba.longitud()+1);
+                prueba.insertar(17, prueba.longitud()+1);
+                System.out.println("Lista pasada por parámetro a verificarCamino(): " + prueba.toString());
+                System.out.println("Verificar camino debería devolver " + sOk + "--->"
+                                + ((arbol.verificarCamino(prueba)) ? sOk : sErr));
+
+                System.out.println(sMagenta + "********************************");
+                System.out.println("*  Probando listarEntreNiveles  *");
+                System.out.println("*********************************" + sReset);
+                System.out.println("\n toString()  deberia dar: \n"
+                + "\n                              20"
+                + "\n                 +------------+----------+"
+                + "\n                 |                       |"
+                + "\n                 19                      25"
+                + "\n             +---+---+           +-------+-----+-----"
+                + "\n             |       |           |       |     |    |"
+                + "\n             13      17          30      35    39   17"
+                + "\n             +             +-----+-----+"
+                + "\n             |             |     |     |"
+                + "\n             20            40    45    55"
+                + "\n" + arbol.toString());
+                System.out.println("Listar entre niveles con niv1 = 1 y niv2 = 2 debería dar: "
+                                + "\n [19, 13, 17, 25, 30, 35, 39, 17]"
+                                + "\n --> " + arbol.listarEntreNiveles(1, 2));
+                                System.out.println("\n");
+                System.out.println("Listar entre niveles con niv1 = 0 y niv2 = 1 debería dar: "
+                                + "\n [20, 19, 25]"
+                                + "\n --> " + arbol.listarEntreNiveles(0,1));
+                                System.out.println("\n");
+                System.out.println("Listar entre niveles con niv1 = 0 y niv2 = 2 debería dar: "
+                                + "\n [20, 19, 13, 17, 25, 30, 35, 39, 17]"
+                                + "\n --> " + arbol.listarEntreNiveles(0, 2));
+                                System.out.println("\n");
+                System.out.println("Listar entre niveles con niv1 = 2 y niv2 = 3 debería dar: "
+                                + "\n [13, 20, 17, 30, 40, 45, 55, 35, 39, 17]"
+                                + "\n --> " + arbol.listarEntreNiveles(2, 3));
+                                System.out.println("\n");
+                
+                System.out.println("Probando con niveles que no existen, ej: nivel 4.");
+                System.out.println("Listar entre niveles con niv1 = 2 y niv2 = 4 debería dar igual que entre nivel 2 y 3: "
+                                + "\n [13, 20, 17, 30, 40, 45, 55, 35, 39, 17]"
+                                + "\n --> " + arbol.listarEntreNiveles(2, 3));
+                                System.out.println("\n");
+                
+                System.out.println("Probando con nivel minimo mayor al nivel maximo del arbol:");
+                System.out.println("Listar entre niveles con niv1 = 4 y niv2 = 5 debería dar lista vacia:"
+                                + "\n --> " + arbol.listarEntreNiveles(4, 5));
+                                System.out.println("\n");       
         }
 
 }

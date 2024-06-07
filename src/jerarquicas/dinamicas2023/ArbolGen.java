@@ -620,4 +620,72 @@ public class ArbolGen {
         return resultado; // cambiar
     }
 
+    /*
+     * Dada una lista, verifica si la misma corresponde a un camino
+     * desde la raíz hasta algún elemento del árbol.
+     */
+    public boolean verificarCamino(Lista lis) {
+        boolean exito = false;
+        if (lis != null) {
+            exito = verificarCaminoAux(this.raiz, lis, 1);
+        }
+        return exito;
+    }
+
+    // Método recursivo privado que verifica si una lista pertenece
+    // a un camino desde la raíz hasta algún elemento del árbol.
+    private boolean verificarCaminoAux(NodoGen n, Lista list, int posActual) {
+        boolean exito = false;
+        if (n != null) {
+            // Comparo el elemento del nodo con el de la lista en la posición actual
+            // Si coincide, continúo bajando por la rama, sino, devuelve false
+            if (n.getElem().equals(list.recuperar(posActual))) {
+                if (posActual == list.longitud()) { // Condición de corte
+                    exito = true;
+                }
+                // Continúo con los hijos del nodo actual
+                NodoGen hijo = n.getHijoIzquierdo();
+                while (hijo != null && !exito) { // Llamado recursivo con los hijos
+                    exito = verificarCaminoAux(hijo, list, posActual + 1);
+                    hijo = hijo.getHermanoDerecho();
+                }
+            }
+        }
+        return exito;
+    }
+
+    /*
+     * Recibe como parámetro dos valores enternos niv1 y niv2 y 
+     * devuelve una lista con los elementos del árbol que están
+     * entre los niveles niv1 y niv2 inclusive.
+     */
+    public Lista listarEntreNiveles(int niv1, int niv2) {
+        Lista lis = new Lista();
+        listarEntreNivelesAux(this.raiz, niv1, niv2, lis, 0);
+        return lis;
+    }
+
+    private void listarEntreNivelesAux(NodoGen n, int min, int max, Lista lis, int nivelActual) {
+        if (n != null) {
+            // Si estoy en el nivel correcto, inserto el elemento actual en la lista
+            if (nivelActual >= min && nivelActual <= max) {
+                lis.insertar(n.getElem(), lis.longitud() + 1);
+            }
+
+            // Continúo con el hijo izquierdo del nodo actual, sólo si debo avanzar
+            // al siguiente nivel, para no recorrer la estructura innecesariamente
+            if (nivelActual + 1 <= max) {
+                NodoGen hijo = n.getHijoIzquierdo();
+                listarEntreNivelesAux(hijo, min, max, lis, nivelActual + 1);
+            }
+
+            // Ya recorrí el subárbol izquierdo hasta el nivel menor o igual al 'max'
+            // Voy al hermano derecho, en caso de que exista
+            NodoGen hermano = n.getHermanoDerecho();
+            if (hermano != null) {
+                listarEntreNivelesAux(hermano, min, max, lis, nivelActual);
+            }
+        }
+    }
+
 }
