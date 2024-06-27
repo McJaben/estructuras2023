@@ -301,7 +301,7 @@ public class TestArbolGen {
                 System.out.println("Probando con nivel minimo mayor al nivel maximo del arbol:");
                 System.out.println("Listar entre niveles con niv1 = 4 y niv2 = 5 debería dar lista vacia:"
                                 + "\n --> " + arbol.listarEntreNiveles(4, 5));
-                                System.out.println("\n");       
+                                System.out.println("\n");
         }
 
 }

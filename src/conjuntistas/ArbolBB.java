@@ -58,7 +58,7 @@ public class ArbolBB {
         }
         return exito;
     }
-    
+
     /*
      * Devuelve verdadero si el elemento recibido por parámetro
      * está en el árbol y falso en caso contrario.
@@ -91,16 +91,16 @@ public class ArbolBB {
 
     /*
      * Implementación iterativa del método pertenece().
-     * Devuelve verdadero si el elemento recibido por parámetro 
+     * Devuelve verdadero si el elemento recibido por parámetro
      * está en el árbol, falso en caso contrario.
      */
     public boolean perteneceIterativo(Comparable elemento) {
         NodoABB actual = this.raiz;
         boolean exito = false;
-    
+
         while (actual != null && !exito) {
             int comparacion = elemento.compareTo(actual.getElem());
-    
+
             if (comparacion == 0) {
                 // Elemento encontrado
                 exito = true;
@@ -115,16 +115,121 @@ public class ArbolBB {
 
         return exito;
     }
-    
-
 
     /*
-     * 
+     * Recibe el elemento que desea eliminar y lo remueve del árbol.
+     * Devuelve true si la eliminación tuvo éxito, y falso si el elemento
+     * no se encuentra en el árbol, y por tanto no se pudo eliminar.
      */
     public boolean eliminar(Comparable elem) {
         boolean exito = false;
-        // Implementar
+
+        if (this.raiz != null) {
+            exito = eliminarAux(this.raiz, null, elem);
+        }
+
         return exito;
+    }
+
+    /*
+     * Método PRIVADO recursivo. Recorre la estructura de manera recursiva
+     * para buscar el nodo a eliminar, distinguiendo los 3 casos posibles:
+     * 1. Que el nodo a eliminar sea una hoja.
+     * 2. Que el nodo a eliminar tenga 1 hijo.
+     * 3. Que el nodo a eliminar tenga 2 hijos.
+     */
+    private boolean eliminarAux(NodoABB nodo, NodoABB padre, Comparable buscado) {
+        boolean exito = false;
+
+        if (nodo != null) {
+            if (buscado.compareTo(nodo.getElem()) == 0) {
+                // Encontró el nodo buscado, chequea a qué caso de eliminación pertenece
+                if (padre != null) {
+                    // Verifico si el nodo buscado es HI o HD de su padre. true = HI, false = HD
+                    boolean esHijoIzquierdo = buscado.compareTo(padre.getIzquierdo().getElem()) == 0;
+
+                    // Cuenta cantidad de hijos para distinguir caso 1, 2 y 3
+                    String hijos = "";
+                    if (nodo.getIzquierdo() != null) {
+                        hijos += "I";
+                    }
+                    if (nodo.getDerecho() != null) {
+                        hijos += "D";
+                    }
+
+                    // Elimino según cada caso
+                    if (hijos.equals("")) { // caso 1 - nodo es hoja
+                        if (esHijoIzquierdo) {
+                            padre.setIzquierdo(null);
+                        } else {
+                            padre.setDerecho(null);
+                        }
+                    } else if (hijos.length() == 1) { // caso 2 - Nodo tiene 1 hijo
+                        // Diferencio por hijos.equals("I") || hijos.equals("D")
+                        if (hijos.equals("I")) { // Nodo sólo tiene HI
+                            if (esHijoIzquierdo) {
+                                padre.setIzquierdo(nodo.getIzquierdo());
+                            } else {
+                                padre.setDerecho(nodo.getIzquierdo());
+                            }
+                        } else { // Nodo sólo tiene HD
+                            if (esHijoIzquierdo) {
+                                padre.setIzquierdo(nodo.getDerecho());
+                            } else {
+                                padre.setDerecho(nodo.getDerecho());
+                            }
+                        }
+                    } else if (hijos.length() == 2) { // caso 3 - Nodo tiene 3 hijos
+                        NodoABB padreCandidato = obtenerPadreCandidato(nodo);
+                        NodoABB candidato = null;
+                        if (padreCandidato.getIzquierdo() != null) {
+                            // El candidato es HI del padre
+                            candidato = padreCandidato.getIzquierdo();
+                        } else {
+                            // El padre es una hoja y es, por tanto, el propio candidato
+                            candidato = padreCandidato;
+                            // El padre del nuevo candidato es el propio nodo a eliminar
+
+                        }
+                        // Reemplazo el valor del nodo a eliminar por el del candidato
+                        nodo.setElem(candidato.getElem());
+                        // Enlazo al HD del candidato con el padre del candidato
+                        padreCandidato.setIzquierdo(candidato.getDerecho());
+                    }
+                }
+            } else {
+                this.raiz = null; // El nodo a eliminar es la raíz
+            }
+        } else if (buscado.compareTo(nodo.getElem()) < 0) {
+            // Bajar por rama izquierda
+        } else {
+            // Bajar por rama derecha
+        }
+
+        return exito;
+    }
+
+    /*
+     * Método privado. Devuelve el padre del menor elemento
+     * del subárbol derecho del nodo pasado por parámetro
+     */
+    private NodoABB obtenerPadreCandidato(NodoABB n) {
+        NodoABB padre = n;
+
+        NodoABB aux = n.getDerecho(); // Comienza recorrido por subarbol derecho
+        NodoABB candidato = aux.getIzquierdo();
+        while (candidato.getIzquierdo() != null) {
+            aux = candidato;
+            candidato.getIzquierdo();
+        }
+        if (aux != null) {
+            padre = aux;
+        }
+        // aux representa al menor elemento del subárbol derecho de n
+        // Retorno el padre del menor elemento del subárbol derecho de n
+        // Si el subárbol derecho de n es una hoja, padre representa al menor
+        // elemento del subárbol derecho de n
+        return padre;
     }
 
     /*
