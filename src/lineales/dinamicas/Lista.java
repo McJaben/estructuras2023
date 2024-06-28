@@ -230,7 +230,7 @@ public class Lista {
                     i++;
                 }
                 // Insert the element of the position that is a multiple of 'num' in the copy
-                copy.insertar(actual.getElem(), copy.longitud() + 1);
+                copy.insertar(actual.getElem(), copy.longitud() + 1); // Intentar hacerlo sin el método insertar
 
                 // Increase the 'pos' position in 'num' times to travel only what is necessary
                 // and thus guarantee that it is always in the correct position
@@ -241,4 +241,58 @@ public class Lista {
         return copy;
     }
 
+    /*
+     * Mueve el elemento que se encuentra en la posición pasada por parámetro a
+     * la anteúltima posición de la lista. Retorna true si pudo, y false en caso
+     * contrario.
+     */
+    public boolean moverAAnteultimaPosicion(int pos) {
+        boolean exito = false;
+        int longitud = this.longitud();
+
+        if (this.cabecera != null && pos != (longitud - 1) && pos >= 1 && pos <= longitud && longitud >= 2) {
+            Nodo aux = this.cabecera;
+            if (longitud == 2) { // CASO long = 2, sé que pos != longitud -1 por el primer if.
+                // Intercambio el primero con el segundo y ya queda bien ubicado
+                this.cabecera = this.cabecera.getEnlace();
+                this.cabecera.setEnlace(aux);
+                aux.setEnlace(null);
+            } else {
+                Nodo porMover = null;
+                Nodo temp = aux;
+                
+                // Busco al nodo porMover (el que está en la posición 'pos')
+                if (pos == 1) { // CASO pos == 1
+                    porMover = this.cabecera; // Guardo nodo porMover de pos == 1
+                    this.cabecera = this.cabecera.getEnlace();
+                    aux = this.cabecera;
+                } else { // Caso pos != 1 (funciona igual para pos == long o pos != long)
+                    for (int i = 1; i < pos - 1; i++) {
+                        temp = aux;
+                        aux = aux.getEnlace();
+                    }
+                    porMover = aux.getEnlace();
+                    if (pos != longitud) {
+                        aux.setEnlace(porMover.getEnlace()); // Quito enlace del aux al nodo porMover
+                    }
+                }
+
+                // Ya encontré al nodo que quiero mover, procedo a moverlo
+                if (pos == longitud) { // Caso pos == long: el nodo porMover es el último
+                    temp.setEnlace(porMover); // nodo porMover pasa de ser último a anteúltimo
+                    porMover.setEnlace(aux); // aux pasa a ser el último
+                    aux.setEnlace(null);
+                } else {
+                    // Recorro la estructura hasta longitud - 1
+                    while (aux.getEnlace().getEnlace() != null) {
+                        aux = aux.getEnlace(); // aux es el anteúltimo actual
+                    }
+                    porMover.setEnlace(aux.getEnlace()); // enlazo porMover con el último nodo
+                    aux.setEnlace(porMover); // Muevo nodo porMover a anteúltima posición
+                }
+            }
+            exito = true;
+        }
+        return exito;
+    }
 }

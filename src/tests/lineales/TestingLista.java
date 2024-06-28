@@ -10,7 +10,8 @@ import lineales.dinamicas.Lista;
 
 public class TestingLista {
 
-	static String sOk = "OK!", sErr = "ERROR";
+	static String sOk = "\u001B[32m OK! \u001B[0m"; // mensaje OK! en verde
+	static String sErr = " \u001B[31m ERROR \u001B[0m"; // mensaje ERROR en rojo
 
 	public static final String ANSI_YELLOW_BACKGROUND = "\u001B[43m";
 	public static final String RESET = "\u001B[0m";
@@ -143,6 +144,36 @@ public class TestingLista {
 				+ caracteres.toString());
 		System.out.println("obtenerMultiplos() con lista anterior y num=3 debería imprimir: [C, F, I]" + " ---> " 
 				+ caracteres.obtenerMultiplos(3).toString());
-	}
 
+		System.out.println();
+		System.out.println("\n\n*****************************************");
+		System.out.println("*     Test de moverAAnteultimaPosicion 	*");
+		System.out.println("*****************************************\n");
+
+		Lista nuevita = new Lista();
+		nuevita.insertar(6, nuevita.longitud() + 1);
+		nuevita.insertar(2, nuevita.longitud() + 1);
+		nuevita.insertar(7, nuevita.longitud() + 1);
+		nuevita.insertar(1, nuevita.longitud() + 1);
+		nuevita.insertar(3, nuevita.longitud() + 1);
+		nuevita.insertar(5, nuevita.longitud() + 1);
+		nuevita.insertar(0, nuevita.longitud() + 1);
+		System.out.println("Lista original: " + nuevita.toString());
+		System.out.println("Probando caso general o caso base:");
+		System.out.println("mover pos=3 a anteultima posicion espera true y [6,2,1,3,5,7,0]" + "--->" 
+				+ (((nuevita.moverAAnteultimaPosicion(3)) == true) ? sOk : sErr) + nuevita.toString());
+		System.out.println("CASO pos = longitud");
+		System.out.println("Si ahora quiere mover pos = 7 espera: true y [6,2,1,3,5,0,7]" + "--->" 
+				+ (((nuevita.moverAAnteultimaPosicion(7)) == true) ? sOk : sErr) + nuevita.toString());
+		System.out.println("Caso pos == 1");
+		System.out.println("Si ahora quiere mover pos = 1 espera: true y [2,1,3,5,0,6,7]" + "--->" 
+				+ (((nuevita.moverAAnteultimaPosicion(1)) == true) ? sOk : sErr) + nuevita.toString());
+		System.out.println("Caso longitud == 2");
+		Lista chica = new Lista();
+		chica.insertar(2, chica.longitud() + 1);
+		chica.insertar(5, chica.longitud() + 1);
+		System.out.println("Lista de longitud = 2: " + chica.toString());
+		System.out.println("mover pos=2 a anteultima posicion espera true y [5,2]" + "--->" 
+				+ (((chica.moverAAnteultimaPosicion(2)) == true) ? sOk : sErr) + chica.toString());
+		}
 }
