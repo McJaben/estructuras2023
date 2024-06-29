@@ -5,6 +5,7 @@ import lineales.dinamicas.*;
 public class TestLineales {
     public static void main(String[] args) {
         Cola q = new Cola();
+        System.out.println("TEST de invertirVocalesDuplicarSinVocales()");
         q.poner('a');
         q.poner('b');
         q.poner('c');
@@ -27,17 +28,36 @@ public class TestLineales {
         q.poner('j');
 
         System.out.println("Cola q: " + q.toString());
-        System.out.println("q.invertirVocalesDuplicarSinVocales debería dar: " + "--->"
+        System.out.println("invertirVocalesDuplicarSinVocales(q) debería dar: " + "--->"
                 + "[e, a, #, a, #, q, w, r, t, y, q, w, r, t, y, #, s, j, s, j]\n");
         Lista list = invertirVocalesDuplicarSinVocales(q);
         System.out.println("Retorna ----> " + list.toString());
+
+        System.out.println("TEST de generarSecuencia()");
+        q.vaciar();
+        q.poner('0');
+        q.poner('1');
+        q.poner('2');
+        q.poner('3');
+        q.poner('4');
+        q.poner('5');
+        q.poner('6');
+        q.poner('7');
+        q.poner('8');
+        q.poner('9');
+        System.out.println("Nueva cola:" + q.toString());
+        Lista lis = generarSecuencia(q, 4);
+        System.out.println("generarSecuencia(q, 4) debería dar: " + "---->"
+                + "[3,2,1,0,0,1,2,3,$,7,6,5,4,4,5,6,7,$,9,8,8,9]");
+        System.out.println("Retorna ---->" + lis.toString());
+
 
     }
 
     public static Lista invertirVocalesDuplicarSinVocales(Cola q) {
         Lista lista = new Lista();
         char aux = (char) q.obtenerFrente();
-        Cola palabraActual = q.clone();
+        Cola palabraActual = new Cola();
         Pila vocales = new Pila();
         int recorridoCompleto = 0;
         while (!q.esVacia() && recorridoCompleto < 2) {
@@ -81,5 +101,56 @@ public class TestLineales {
             aux = (char) q.obtenerFrente(); // actualizo caracter del frente de la cola
         }
         return lista;
+    }
+
+    /*
+     * toma una cola q de caracteres y un número entero t, y devuelve una lista
+     * en la forma especificada: a1'a1$a2'a2$...an'an, donde ai es una sucesión
+     * de caracteres hasta t, y ai' es dicha sucesión de caracteres invertida
+     */
+    public static Lista generarSecuencia(Cola q, int t) {
+        Lista lis = new Lista();
+        if (!q.esVacia() && t > 0) {
+            Cola sucesionActual = new Cola();
+            Pila pilaInvertir = new Pila();
+            char aux = (char) q.obtenerFrente();
+            int recorridoCompleto = 0, cont = 0;
+            // Comienzo el recorrido de la cola q
+            while (!q.esVacia() && recorridoCompleto < 2) {
+                // Voy guardando los caracteres en estructuras auxiliares
+                if ((cont < t) && (aux != '#')) { // '#' es para marcar la últ subcadena
+                    sucesionActual.poner(aux);
+                    pilaInvertir.apilar(aux);
+                    q.sacar();
+                    cont++;
+                } else {
+                    while (!pilaInvertir.esVacia()) {
+                        lis.insertar(pilaInvertir.obtenerTope(), lis.longitud() + 1);
+                        pilaInvertir.desapilar();
+                    }
+                    while (!sucesionActual.esVacia()) {
+                        lis.insertar(sucesionActual.obtenerFrente(), lis.longitud() + 1);
+                        sucesionActual.sacar();
+                    }
+                    // Si no estoy en la última subcadena, inserto caracter de separación
+                    if (aux != '#') {
+                        lis.insertar('$', lis.longitud() + 1);
+                    } else { // si estoy en la última subcadena, quito el '#' de marcado
+                        q.sacar();
+                    }
+                    cont = 0; // reinicio el conteo
+                }
+                // Avanzo a la siguiente subcadena y chequeo si llegué al final con sucesiones
+                // sin insertar
+                if (q.esVacia() && cont > 0) {
+                    q.poner('#'); // marco que llegué al final con caracteres pendientes
+                    recorridoCompleto++;
+                }
+                if (!q.esVacia()) {
+                    aux = (char) q.obtenerFrente(); // actualizo caracter
+                }
+            }
+        }
+        return lis;
     }
 }
