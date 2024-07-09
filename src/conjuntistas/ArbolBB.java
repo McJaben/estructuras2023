@@ -196,16 +196,17 @@ public class ArbolBB {
                         // Enlazo al HD del candidato con el padre del candidato
                         padreCandidato.setIzquierdo(candidato.getDerecho());
                     }
+                } else {
+                    this.raiz = null; // El nodo a eliminar es la raíz
                 }
+            } else if (buscado.compareTo(nodo.getElem()) < 0) {
+               // Bajar por rama izquierda
+                exito = eliminarAux(nodo.getIzquierdo(), nodo, buscado);
             } else {
-                this.raiz = null; // El nodo a eliminar es la raíz
+                // Bajar por rama derecha
+                exito = eliminarAux(nodo.getDerecho(), nodo, buscado);
             }
-        } else if (buscado.compareTo(nodo.getElem()) < 0) {
-            // Bajar por rama izquierda
-        } else {
-            // Bajar por rama derecha
         }
-
         return exito;
     }
 
