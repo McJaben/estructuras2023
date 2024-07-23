@@ -144,63 +144,31 @@ public class ArbolBB {
         if (nodo != null) {
             if (buscado.compareTo(nodo.getElem()) == 0) {
                 // Encontró el nodo buscado, chequea a qué caso de eliminación pertenece
-                if (padre != null) {
-                    // Verifico si el nodo buscado es HI o HD de su padre. true = HI, false = HD
-                    boolean esHijoIzquierdo = buscado.compareTo(padre.getIzquierdo().getElem()) == 0;
-
+                if (padre == null) {
+                    this.raiz = null; // El nodo a eliminar es la raíz (Caso especial del caso 1)
+                } else {
+                    // Verifico si nodo buscado es HI o HD de su padre.
+                    //Si buscador es mayor = 'd' (HD), si es menor = 'i' (HI)
+                    char pos;
+                    if (buscado.compareTo(padre.getElem()) > 0) {
+                        pos = 'd';
+                    } else {
+                        pos = 'i';
+                    }
                     // Cuenta cantidad de hijos para distinguir caso 1, 2 y 3
-                    String hijos = "";
+                    int caso = 1;
                     if (nodo.getIzquierdo() != null) {
-                        hijos += "I";
+                        caso++;
                     }
                     if (nodo.getDerecho() != null) {
-                        hijos += "D";
+                        caso++;
                     }
-
-                    // Elimino según cada caso
-                    if (hijos.equals("")) { // caso 1 - nodo es hoja
-                        if (esHijoIzquierdo) {
-                            padre.setIzquierdo(null);
-                        } else {
-                            padre.setDerecho(null);
-                        }
-                    } else if (hijos.length() == 1) { // caso 2 - Nodo tiene 1 hijo
-                        // Diferencio por hijos.equals("I") || hijos.equals("D")
-                        if (hijos.equals("I")) { // Nodo sólo tiene HI
-                            if (esHijoIzquierdo) {
-                                padre.setIzquierdo(nodo.getIzquierdo());
-                            } else {
-                                padre.setDerecho(nodo.getIzquierdo());
-                            }
-                        } else { // Nodo sólo tiene HD
-                            if (esHijoIzquierdo) {
-                                padre.setIzquierdo(nodo.getDerecho());
-                            } else {
-                                padre.setDerecho(nodo.getDerecho());
-                            }
-                        }
-                    } else if (hijos.length() == 2) { // caso 3 - Nodo tiene 3 hijos
-                        NodoABB padreCandidato = obtenerPadreCandidato(nodo);
-                        NodoABB candidato = null;
-                        if (padreCandidato.getIzquierdo() != null) {
-                            // El candidato es HI del padre
-                            candidato = padreCandidato.getIzquierdo();
-                        } else {
-                            // El padre es una hoja y es, por tanto, el propio candidato
-                            candidato = padreCandidato;
-                            // El padre del nuevo candidato es el propio nodo a eliminar
-
-                        }
-                        // Reemplazo el valor del nodo a eliminar por el del candidato
-                        nodo.setElem(candidato.getElem());
-                        // Enlazo al HD del candidato con el padre del candidato
-                        padreCandidato.setIzquierdo(candidato.getDerecho());
-                    }
-                } else {
-                    this.raiz = null; // El nodo a eliminar es la raíz
+                    // Llamo al método auxiliar que se encarga de eliminar según cada caso
+                    eliminarCasos(nodo, padre, caso, pos);
                 }
+                exito = true;
             } else if (buscado.compareTo(nodo.getElem()) < 0) {
-               // Bajar por rama izquierda
+                // Bajar por rama izquierda
                 exito = eliminarAux(nodo.getIzquierdo(), nodo, buscado);
             } else {
                 // Bajar por rama derecha
@@ -210,11 +178,58 @@ public class ArbolBB {
         return exito;
     }
 
+    private void eliminarCasos(NodoABB n, NodoABB padre, int caso, int pos) {
+
+        if (caso == 1) { // Caso 1 - nodo es hoja
+            if (pos == 'i') {
+                padre.setIzquierdo(null);
+            } else {
+                padre.setDerecho(null);
+            }
+        } else if (caso == 2) { // Caso 2 - nodo es hoja
+            if (pos == 'i') { // Si nodo es HI de su padre
+                if (n.getIzquierdo() != null) { 
+                    padre.setIzquierdo(n.getIzquierdo()); // Si nodo n tiene HI
+                } else {
+                    padre.setIzquierdo(n.getDerecho()); // Si nodo n tiene HD
+                }
+            } else { // Si nodo es HD de su padre
+                if (n.getIzquierdo() != null) { // Si nodo n tiene HI
+                    padre.setDerecho(n.getIzquierdo());
+                } else {
+                    padre.setDerecho(n.getDerecho()); 
+                }
+            }
+        } else {
+
+         // caso 3 - Nodo tiene 3 hijos -- TESTEAR/MODIFICAR
+            NodoABB padreCandidato = obtenerPadreCandidato(n);
+            NodoABB candidato = null;
+            if (padreCandidato.getIzquierdo() != null) {
+                // El candidato es HI del padre
+                candidato = padreCandidato.getIzquierdo();
+            } else {
+                // El padre es una hoja y es, por tanto, el propio candidato
+                candidato = padreCandidato;
+                // El padre del nuevo candidato es el propio nodo a eliminar
+
+            }
+            // Reemplazo el valor del nodo a eliminar por el del candidato
+            n.setElem(candidato.getElem());
+            // Enlazo al HD del candidato con el padre del candidato
+            padreCandidato.setIzquierdo(candidato.getDerecho());
+        }
+    }
+
     /*
      * Método privado. Devuelve el padre del menor elemento
      * del subárbol derecho del nodo pasado por parámetro
      */
     private NodoABB obtenerPadreCandidato(NodoABB n) {
+        // aux representa al menor elemento del subárbol derecho de n
+        // Retorno el padre del menor elemento del subárbol derecho de n
+        // Si el subárbol derecho de n es una hoja, el nodo padre es el menor
+        // elemento del subárbol derecho de n
         NodoABB padre = n;
 
         NodoABB aux = n.getDerecho(); // Comienza recorrido por subarbol derecho
@@ -226,10 +241,6 @@ public class ArbolBB {
         if (aux != null) {
             padre = aux;
         }
-        // aux representa al menor elemento del subárbol derecho de n
-        // Retorno el padre del menor elemento del subárbol derecho de n
-        // Si el subárbol derecho de n es una hoja, padre representa al menor
-        // elemento del subárbol derecho de n
         return padre;
     }
 
