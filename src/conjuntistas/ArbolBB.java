@@ -7,9 +7,18 @@ import lineales.dinamicas.Lista;
  *         Clase Árbol Binario de Búsqueda.
  */
 
-public class ArbolBB {
+public class ArbolBB<T extends Comparable<T>> {
+    /*
+     * Con esta cabecera estoy declarando que el tipo T implementa la interfaz
+     * Comparable. Luego, en la firma de los métodos digo que los elementos son
+     * de tipo T, que ya establecí que pueden compararse entre sí.
+     * Con esto elimino los warnings de "raw type", le aseguro al compilador 
+     * que los objetos son comparables, mantiene activo el chequeo de tipos y,
+     * por lo tanto, evita que se generen errores en tiempo de ejecución.
+     */
+    
     // Atributos
-    private NodoABB raiz;
+    private NodoABB<T> raiz;
 
     // Constructor vacío
     public ArbolBB() {
@@ -22,17 +31,17 @@ public class ArbolBB {
      * Devuelve verdadero si el elemento se agrega a la estructura y
      * falso en caso contrario (si está repetido).
      */
-    public boolean insertar(Comparable elem) {
+    public boolean insertar(T elem) {
         boolean exito = true;
         if (this.raiz == null) {
-            this.raiz = new NodoABB(elem);
+            this.raiz = new NodoABB<T>(elem);
         } else {
             exito = insertarAux(this.raiz, elem);
         }
         return exito;
     }
 
-    private boolean insertarAux(NodoABB n, Comparable elemento) {
+    private boolean insertarAux(NodoABB<T> n, T elemento) {
         // precondicion: n no es nulo
         boolean exito = true;
 
@@ -45,7 +54,7 @@ public class ArbolBB {
             if (n.getIzquierdo() != null) {
                 exito = insertarAux(n.getIzquierdo(), elemento);
             } else {
-                n.setIzquierdo(new NodoABB(elemento));
+                n.setIzquierdo(new NodoABB<T>(elemento));
             }
         } else {
             // el elemento es mayor que n.getElem()
@@ -53,7 +62,7 @@ public class ArbolBB {
             if (n.getDerecho() != null) {
                 exito = insertarAux(n.getDerecho(), elemento);
             } else {
-                n.setDerecho(new NodoABB(elemento));
+                n.setDerecho(new NodoABB<T>(elemento));
             }
         }
         return exito;
@@ -63,14 +72,14 @@ public class ArbolBB {
      * Devuelve verdadero si el elemento recibido por parámetro
      * está en el árbol y falso en caso contrario.
      */
-    public boolean pertenece(Comparable elem) {
+    public boolean pertenece(T elem) {
         return perteneceAux(this.raiz, elem);
     }
 
     /*
      * Método auxiliar y privado, que recorre la estructura de forma recursiva.
      */
-    private boolean perteneceAux(NodoABB n, Comparable elemento) {
+    private boolean perteneceAux(NodoABB<T> n, T elemento) {
         boolean exito = false;
         if (n != null) {
             if ((elemento.compareTo(n.getElem()) == 0)) {
@@ -94,8 +103,8 @@ public class ArbolBB {
      * Devuelve verdadero si el elemento recibido por parámetro
      * está en el árbol, falso en caso contrario.
      */
-    public boolean perteneceIterativo(Comparable elemento) {
-        NodoABB actual = this.raiz;
+    public boolean perteneceIterativo(T elemento) {
+        NodoABB<T> actual = this.raiz;
         boolean exito = false;
 
         while (actual != null && !exito) {
@@ -121,7 +130,7 @@ public class ArbolBB {
      * Devuelve true si la eliminación tuvo éxito, y falso si el elemento
      * no se encuentra en el árbol, y por tanto no se pudo eliminar.
      */
-    public boolean eliminar(Comparable elem) {
+    public boolean eliminar(T elem) {
         boolean exito = false;
 
         if (this.raiz != null) {
@@ -138,7 +147,7 @@ public class ArbolBB {
      * 2. Que el nodo a eliminar tenga 1 hijo.
      * 3. Que el nodo a eliminar tenga 2 hijos.
      */
-    private boolean eliminarAux(NodoABB nodo, NodoABB padre, Comparable buscado) {
+    private boolean eliminarAux(NodoABB<T> nodo, NodoABB<T> padre, T buscado) {
         boolean exito = false;
 
         if (nodo != null) {
@@ -178,7 +187,7 @@ public class ArbolBB {
         return exito;
     }
 
-    private void eliminarCasos(NodoABB n, NodoABB padre, int caso, int pos) {
+    private void eliminarCasos(NodoABB<T> n, NodoABB<T> padre, int caso, int pos) {
 
         if (caso == 1) { // Caso 1 - nodo es hoja
             if (pos == 'i') {
@@ -203,8 +212,8 @@ public class ArbolBB {
         } else {
 
          // caso 3 - Nodo tiene 3 hijos -- TESTEAR/MODIFICAR
-            NodoABB padreCandidato = obtenerPadreCandidato(n);
-            NodoABB candidato = null;
+            NodoABB<T> padreCandidato = obtenerPadreCandidato(n);
+            NodoABB<T> candidato = null;
             if (padreCandidato.getIzquierdo() != null) {
                 // El candidato es HI del padre
                 candidato = padreCandidato.getIzquierdo();
@@ -225,15 +234,15 @@ public class ArbolBB {
      * Método privado. Devuelve el padre del menor elemento
      * del subárbol derecho del nodo pasado por parámetro
      */
-    private NodoABB obtenerPadreCandidato(NodoABB n) {
+    private NodoABB<T> obtenerPadreCandidato(NodoABB<T> n) {
         // aux representa al menor elemento del subárbol derecho de n
         // Retorno el padre del menor elemento del subárbol derecho de n
         // Si el subárbol derecho de n es una hoja, el nodo padre es el menor
         // elemento del subárbol derecho de n
-        NodoABB padre = n;
+        NodoABB<T> padre = n;
 
-        NodoABB aux = n.getDerecho(); // Comienza recorrido por subarbol derecho
-        NodoABB candidato = aux.getIzquierdo();
+        NodoABB<T> aux = n.getDerecho(); // Comienza recorrido por subarbol derecho
+        NodoABB<T> candidato = aux.getIzquierdo();
         while (candidato.getIzquierdo() != null) {
             aux = candidato;
             candidato.getIzquierdo();
@@ -255,7 +264,7 @@ public class ArbolBB {
 
     /*
      */
-    public Lista listarRango(Comparable minElem, Comparable maxElem) {
+    public Lista listarRango(T minElem, T maxElem) {
         Lista lis = new Lista();
         // Implementar
         return lis;
@@ -264,8 +273,8 @@ public class ArbolBB {
     /*
      * 
      */
-    public Comparable minimoElem() {
-        Comparable elem = null;
+    public T minimoElem() {
+        T elem = null;
         // Implementar
         return elem;
     }
@@ -273,8 +282,8 @@ public class ArbolBB {
     /*
      * 
      */
-    public Comparable maximoElem() {
-        Comparable elem = null;
+    public T maximoElem() {
+        T elem = null;
         // Implementar
         return elem;
     }
