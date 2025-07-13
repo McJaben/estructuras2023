@@ -1,0 +1,11 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"java.format.settings.url": ".vscode/google-style-custom.xml",
+		"java.format.settings.profile": "GoogleStyle"
+	}
+}

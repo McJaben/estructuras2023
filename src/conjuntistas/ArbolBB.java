@@ -296,4 +296,10 @@ public class ArbolBB<T extends Comparable<T>> {
         return this.raiz == null;
     }
 
+    /*
+     * Vacía el árbol.
+     */
+    public void vaciar() {
+        this.raiz = null;
+    }
 }
