@@ -258,7 +258,7 @@ public class ArbolBB<T extends Comparable<T>> {
      */
     public Lista listar() {
         Lista lis = new Lista();
-        // Implementar
+        // TODO: Implementar
         return lis;
     }
 
@@ -266,7 +266,7 @@ public class ArbolBB<T extends Comparable<T>> {
      */
     public Lista listarRango(T minElem, T maxElem) {
         Lista lis = new Lista();
-        // Implementar
+        // TODO: Implementar
         return lis;
     }
 
@@ -275,7 +275,7 @@ public class ArbolBB<T extends Comparable<T>> {
      */
     public T minimoElem() {
         T elem = null;
-        // Implementar
+        // TODO: Implementar
         return elem;
     }
 
@@ -284,7 +284,7 @@ public class ArbolBB<T extends Comparable<T>> {
      */
     public T maximoElem() {
         T elem = null;
-        // Implementar
+        // TODO: Implementar
         return elem;
     }
 
