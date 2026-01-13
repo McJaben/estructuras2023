@@ -12,11 +12,11 @@ public class ArbolBB<T extends Comparable<T>> {
      * Con esta cabecera estoy declarando que el tipo T implementa la interfaz
      * Comparable. Luego, en la firma de los métodos digo que los elementos son
      * de tipo T, que ya establecí que pueden compararse entre sí.
-     * Con esto elimino los warnings de "raw type", le aseguro al compilador 
+     * Con esto elimino los warnings de "raw type", le aseguro al compilador
      * que los objetos son comparables, mantiene activo el chequeo de tipos y,
      * por lo tanto, evita que se generen errores en tiempo de ejecución.
      */
-    
+
     // Atributos
     private NodoABB<T> raiz;
 
@@ -157,7 +157,7 @@ public class ArbolBB<T extends Comparable<T>> {
                     this.raiz = null; // El nodo a eliminar es la raíz (Caso especial del caso 1)
                 } else {
                     // Verifico si nodo buscado es HI o HD de su padre.
-                    //Si buscador es mayor = 'd' (HD), si es menor = 'i' (HI)
+                    // Si buscador es mayor = 'd' (HD), si es menor = 'i' (HI)
                     char pos;
                     if (buscado.compareTo(padre.getElem()) > 0) {
                         pos = 'd';
@@ -197,7 +197,7 @@ public class ArbolBB<T extends Comparable<T>> {
             }
         } else if (caso == 2) { // Caso 2 - nodo es hoja
             if (pos == 'i') { // Si nodo es HI de su padre
-                if (n.getIzquierdo() != null) { 
+                if (n.getIzquierdo() != null) {
                     padre.setIzquierdo(n.getIzquierdo()); // Si nodo n tiene HI
                 } else {
                     padre.setIzquierdo(n.getDerecho()); // Si nodo n tiene HD
@@ -206,12 +206,12 @@ public class ArbolBB<T extends Comparable<T>> {
                 if (n.getIzquierdo() != null) { // Si nodo n tiene HI
                     padre.setDerecho(n.getIzquierdo());
                 } else {
-                    padre.setDerecho(n.getDerecho()); 
+                    padre.setDerecho(n.getDerecho());
                 }
             }
         } else {
 
-         // caso 3 - Nodo tiene 3 hijos -- TESTEAR/MODIFICAR
+            // caso 3 - Nodo tiene 3 hijos -- TESTEAR/MODIFICAR
             NodoABB<T> padreCandidato = obtenerPadreCandidato(n);
             NodoABB<T> candidato = null;
             if (padreCandidato.getIzquierdo() != null) {
@@ -254,7 +254,8 @@ public class ArbolBB<T extends Comparable<T>> {
     }
 
     /*
-     * 
+     * Recorre el árbol completo y devuelve una lista ordenada con los elementos que
+     * se encuentran almacenados en él
      */
     public Lista listar() {
         Lista lis = new Lista();

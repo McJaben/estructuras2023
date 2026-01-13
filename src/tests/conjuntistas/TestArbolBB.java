@@ -69,7 +69,7 @@ public class TestArbolBB {
 		arbol.vaciar();
 		System.out.println("Verifico que el árbol sea vacío, espera " + sOk + "--->"
 				+ ((arbol.esVacio()) ? sOk : sErr));
-		// Podés seguir con pruebas de eliminar, listarRango, obtenerMinimo, obtenerMaximo, etc.
+        // TODO: Implementar tests para eliminar, listarRango, obtenerMinimo, obtenerMaximo, etc.
 	}
 }
 
