@@ -55,6 +55,10 @@ public class TestArbolBB {
 		System.out.println("Inserta 40: " + (arbol.insertar(40) ? sOk : sErr));
 		System.out.println("Inserta 60: " + (arbol.insertar(60) ? sOk : sErr));
 		System.out.println("Inserta 80: " + (arbol.insertar(80) ? sOk : sErr));
+		System.out.println("Inserta 25: " + (arbol.insertar(25) ? sOk : sErr));
+		System.out.println("Inserta 35: " + (arbol.insertar(35) ? sOk : sErr));
+		System.out.println("Inserta 90: " + (arbol.insertar(90) ? sOk : sErr));
+		System.out.println("Inserta 100: " + (arbol.insertar(100) ? sOk : sErr));
 
 		System.out.println("\nIntento insertar repetido 30: " + "espera:" + sErr + "--->"
 				+ (arbol.insertar(30) ? sOk : sErr)); // debe dar false
@@ -65,11 +69,15 @@ public class TestArbolBB {
 		System.out.println("¿Pertenece 100? " + "espera:" + sErr + "--->"
 				+ (arbol.pertenece(100) ? sOk : sErr)); // false
 
+        System.out.println("Listar árbol...");
+        System.out.println(arbol.listar());
+
 		System.out.println("Vaciando el árbol...");
 		arbol.vaciar();
 		System.out.println("Verifico que el árbol sea vacío, espera " + sOk + "--->"
-				+ ((arbol.esVacio()) ? sOk : sErr));
+        + ((arbol.esVacio()) ? sOk : sErr));
         // TODO: Implementar tests para eliminar, listarRango, obtenerMinimo, obtenerMaximo, etc.
+        
 	}
 }
 

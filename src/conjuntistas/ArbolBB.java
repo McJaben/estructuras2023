@@ -259,11 +259,40 @@ public class ArbolBB<T extends Comparable<T>> {
      */
     public Lista listar() {
         Lista lis = new Lista();
-        // TODO: Implementar
+        NodoABB<T> aux = this.raiz;
+        if (aux != null) {
+            int posInicial = 0; // posicion inicial al insertar en la lista
+            this.listarAux(lis, aux, posInicial);
+        }
         return lis;
     }
 
     /*
+     * Método auxiliar y privado, que recorre la estructura de forma recursiva.
+     * list: lista a manipular
+     * n: nodo
+     * pos: posición del último elemento insertado
+     * Retorna entero: posición del 
+     */
+    private int listarAux(Lista list, NodoABB<T> n, int pos) {
+        int aux = pos;
+        if (n != null) {
+            // Si tiene HI, sigo recorriendo por la rama izquierda
+            if (n.getIzquierdo() != null) {
+                aux = this.listarAux(list, n.getIzquierdo(), pos);
+            } 
+            aux++; // Incremento la posición
+            list.insertar(n.getElem(), aux);
+            if (n.getDerecho() != null) {
+                aux = this.listarAux(list, n.getDerecho(), aux);
+            }
+        }
+        return aux;
+    }
+
+    /*
+     * Recorre parte del árbol (sólo lo necesario) y devuelve una lista ordenada
+     * con los elementos que se encuentran almacenados en él.
      */
     public Lista listarRango(T minElem, T maxElem) {
         Lista lis = new Lista();
@@ -272,7 +301,8 @@ public class ArbolBB<T extends Comparable<T>> {
     }
 
     /*
-     * 
+     * Recorre la rama correspondiente y devuelve el elemento más pequeño almacenado
+     * en el árbol.
      */
     public T minimoElem() {
         T elem = null;
@@ -281,7 +311,8 @@ public class ArbolBB<T extends Comparable<T>> {
     }
 
     /*
-     * 
+     * Recorre la rama correspondiente y devuelve el elemento más grande almacenado
+     * en el árbol.
      */
     public T maximoElem() {
         T elem = null;
