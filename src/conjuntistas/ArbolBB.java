@@ -44,11 +44,11 @@ public class ArbolBB<T extends Comparable<T>> {
     private boolean insertarAux(NodoABB<T> n, T elemento) {
         // precondicion: n no es nulo
         boolean exito = true;
-
-        if ((elemento.compareTo(n.getElem()) == 0)) {
+        int comparacion = elemento.compareTo(n.getElem());
+        if ((comparacion == 0)) {
             // Reportar error: Elemento repetido
             exito = false;
-        } else if (elemento.compareTo(n.getElem()) < 0) {
+        } else if (comparacion < 0) {
             // el elemento es menor que n.getElem()
             // si tiene HI baja a la izquierda, sino agrega elemento
             if (n.getIzquierdo() != null) {
@@ -82,10 +82,11 @@ public class ArbolBB<T extends Comparable<T>> {
     private boolean perteneceAux(NodoABB<T> n, T elemento) {
         boolean exito = false;
         if (n != null) {
-            if ((elemento.compareTo(n.getElem()) == 0)) {
+            int comparacion = elemento.compareTo(n.getElem());
+            if ((comparacion == 0)) {
                 // Elemento encontrado
                 exito = true;
-            } else if (elemento.compareTo(n.getElem()) < 0) {
+            } else if (comparacion < 0) {
                 // elemento es menor que n.getElem()
                 // busca a la izquierda de n
                 exito = perteneceAux(n.getIzquierdo(), elemento);
@@ -272,7 +273,7 @@ public class ArbolBB<T extends Comparable<T>> {
      * list: lista a manipular
      * n: nodo
      * pos: posición del último elemento insertado
-     * Retorna entero: posición del 
+     * Retorna entero: posición del
      */
     private int listarAux(Lista list, NodoABB<T> n, int pos) {
         int aux = pos;
@@ -280,7 +281,7 @@ public class ArbolBB<T extends Comparable<T>> {
             // Si tiene HI, sigo recorriendo por la rama izquierda
             if (n.getIzquierdo() != null) {
                 aux = this.listarAux(list, n.getIzquierdo(), pos);
-            } 
+            }
             aux++; // Incremento la posición
             list.insertar(n.getElem(), aux);
             if (n.getDerecho() != null) {
