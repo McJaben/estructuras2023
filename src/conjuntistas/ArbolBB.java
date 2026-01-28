@@ -297,9 +297,37 @@ public class ArbolBB<T extends Comparable<T>> {
      */
     public Lista listarRango(T minElem, T maxElem) {
         Lista lis = new Lista();
-        // TODO: Implementar
+        // TODO: Analizar si es suficientemente eficiente y/o mejorar implementación
+
+        // 1. Busco el nodo más cercano a minElem
+        NodoABB<T> actual = this.raiz;
+        boolean encontrado = false;
+
+        while (actual != null && !encontrado) {
+            int comparacion = minElem.compareTo(actual.getElem());
+
+            if (comparacion == 0) {
+                // Elemento encontrado
+                encontrado = true;
+            } else if (comparacion < 0) {
+                // Busca en el subárbol izquierdo
+                actual = actual.getIzquierdo();
+            } else {
+                // Busca en el subárbol derecho
+                actual = actual.getDerecho();
+            }
+        }
+
+        // 2. Si se encontró el nodo con el elemento más cercano al mínimo, comienzo a insertar
+        if (encontrado) {
+            // TODO: terminar algoritmo
+            
+        }
+
         return lis;
     }
+
+    private void listarRangoAux()
 
     /*
      * Recorre la rama correspondiente y devuelve el elemento más pequeño almacenado
