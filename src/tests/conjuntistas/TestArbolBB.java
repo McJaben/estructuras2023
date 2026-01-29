@@ -87,7 +87,7 @@ public class TestArbolBB {
         arbol.vaciar();
         System.out.println("Verifico que el árbol sea vacío, espera " + sOk + "--->"
                 + ((arbol.esVacio()) ? sOk : sErr));
-        // TODO: Implementar tests para eliminar, obtenerMaximo
+        // TODO: Implementar tests para eliminar
         // obtenerMaximo, etc.
 
     }
