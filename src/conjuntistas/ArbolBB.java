@@ -297,45 +297,54 @@ public class ArbolBB<T extends Comparable<T>> {
      */
     public Lista listarRango(T minElem, T maxElem) {
         Lista lis = new Lista();
-        // TODO: Analizar si es suficientemente eficiente y/o mejorar implementación
-
-        // 1. Busco el nodo más cercano a minElem
-        NodoABB<T> actual = this.raiz;
-        boolean encontrado = false;
-
-        while (actual != null && !encontrado) {
-            int comparacion = minElem.compareTo(actual.getElem());
-
-            if (comparacion == 0) {
-                // Elemento encontrado
-                encontrado = true;
-            } else if (comparacion < 0) {
-                // Busca en el subárbol izquierdo
-                actual = actual.getIzquierdo();
-            } else {
-                // Busca en el subárbol derecho
-                actual = actual.getDerecho();
-            }
+        NodoABB<T> raiz = this.raiz;
+        if (raiz != null) {
+            this.listarRangoAux(lis, raiz, minElem, maxElem);
         }
-
-        // 2. Si se encontró el nodo con el elemento más cercano al mínimo, comienzo a insertar
-        if (encontrado) {
-            // TODO: terminar algoritmo
-            
-        }
-
         return lis;
     }
 
-    private void listarRangoAux()
+    /*
+     * Método auxiliar y privado, que recorre la estructura de forma recursiva.
+     * list: lista a manipular
+     * n: nodo
+     */
+    private void listarRangoAux(Lista list, NodoABB<T> n, T min, T max) {
+        if (n != null) {
+            T valorNodo = n.getElem();
+
+            // Si n es mayor a min, recorrer HI
+            if (valorNodo.compareTo(min) > 0) {
+                this.listarRangoAux(list, n.getIzquierdo(), min, max);
+            }
+
+            // Si n está dentro del rango [min, max], insertar n
+            if (valorNodo.compareTo(min) >= 0 && valorNodo.compareTo(max) <= 0) {
+                list.insertar(valorNodo, list.longitud() + 1);
+            }
+
+            // Si n es menor a max, recorrer HD
+            if (valorNodo.compareTo(max) < 0) {
+                this.listarRangoAux(list, n.getDerecho(), min, max);
+            }
+        }
+    }
 
     /*
      * Recorre la rama correspondiente y devuelve el elemento más pequeño almacenado
      * en el árbol.
+     * Si el árbol está vacío, devuelve null
      */
     public T minimoElem() {
         T elem = null;
-        // TODO: Implementar
+        // Como es un árbol ordenado, el menor de los elementos es el que se encuentra más a la izquierda
+        NodoABB<T> n = this.raiz;
+
+        while (n != null) {
+            elem = n.getElem();
+            n = n.getIzquierdo();
+        }
+
         return elem;
     }
 
@@ -345,7 +354,14 @@ public class ArbolBB<T extends Comparable<T>> {
      */
     public T maximoElem() {
         T elem = null;
-        // TODO: Implementar
+        // Como es un árbol ordenado, el mayor de los elementos es el que se encuentra más a la derecha
+        NodoABB<T> n = this.raiz;
+        
+        while (n != null) {
+            elem = n.getElem();
+            n = n.getDerecho();
+        }
+
         return elem;
     }
 
