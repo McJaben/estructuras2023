@@ -68,6 +68,13 @@ public class TestArbolBB {
         System.out.println("¿Pertenece 100? " + "espera:" + sErr + "--->"
                 + (arbol.pertenece(100) ? sOk : sErr)); // false
 
+        System.out.println(sYellow
+                + "\n---------------------------------------------------------------------------------------------------------------\n"
+                + sReset);
+        System.out.println(sMagenta + "****************************************");
+        System.out.println("*     Métodos listar y listarRango     *");
+        System.out.println("****************************************" + sReset);
+
         System.out.println("Listar árbol...");
         System.out.println(arbol.listar());
         System.out.println("Listando rango de 15 a 40" + " espera: [20,25,30,35,40]" + " ---> "
@@ -78,17 +85,40 @@ public class TestArbolBB {
 
         System.out.println("Listando rango de 25 a 90" + " espera: [25,30,35,40,50,60,70,80,90]" + " ---> "
                 + arbol.listarRango(25, 90));
-        
+
+        System.out.println(sYellow
+                + "\n---------------------------------------------------------------------------------------------------------------\n"
+                + sReset);
+        System.out.println(sMagenta + "****************************************");
+        System.out.println("*     Métodos minimoElem y maximoElem     *");
+        System.out.println("****************************************" + sReset);
         int aux = arbol.minimoElem();
-        System.out.println("Obteniendo el mínimo elemento del árbol " + "espera 20 y " + sOk + " ---> " + aux + (aux == 20 ? sOk : sErr) );
+        System.out.println("Obteniendo el mínimo elemento del árbol " + "espera 20 y " + sOk + " ---> " + aux
+                + (aux == 20 ? sOk : sErr));
         aux = arbol.maximoElem();
-        System.out.println("Obteniendo el máximo elemento del árbol " + "espera 90 y " + sOk + " ---> " + aux + (aux == 90 ? sOk : sErr) );
+        System.out.println("Obteniendo el máximo elemento del árbol " + "espera 90 y " + sOk + " ---> " + aux
+                + (aux == 90 ? sOk : sErr));
+
+        System.out.println(sYellow
+                + "\n---------------------------------------------------------------------------------------------------------------\n"
+                + sReset);
+        System.out.println(sMagenta + "****************************************");
+        System.out.println("*     Métodos eliminar y vaciar     *");
+        System.out.println("****************************************" + sReset);
+
+        System.out.println("Árbol actual: " + arbol.listar());
+        System.out.println("Eliminando elemento 30, espera: " + sOk + " y [20,25,35,40,50,60,70,80,90]" + " ---> "
+                + (arbol.eliminar(30) ? sOk : sErr) + " y " + arbol.listar());
+
+        System.out.println("Eliminando elemento 25, espera: " + sOk + " y [20,35,40,50,60,70,80,90]" + " ---> "
+                + (arbol.eliminar(25) ? sOk : sErr) + " y " + arbol.listar());
+
+        System.out.println("Eliminando elemento 80, espera: " + sOk + " y [20,35,40,50,60,70,90]" + " ---> "
+                + (arbol.eliminar(80) ? sOk : sErr) + " y " + arbol.listar());
+
         System.out.println("Vaciando el árbol...");
         arbol.vaciar();
         System.out.println("Verifico que el árbol sea vacío, espera " + sOk + "--->"
                 + ((arbol.esVacio()) ? sOk : sErr));
-        // TODO: Implementar tests para eliminar
-        // obtenerMaximo, etc.
-
     }
 }
