@@ -1,5 +1,6 @@
 package conjuntistas;
 
+import lineales.dinamicas.Cola;
 import lineales.dinamicas.Lista;
 
 /**
@@ -378,5 +379,63 @@ public class ArbolBB<T extends Comparable<T>> {
      */
     public void vaciar() {
         this.raiz = null;
+    }
+
+    /**
+     * Genera y devuelve una cadena de caracteres que indica cuál es la raíz del árbol y quiénes son
+     * los hijos de cada nodo.
+     */
+    @Override
+    public String toString() {
+        String cadena;
+        if (this.raiz != null) {
+            cadena = toStringAux(this.raiz);
+        } else {
+            cadena = "Árbol vacío";
+        }
+        return cadena;
+    }
+
+    private String toStringAux(NodoABB<T> nodo) {
+        // método Privado que recorre el árbol por niveles y va guardando los
+        // elementos de cada nodo y sus hijos en un String para luego retornarlo
+        String cadena = "";
+        // si el arbol está vacío, esto no se ejecuta y devuelve una cadena vacía
+        if (nodo != null) {
+            int elementosEnNivel = 1; // Número de elementos en el nivel actual
+            Cola cola = new Cola();
+            cola.poner(this.raiz);
+
+            // Mientras la cola no sea vacía
+            while (!cola.esVacia()) {
+                int elementosSigNivel = 0; // Número de elementos en el siguiente nivel
+                // Recorremos todos los nodos del nivel actual y los insertamos en la lista
+                for (int i = 0; i < elementosEnNivel; i++) {
+                    // Obtengo el nodo actual de la cola
+                    NodoABB<T> actual = (NodoABB<T>) cola.obtenerFrente();
+                    // Sacamos el nodo actual de la cola
+                    cola.sacar();
+                    cadena += actual.getElem();
+                    // Agregamos los hijos del nodo actual a la cola, si existen
+                    if (actual.getIzquierdo() != null) {
+                        cola.poner(actual.getIzquierdo());
+                        cadena += " HI: " + actual.getIzquierdo().getElem();
+                        elementosSigNivel++;
+                    } else {
+                        cadena += " HI: -";
+                    }
+                    if (actual.getDerecho() != null) {
+                        cola.poner(actual.getDerecho());
+                        cadena += " HD: " + actual.getDerecho().getElem() + "\n";
+                        elementosSigNivel++;
+                    } else {
+                        cadena += " HD: - \n";
+                    }
+                }
+                // Actualizamos el número de elementos
+                elementosEnNivel = elementosSigNivel;
+            }
+        }
+        return cadena;
     }
 }
