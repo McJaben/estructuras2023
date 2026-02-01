@@ -1,5 +1,0 @@
-package conjuntistas;
-
-public class ArbolHeap<T extends Comparable<t>> {
-
-}
