@@ -46,11 +46,11 @@ public class TestHeapMin {
 
         System.out.println("Insertando elementos:");
         System.out.println("Inserta 50: " + (heap.insertar(50) ? sOk : sErr));
-        // System.out.println("Inserta 30: " + (heap.insertar(30) ? sOk : sErr));
-        // System.out.println("Inserta 70: " + (heap.insertar(70) ? sOk : sErr));
-        // System.out.println("Inserta 20: " + (heap.insertar(20) ? sOk : sErr));
-        // System.out.println("Inserta 40: " + (heap.insertar(40) ? sOk : sErr));
-        // System.out.println("Inserta 10: " + (heap.insertar(10) ? sOk : sErr));
+        System.out.println("Inserta 30: " + (heap.insertar(30) ? sOk : sErr));
+        System.out.println("Inserta 70: " + (heap.insertar(70) ? sOk : sErr));
+        System.out.println("Inserta 20: " + (heap.insertar(20) ? sOk : sErr));
+        System.out.println("Inserta 40: " + (heap.insertar(40) ? sOk : sErr));
+        System.out.println("Inserta 10: " + (heap.insertar(10) ? sOk : sErr));
 
         // System.out.println("\nMínimo esperado: 10 ---> "
         //         + (heap.recuperarMin() == 10 ? sOk : sErr));

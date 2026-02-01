@@ -30,6 +30,7 @@ public class HeapMin<T extends Comparable<T>> {
      *   a) llegue a una posición en que sea mayor que su padre
      *   b) llegue a la raíz
      * Si la operación termina con éxito devuelve verdadero y falso en caso contrario.
+     * Caso de error: que el árbol heap esté lleno
      * Se aceptan elementos repetidos.
      */
     public boolean insertar(T elem) {
@@ -41,21 +42,27 @@ public class HeapMin<T extends Comparable<T>> {
             // Primero inserto el elemento al final del arreglo
             this.ultimo++;
             this.heap[ultimo] = elem;
-            
             int posActual = this.ultimo;
-            // Si no es la cima, busco al padre y los comparo para ver si debo intercambiarlos
             if (posActual > 1) {
-                // TODO: Corregir lógica, teniendo en cuenta que la posición 0 del array no se usa
-                boolean ordenado = false;
-                while (!ordenado && posActual != 1) {
-                    // Mientras el elemento sea menor que su padre, continúo
-                    T padre = this.heap[posActual / 2];
-                    ordenado = elem.compareTo(padre) >= 0;
-                    if (!ordenado) {
-                        this.heap[posActual] = padre;
-                        this.heap[posActual / 2] = elem;
+                // Si no es la cima, busco al padre y los comparo para ver si debo intercambiarlos
+                int posPadre = posActual / 2;
+                T elemPadre = this.heap[posPadre];
+                // El valor de 'elem' siempre es igual por más que esté en otra posición
+                boolean ordenado = elem.compareTo(elemPadre) >= 0;
+                while (!ordenado && posActual > 1) {
+                    // Mientras el elemento sea menor que su elemPadre, intercambio sus valores (va subiendo en el árbol)
+                    this.heap[posActual] = elemPadre;
+                    this.heap[posPadre] = elem;
+
+                    // Actualizo posiciones de referencia
+                    posActual = posPadre;
+                    posPadre = posPadre / 2;
+                    
+                    // Verifico si ya quedó ordenado
+                    if (posActual >= 1 && posPadre >= 1) {
+                        ordenado = elem.compareTo(this.heap[posPadre]) >= 0;
+                        elemPadre = this.heap[posPadre];
                     }
-                    posActual = posActual / 2;
                 }
             }
         }
