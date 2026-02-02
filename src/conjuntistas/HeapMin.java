@@ -73,14 +73,57 @@ public class HeapMin<T extends Comparable<T>> {
     /**
      * Elimina el elemento de la raíz (o cima del montículo). 
      * 1. Poner en la raíz el valor de la hoja más a la derecha del último nivel y eliminar dicha hoja. 
-     * 2. “Empujar” el elemento hacia abajo, intercambiándo su valor con el del hijo de menor valor.
+     * 2. “Empujar” el elemento hacia abajo, intercambiando su valor con el del hijo de menor valor.
      * 3. Repetir el paso 2 hasta que el elemento quede en una hoja o tenga menor valor que sus hijos.
      * Si la operación termina con éxito devuelve verdadero y falso si el árbol estaba vacío.
      */
     public boolean eliminarCima() {
         boolean exito = false;
-        // TODO: implementar lógica de eliminación de la cima
+        if (this.ultimo != 0) { // Si la estructura no está vacía
+            // Sacar la raíz y poner la última hoja en su lugar
+            this.heap[1] = this.heap[ultimo];
+            this.ultimo--;
+            // Reestablece la propiedad del heap mínimo
+            hacerBajar(1);
+            exito = true;
+        }
         return exito;
+    }
+
+    private void hacerBajar(int posPadre) {
+        int posH;
+        T temp = this.heap[posPadre];
+        boolean salir = false;
+
+        while (!salir) {
+            posH = posPadre * 2;
+            if (posH <= this.ultimo) {
+                // temp tiene al menos un hijo (izq) y lo considera menor
+
+                if (posH < this.ultimo) {
+                    // hijoMenor tiene hermano derecho
+
+                    if (this.heap[posH + 1].compareTo(this.heap[posH]) < 0) {
+                        // el hijo derecho es el menor de los dos
+                        posH++;
+                    }
+                }
+
+                // compara al hijo menor con el padre
+                if (this.heap[posH].compareTo(temp) < 0) {
+                    // el hijo es menor que el padre, los intercambia
+                    this.heap[posPadre] = this.heap[posH];
+                    this.heap[posH] = temp;
+                    posPadre = posH;
+                } else {
+                    // el padre es menor que su hijo, está bien ubicado
+                    salir = true;
+                }
+            } else {
+                // el temp es hoja, está bien ubicado
+                salir = true;
+            }
+        }
     }
 
     /**
@@ -93,6 +136,10 @@ public class HeapMin<T extends Comparable<T>> {
 
     // Devuelve falso si hay al menos un elemento cargado y verdadero en caso contrario
     public boolean esVacio() {
-        return this.heap.length == 0;
+        return this.ultimo == 0;
     }
+
+    // TODO: implementar método listar()
+
+    // TODO: implementar método vaciar()
 }

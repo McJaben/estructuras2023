@@ -30,11 +30,11 @@ public class TestHeapMin {
         System.out.println("Verifico que el heap esté vacío, espera " + sOk + "---> "
                 + (heap.esVacio() ? sOk : sErr));
 
-        // System.out.println("Intento recuperar mínimo en heap vacío, espera null ---> "
-        //         + (heap.recuperarMin() == null ? sOk : sErr));
+        System.out.println("Intento recuperar mínimo en heap vacío, espera null ---> "
+                + (heap.recuperarCima() == null ? sOk : sErr));
 
-        // System.out.println("Intento eliminar mínimo en heap vacío, espera " + sErr + " ---> "
-        //         + (!heap.eliminarMin() ? sOk : sErr));
+        System.out.println("Intento eliminar mínimo en heap vacío, espera " + sErr + " ---> "
+                + (heap.eliminarCima() ? sOk : sErr));
 
         System.out.println(sYellow
                 + "\n---------------------------------------------------------------------------------------------------------------\n"
@@ -52,47 +52,47 @@ public class TestHeapMin {
         System.out.println("Inserta 40: " + (heap.insertar(40) ? sOk : sErr));
         System.out.println("Inserta 10: " + (heap.insertar(10) ? sOk : sErr));
 
-        // System.out.println("\nMínimo esperado: 10 ---> "
-        //         + (heap.recuperarMin() == 10 ? sOk : sErr));
+        System.out.println("\nMínimo esperado: 10 ---> "
+                + (heap.recuperarCima() == 10 ? sOk : sErr));
 
         // System.out.println("Contenido del heap (por niveles):");
         // System.out.println(heap.listar());
 
-        // System.out.println(sYellow
-        //         + "\n---------------------------------------------------------------------------------------------------------------\n"
-        //         + sReset);
+        System.out.println(sYellow
+                + "\n---------------------------------------------------------------------------------------------------------------\n"
+                + sReset);
 
-        // System.out.println(sMagenta + "****************************************");
-        // System.out.println("*     Eliminar mínimo                 *");
-        // System.out.println("****************************************" + sReset);
+        System.out.println(sMagenta + "****************************************");
+        System.out.println("*     Eliminar mínimo                 *");
+        System.out.println("****************************************" + sReset);
 
-        // System.out.println("Eliminando mínimo (10): "
-        //         + (heap.eliminarMin() ? sOk : sErr));
-        // System.out.println("Nuevo mínimo esperado: 20 ---> "
-        //         + (heap.recuperarMin() == 20 ? sOk : sErr));
+        System.out.println("Eliminando mínimo (10): "
+                + (heap.eliminarCima() ? sOk : sErr));
+        System.out.println("Nuevo mínimo esperado: 20 ---> "
+                + (heap.recuperarCima() == 20 ? sOk : sErr));
         // System.out.println("Heap actual: " + heap.listar());
 
-        // System.out.println("Eliminando mínimo (20): "
-        //         + (heap.eliminarMin() ? sOk : sErr));
-        // System.out.println("Nuevo mínimo esperado: 30 ---> "
-        //         + (heap.recuperarMin() == 30 ? sOk : sErr));
+        System.out.println("Eliminando mínimo (20): "
+                + (heap.eliminarCima() ? sOk : sErr));
+        System.out.println("Nuevo mínimo esperado: 30 ---> "
+                + (heap.recuperarCima() == 30 ? sOk : sErr));
         // System.out.println("Heap actual: " + heap.listar());
 
-        // System.out.println(sYellow
-        //         + "\n---------------------------------------------------------------------------------------------------------------\n"
-        //         + sReset);
+        System.out.println(sYellow
+                + "\n---------------------------------------------------------------------------------------------------------------\n"
+                + sReset);
 
-        // System.out.println(sMagenta + "****************************************");
-        // System.out.println("*     Vaciar heap                     *");
-        // System.out.println("****************************************" + sReset);
+        System.out.println(sMagenta + "****************************************");
+        System.out.println("*     Vaciar heap                     *");
+        System.out.println("****************************************" + sReset);
 
         // System.out.println("Vaciando heap...");
         // heap.vaciar();
 
-        // System.out.println("Verifico que el heap esté vacío, espera " + sOk + "---> "
-        //         + (heap.esVacio() ? sOk : sErr));
+        System.out.println("Verifico que el heap esté vacío, espera " + sOk + "---> "
+                + (heap.esVacio() ? sOk : sErr));
 
-        // System.out.println("Recuperar mínimo luego de vaciar, espera null ---> "
-        //         + (heap.recuperarMin() == null ? sOk : sErr));
+        System.out.println("Recuperar mínimo luego de vaciar, espera null ---> "
+                + (heap.recuperarCima() == null ? sOk : sErr));
     }
 }
