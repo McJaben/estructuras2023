@@ -11,7 +11,12 @@ public class NodoAVL<T> extends NodoABB<T> {
     public NodoAVL(T nuevoElem, NodoABB<T> izq, NodoABB<T> der) {
         super(nuevoElem, izq, der);
         // inicializamos altura teniendo en cuenta hijos si ya vienen dados
-        recalcularAltura();
+        this.recalcularAltura();
+    }
+
+    public NodoAVL(T nuevoElem) {
+        super(nuevoElem);
+        this.recalcularAltura();
     }
 
     /**
@@ -38,13 +43,13 @@ public class NodoAVL<T> extends NodoABB<T> {
     @Override
     public void setIzquierdo(NodoABB<T> izquierdo) {
         super.setIzquierdo(izquierdo);
-        recalcularAltura();
+        this.recalcularAltura();
     }
 
     @Override
     public void setDerecho(NodoABB<T> derecho) {
         super.setDerecho(derecho);
-        recalcularAltura();
+        this.recalcularAltura();
     }
 
     /**
