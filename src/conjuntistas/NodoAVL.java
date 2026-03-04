@@ -28,7 +28,7 @@ public class NodoAVL<T> extends NodoABB<T> {
     }
 
     /**
-     * Getters específicos para evitar casteos externos (evita tener que hacerlo en ArbolABL).
+     * Getters específicos para evitar casteos externos (evita tener que hacer casting en ArbolAVL).
      */
     @Override
     public NodoAVL<T> getIzquierdo() {
