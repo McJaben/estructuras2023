@@ -16,7 +16,7 @@ public class NodoAVL<T> extends NodoABB<T> {
 
     public NodoAVL(T nuevoElem) {
         super(nuevoElem);
-        this.recalcularAltura();
+        this.altura = 0; // Si no tiene hijos, es una hoja y las hojas tienen altura 0.
     }
 
     /**
@@ -43,13 +43,11 @@ public class NodoAVL<T> extends NodoABB<T> {
     @Override
     public void setIzquierdo(NodoABB<T> izquierdo) {
         super.setIzquierdo(izquierdo);
-        this.recalcularAltura();
     }
 
     @Override
     public void setDerecho(NodoABB<T> derecho) {
         super.setDerecho(derecho);
-        this.recalcularAltura();
     }
 
     /**

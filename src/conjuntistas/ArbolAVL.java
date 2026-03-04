@@ -4,7 +4,11 @@ import lineales.dinamicas.Lista;
 import lineales.dinamicas.Cola;
 
 /**
- * @author Benjamín Morales <benjamin.morales at est.fi.uncoma.edu.ar> Clase Árbol Binario AVL.
+ * @author Benjamín Morales <benjamin.morales at est.fi.uncoma.edu.ar> Clase Árbol Binario AVL. Este
+ *         tipo de árboles, como se mantienen balanceados, se puede asegurar que en el peor de los
+ *         casos son de orden O(log n). Si bien las operaciones de inserción y eliminación tienen un
+ *         costo extra (el balanceo), si el cálculo de la altura se hace de manera constante, el
+ *         orden de insertar o eliminar se mantiene en O(log n)
  */
 
 public class ArbolAVL<T extends Comparable<T>> {
@@ -15,6 +19,193 @@ public class ArbolAVL<T extends Comparable<T>> {
     public ArbolAVL() {
         this.raiz = null;
     }
+
+    /**
+     * A tener encuenta del Apunte 4 - Estructuras conjuntistas: La detección del desbalance se hace
+     * siempre después de la inserción o eliminación de un elemento, y es un chequeo que se realiza
+     * en todos los niveles a la vuelta de la recursión. En cuanto se detecta que el balance no
+     * respeta el balance permitido se aplican una o dos rotaciones para solucionarlo
+     */
+
+    /**
+     * Clase interna privada para manejar los resultados de inserción y eliminación en el árbol AVL.
+     * Se implementa para lograr retornar más de un resultado en un método. Basado en el Apéndice C
+     * de la cátedra.
+     */
+    private static class Resultado<T> {
+        NodoAVL<T> nodo;
+        boolean exito;
+
+        Resultado(NodoAVL<T> nodo, boolean exito) {
+            this.nodo = nodo;
+            this.exito = exito;
+        }
+    }
+
+
+    // TODO: método insertar() de AVL y testeo
+    /**
+     * Inserta un elemento en el árbol AVL manteniendo el balance. La inserción es O(log n) porque
+     * el árbol permanece balanceado.
+     * 
+     * @param elemento el elemento a insertar
+     * @return true si se insertó, false si ya existía
+     */
+    public boolean insertar(T elem) {
+        Resultado<T> resultado = insertarAux(this.raiz, elem);
+        this.raiz = resultado.nodo;
+        return resultado.exito;
+    }
+
+    // TODO: implementar insertarAux() y lógica de balanceo, rotaciones, etc + testeo
+    /**
+     * Método privado para insertar elementos en el árbol AVL manteniendo el balance. La inserción
+     * es O(log n) porque el árbol permanece balanceado.
+     * 
+     * @param n nodo actual usado para comparar con el nuevo elemento
+     * @param elem el elemento a insertar
+     * @return Resultado: contiene al nodo raíz y el boolean que indica si se insertó o no
+     */
+    private Resultado<T> insertarAux(NodoAVL<T> n, T elem) {
+        Resultado<T> res;
+
+        if (n == null) {
+            // Caso base: llegamos a una hoja o árbol vacío
+            res = new Resultado<>(new NodoAVL<>(elem), true);
+        } else {
+            int comparacion = elem.compareTo(n.getElem());
+
+            if (comparacion == 0) {
+                // El elemento ya existe, no se inserta
+                res = new Resultado<>(n, false);
+            } else {
+                if (comparacion < 0) {
+                    // Bajamos por la izquierda
+                    res = insertarAux(n.getIzquierdo(), elem);
+                    n.setIzquierdo(res.nodo);
+                } else {
+                    // Bajamos por la derecha
+                    res = insertarAux(n.getDerecho(), elem);
+                    n.setDerecho(res.nodo);
+                }
+
+                // A la vuelta de la recursión se realiza detección de desbalance
+                if (res.exito) {
+                    // Solo si hubo inserción real, balanceamos este nodo
+                    res.nodo = balancear(n);
+                } else {
+                    // Si no hubo inserción, el nodo actual sigue siendo n
+                    res.nodo = n;
+                }
+            }
+        }
+        return res;
+    }
+
+    /**
+     * Balancea el nodo si es necesario. Aplica rotaciones simples o dobles según el balance del
+     * nodo y su hijo correspondiente.
+     * 
+     * @param n el nodo a balancear (no null)
+     * @return la nueva raíz del subárbol balanceado
+     */
+    private NodoAVL<T> balancear(NodoAVL<T> n) {
+        NodoAVL<T> resultado = n;
+
+        // Recalcular altura del nodo actual (muy importante antes de sacar el balance)
+        n.recalcularAltura();
+        
+        // Calcular el factor de balance (Altura HI - Altura HD)
+        int balance = obtenerBalance(n);
+
+        if (balance == 2) {
+            // Desbalanceado a izquierda
+            int balanceHijo = obtenerBalance(n.getIzquierdo());
+
+            if (balanceHijo >= 0) {
+                // Mismo signo: rotación simple a derecha
+                resultado = rotarDerecha(n);
+            } else {
+                // Signo distinto: rotación doble izquierda-derecha
+                NodoAVL<T> nuevaIzq = rotarIzquierda(n.getIzquierdo());
+                n.setIzquierdo(nuevaIzq);
+                resultado = rotarDerecha(n);
+            }
+
+        } else if (balance == -2) {
+            // Desbalanceado a derecha
+            int balanceHijo = obtenerBalance(n.getDerecho());
+
+            if (balanceHijo <= 0) {
+                // Mismo signo: rotación simple a izquierda
+                resultado = rotarIzquierda(n);
+            } else {
+                // Signo distinto: rotación doble derecha-izquierda
+                NodoAVL<T> nuevaDer = rotarDerecha(n.getDerecho());
+                n.setDerecho(nuevaDer);
+                resultado = rotarIzquierda(n);
+            }
+        }
+
+        return resultado;
+    }
+
+    /**
+     * Método privado para obtener balance del nodo (altura HI - altura HD).
+     * 
+     * @return int que representa el balance
+     */
+    private int obtenerBalance(NodoAVL<T> n) {
+        int altIzq = (n.getIzquierdo() == null) ? -1 : n.getIzquierdo().getAltura(); // -1 si nulo
+        int altDer = (n.getDerecho() == null) ? -1 : n.getDerecho().getAltura();
+        return altIzq - altDer;
+    }
+
+    /**
+     * Rotación simple a izquierda. Algoritmo 4.10 del apunte. Se aplica cuando el nodo está caído a
+     * la derecha (balance -2) y su hijo derecho está caído hacia el mismo lado.
+     * 
+     * @param r el pivote (nodo desbalanceado)
+     * @return la nueva raíz del subárbol
+     */
+    private NodoAVL<T> rotarIzquierda(NodoAVL<T> r) {
+        NodoAVL<T> h = r.getDerecho(); // hijo derecho será nueva raíz
+        NodoAVL<T> temp = h.getIzquierdo(); // subárbol que cambia de padre
+
+        // Realizar rotación (Figura 4.19 y 4.20 del apunte)
+        h.setIzquierdo(r);
+        r.setDerecho(temp);
+
+        // Se recalcula la altura primero de los hijos, luego del padre
+        r.recalcularAltura();
+        h.recalcularAltura();
+
+        return h; // nueva raíz del subárbol
+    }
+
+    /**
+     * Rotación simple a derecha. Algoritmo 4.11 del apunte. Se aplica cuando el nodo está caído a
+     * la izquierda (balance 2) y su hijo izquierdo está caído hacia el mismo lado.
+     * 
+     * @param r el pivote (nodo desbalanceado)
+     * @return la nueva raíz del subárbol
+     */
+    private NodoAVL<T> rotarDerecha(NodoAVL<T> r) {
+        NodoAVL<T> h = r.getIzquierdo(); // hijo izquierdo será nueva raíz
+        NodoAVL<T> temp = h.getDerecho(); // subárbol que cambia de padre
+
+        // Realizar rotación (Figura 4.21 y 4.22 del apunte)
+        h.setDerecho(r);
+        r.setIzquierdo(temp);
+
+        // Recalcular alturas (primero de hijos y luego del padre)
+        r.recalcularAltura();
+        h.recalcularAltura();
+
+        return h; // nueva raíz del subárbol
+    }
+
+    // TODO: método eliminar() de AVL
 
     /*
      * Devuelve verdadero si el elemento recibido por parámetro está en el árbol y falso en caso
