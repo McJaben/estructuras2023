@@ -162,7 +162,7 @@ public class ArbolAVL<T extends Comparable<T>> {
                 NodoAVL<T> nuevaDer = rotarDerecha(n.getDerecho());
                 n.setDerecho(nuevaDer);
                 // Ahora el nodo nuevaDer tiene el mismo signo que el padre y se puede aplicar
-                // rotación simple a derecha
+                // rotación simple a izquierda
                 resultado = rotarIzquierda(n);
             }
         }

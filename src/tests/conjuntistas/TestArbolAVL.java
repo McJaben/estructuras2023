@@ -83,6 +83,10 @@ public class TestArbolAVL {
         verificar("insertar(70) debe retornar true", avl.insertar(70), true);
         verificar("pertenece(70) debe ser true", avl.pertenece(70), true);
 
+        // Verificación de mínimo y máximo elemento
+        verificar("minimoElem() debe ser 30", avl.minimoElem().equals(30), true);
+        verificar("maximoElem() debe ser 70", avl.maximoElem().equals(70), true);
+
         // Árbol balanceado sin necesidad de rotar: 50(30, 70)
         System.out.println("\n  Estado del árbol (esperado: 50 HI:30 HD:70):\n");
         System.out.print(avl.toString());
@@ -95,14 +99,17 @@ public class TestArbolAVL {
     private static void testRotacionSimpleDerecha() {
         separador("3. ROTACIÓN SIMPLE A DERECHA");
         avl = new ArbolAVL<>();
-
-        avl.insertar(30);
-        avl.insertar(20);
+        // Insertar 30 -> 20 -> 10
+        verificar("insertar(30) debe retornar true",avl.insertar(30), true);
+        verificar("insertar(20) debe retornar true",avl.insertar(20), true);
         verificar("insertar(10) debe disparar rotación simple derecha y retornar true",
                 avl.insertar(10), true);
 
         /*
-         * Árbol esperado después de la rotación: 20 / \ 10 30
+         * Árbol esperado después de la rotación: 
+         *      20 
+         *      / \ 
+         *     10 30
          */
         verificar("pertenece(20) - nueva raíz - debe ser true", avl.pertenece(20), true);
         verificar("pertenece(10) debe ser true", avl.pertenece(10), true);
@@ -111,7 +118,7 @@ public class TestArbolAVL {
         verificar("maximoElem() debe ser 30", avl.maximoElem().equals(30), true);
 
         System.out.println("\n  Estado del árbol (esperado: 20 HI:10 HD:30):\n");
-        System.out.print("  " + avl.toString());
+        System.out.print(avl.toString());
     }
 
     // =========================================================================
@@ -122,20 +129,26 @@ public class TestArbolAVL {
         separador("4. ROTACIÓN SIMPLE A IZQUIERDA");
         avl = new ArbolAVL<>();
 
-        avl.insertar(10);
-        avl.insertar(20);
+        // Insertar 10 -> 20 -> 30
+        verificar("insertar(10) debe retornar true",avl.insertar(10), true);
+        verificar("insertar(20) debe retornar true",avl.insertar(20), true);
         verificar("insertar(30) debe disparar rotación simple izquierda y retornar true",
                 avl.insertar(30), true);
 
         /*
-         * Árbol esperado: 20 / \ 10 30
+         * Árbol esperado: 
+         *     20 
+         *    / \ 
+         *   10 30
          */
         verificar("pertenece(20) - nueva raíz - debe ser true", avl.pertenece(20), true);
         verificar("pertenece(10) debe ser true", avl.pertenece(10), true);
         verificar("pertenece(30) debe ser true", avl.pertenece(30), true);
+        verificar("minimoElem() debe ser 10", avl.minimoElem().equals(10), true);
+        verificar("maximoElem() debe ser 30", avl.maximoElem().equals(30), true);
 
         System.out.println("  Estado del árbol (esperado: 20 HI:10 HD:30):");
-        System.out.print("  " + avl.toString());
+        System.out.print(avl.toString());
     }
 
     // =========================================================================
@@ -150,16 +163,19 @@ public class TestArbolAVL {
         avl.insertar(10);
         verificar("insertar(20) debe disparar rotación doble IZQ-DER y retornar true",
                 avl.insertar(20), true);
-
         /*
-         * Árbol esperado: 20 / \ 10 30
+         * Árbol esperado: 
+         *     20 
+         *    / \ 
+         *   10 30
          */
+
         verificar("pertenece(20) - nueva raíz - debe ser true", avl.pertenece(20), true);
         verificar("pertenece(10) debe ser true", avl.pertenece(10), true);
         verificar("pertenece(30) debe ser true", avl.pertenece(30), true);
 
         System.out.println("  Estado del árbol (esperado: 20 HI:10 HD:30):");
-        System.out.print("  " + avl.toString());
+        System.out.print(avl.toString());
     }
 
     // =========================================================================
@@ -176,7 +192,10 @@ public class TestArbolAVL {
                 avl.insertar(20), true);
 
         /*
-         * Árbol esperado: 20 / \ 10 30
+         * Árbol esperado: 
+         *     20 
+         *    / \ 
+         *   10 30
          */
         verificar("pertenece(20) - nueva raíz - debe ser true", avl.pertenece(20), true);
         verificar("pertenece(10) debe ser true", avl.pertenece(10), true);
@@ -206,7 +225,7 @@ public class TestArbolAVL {
                 avl.listar().longitud() == 3, true);
 
         System.out.println("  Estado del árbol (esperado: 50 HI:30 HD:70, sin cambios):");
-        System.out.print("  " + avl.toString());
+        System.out.print(avl.toString());
     }
 
     // =========================================================================
@@ -251,24 +270,30 @@ public class TestArbolAVL {
     }
 
     // =========================================================================
-    // 9. INSERCIÓN MASIVA (secuencia del TestArbolAVL original de la cátedra)
+    // 9. INSERCIÓN MASIVA
     // Verificamos estructura exacta en cada paso clave.
     // =========================================================================
     private static void testInsercionMasiva() {
-        separador("9. INSERCIÓN MASIVA (secuencia de la cátedra)");
+        separador("9. INSERCIÓN MASIVA");
         avl = new ArbolAVL<>();
 
         // ── Paso 1: base ──────────────────────────────────────────────────────
-        avl.insertar(20);
-        avl.insertar(10);
-        avl.insertar(30);
-        avl.insertar(15);
-        avl.insertar(25);
+        
+        verificar("insertar(20) debe retornar true", avl.insertar(20), true);
+        verificar("insertar(10) debe retornar true", avl.insertar(10), true);
+        verificar("insertar(30) debe retornar true", avl.insertar(30), true);
+        verificar("insertar(15) debe retornar true", avl.insertar(15), true);
+        verificar("insertar(25) debe retornar true", avl.insertar(25), true);
 
         // ── Paso 2: 12 → rotación doble DER-IZQ sobre nodo 10 ────────────────
         verificar("insertar(12) debe retornar true", avl.insertar(12), true);
         /*
-         * Esperado tras la rotación: 20 / \ 12 30 / \ / 10 15 25
+         * Esperado tras la rotación:
+         *        20
+         *       /  \
+         *     12    30
+         *    /  \   /
+         *   10  15 25
          */
         verificar("pertenece(12) - nueva raíz del subárbol izq - debe ser true", avl.pertenece(12),
                 true);
@@ -284,32 +309,53 @@ public class TestArbolAVL {
         // ── Paso 4: 23 → rotación simple IZQ sobre nodo 30 ───────────────────
         verificar("insertar(23) debe retornar true", avl.insertar(23), true);
         /*
-         * Esperado: 20 / \ 12 25 / \ / \ 10 15 23 30 / \ 5 11
+         * Esperado:
+         *           20
+         *          /  \
+         *        12    25
+         *       /  \  /  \
+         *      10  15 23  30
+         *     /  \
+         *    5   11
          */
         verificar("pertenece(23) debe ser true", avl.pertenece(23), true);
         verificar("pertenece(25) debe ser true", avl.pertenece(25), true);
         System.out.println("  Tras insertar 23 (esperado: raíz=20, HI=12, HD=25):");
-        System.out.print("  " + avl.toString());
+        System.out.print(avl.toString());
 
         // ── Paso 5: 3 → rotación simple DER sobre nodo 12 ────────────────────
         verificar("insertar(3) debe retornar true", avl.insertar(3), true);
         /*
-         * Esperado tras la rotación: 20 / \ 10 25 / \ / \ 5 12 23 30 / / \ 3 11 15
+         * Esperado tras la rotación:
+         *           20
+         *          /  \
+         *        10    25
+         *       /  \  /  \
+         *      5  12 23  30
+         *     /  /  \
+         *    3  11  15
          */
         verificar("pertenece(3) debe ser true", avl.pertenece(3), true);
         System.out.println("  Tras insertar 3 (esperado: raíz=20, HI=10, HD=25):");
-        System.out.print("  " + avl.toString());
+        System.out.print(avl.toString());
 
         // ── Paso 6: 26 y 27 → rotación doble IZQ-DER sobre subárbol derecho ──
         verificar("insertar(26) debe retornar true", avl.insertar(26), true);
         verificar("insertar(27) debe retornar true", avl.insertar(27), true);
         /*
-         * Esperado: 20 / \ 10 25 / \ / \ 5 12 23 27 / / \ / \ 3 11 15 26 30
+         * Esperado:
+         *           20
+         *          /  \
+         *        10    25
+         *       / \   /  \
+         *      5  12 23  27
+         *     /  / \    /  \
+         *    3  11 15  26  30
          */
         verificar("pertenece(26) debe ser true", avl.pertenece(26), true);
         verificar("pertenece(27) debe ser true", avl.pertenece(27), true);
         System.out.println("  Tras insertar 26 y 27 (esperado: HD de 25 = 27):");
-        System.out.print("  " + avl.toString());
+        System.out.print(avl.toString());
 
         // ── Paso 7: duplicado de la raíz ──────────────────────────────────────
         verificar("insertar(20) duplicado debe retornar false", avl.insertar(20), false);
