@@ -33,8 +33,8 @@ public class ArbolAVL<T extends Comparable<T>> {
      * de la cátedra.
      */
     private static class Resultado<T> {
-        NodoAVL<T> nodo;
-        boolean exito;
+        NodoAVL<T> nodo; // nueva raíz del subárbol (posiblemente modificada por rotaciones)
+        boolean exito; // indica si la operación modificó el árbol (true) o no (false)
 
         Resultado(NodoAVL<T> nodo, boolean exito) {
             this.nodo = nodo;
@@ -57,10 +57,14 @@ public class ArbolAVL<T extends Comparable<T>> {
         return resultado.exito;
     }
 
-    // TODO: implementar insertarAux() y lógica de balanceo, rotaciones, etc + testeo
     /**
      * Método privado para insertar elementos en el árbol AVL manteniendo el balance. La inserción
-     * es O(log n) porque el árbol permanece balanceado.
+     * es O(log n) porque el árbol permanece balanceado. La altura se recalcula sólo en caso de
+     * inserciones y lo hace el método balancear().
+     * 
+     * * Estrategia: 1. Descender recursivamente hasta encontrar posición de inserción o duplicado.
+     * 2. A la vuelta de la recursión, reconectar el subárbol modificado 3. Balancear el nodo actual
+     * si hubo inserción (detecta desbalance en la vuelta)
      * 
      * @param n nodo actual usado para comparar con el nuevo elemento
      * @param elem el elemento a insertar
@@ -76,7 +80,7 @@ public class ArbolAVL<T extends Comparable<T>> {
             int comparacion = elem.compareTo(n.getElem());
 
             if (comparacion == 0) {
-                // El elemento ya existe, no se inserta
+                // Elemento duplicado -> no se inserta y no se modifica el árbol
                 res = new Resultado<>(n, false);
             } else {
                 if (comparacion < 0) {
@@ -103,8 +107,21 @@ public class ArbolAVL<T extends Comparable<T>> {
     }
 
     /**
-     * Balancea el nodo si es necesario. Aplica rotaciones simples o dobles según el balance del
-     * nodo y su hijo correspondiente.
+     * Balancea el nodo aplicando rotaciones si el factor del balance es 2 o -2.
+     * ! Precondición: n no es null.
+     * 
+     * * Convención de signos (según apunte):
+     * - balance = altura(HI) - altura(HD)
+     * - balance = 2  → caído a izquierda
+     * - balance = -2 → caído a derecha
+     * 
+     * Tabla de rotaciones (Figura 4.18):
+     * | Balance padre | Balance hijo  | Rotación           |
+     * |---------------|---------------|--------------------|
+     * | 2             | >= 0          | Simple derecha     |
+     * | 2             | -1            | Doble izq-derecha  |
+     * | -2            | <= 0          | Simple izquierda   |
+     * | -2            | 1             | Doble der-izquierda|
      * 
      * @param n el nodo a balancear (no null)
      * @return la nueva raíz del subárbol balanceado
@@ -114,7 +131,7 @@ public class ArbolAVL<T extends Comparable<T>> {
 
         // Recalcular altura del nodo actual (muy importante antes de sacar el balance)
         n.recalcularAltura();
-        
+
         // Calcular el factor de balance (Altura HI - Altura HD)
         int balance = obtenerBalance(n);
 
@@ -129,9 +146,10 @@ public class ArbolAVL<T extends Comparable<T>> {
                 // Signo distinto: rotación doble izquierda-derecha
                 NodoAVL<T> nuevaIzq = rotarIzquierda(n.getIzquierdo());
                 n.setIzquierdo(nuevaIzq);
+                // Ahora el nodo nuevaIzq tiene el mismo signo que el padre y se puede aplicar
+                // rotación simple a derecha
                 resultado = rotarDerecha(n);
             }
-
         } else if (balance == -2) {
             // Desbalanceado a derecha
             int balanceHijo = obtenerBalance(n.getDerecho());
@@ -143,6 +161,8 @@ public class ArbolAVL<T extends Comparable<T>> {
                 // Signo distinto: rotación doble derecha-izquierda
                 NodoAVL<T> nuevaDer = rotarDerecha(n.getDerecho());
                 n.setDerecho(nuevaDer);
+                // Ahora el nodo nuevaDer tiene el mismo signo que el padre y se puede aplicar
+                // rotación simple a derecha
                 resultado = rotarIzquierda(n);
             }
         }
@@ -151,9 +171,11 @@ public class ArbolAVL<T extends Comparable<T>> {
     }
 
     /**
-     * Método privado para obtener balance del nodo (altura HI - altura HD).
+     * Método privado para obtener balance del nodo (altura HI - altura HD). Por convención el hijo
+     * nulo tiene altura -1.
      * 
-     * @return int que representa el balance
+     * @param n el nodo a evaluar
+     * @return factor de balance en rango [-2, 2]
      */
     private int obtenerBalance(NodoAVL<T> n) {
         int altIzq = (n.getIzquierdo() == null) ? -1 : n.getIzquierdo().getAltura(); // -1 si nulo
