@@ -21,7 +21,7 @@ public class ArbolAVL<T extends Comparable<T>> {
     }
 
     /**
-     * A tener encuenta del Apunte 4 - Estructuras conjuntistas: La detección del desbalance se hace
+     * Se tuvo en cuenta del Apunte 4 - Estructuras conjuntistas: La detección del desbalance se hace
      * siempre después de la inserción o eliminación de un elemento, y es un chequeo que se realiza
      * en todos los niveles a la vuelta de la recursión. En cuanto se detecta que el balance no
      * respeta el balance permitido se aplican una o dos rotaciones para solucionarlo
@@ -325,40 +325,87 @@ public class ArbolAVL<T extends Comparable<T>> {
         } else {
             // Caso 3: dos hijos. Estrategia: reemplazar por el MENOR del subárbol derecho
 
-            // Paso 1: encontrar el menor del derecho
-            T candidato = obtenerMinimo(n.getDerecho());
+            // Optimización para extraer el mínimo del subárbol derecho en un sólo recorrido
+            ResultadoMinimo<T> extraido = extraerMinimo(n.getDerecho());
+            
+            // El mínimo pasa a ser el valor de n
+            n.setElem(extraido.minimo);
 
-            // Paso 2: copiar su valor al nodo actual
-            n.setElem(candidato);
+            // El derecho ahora es el subárbol sin el mínimo (ya viene balanceado)
+            n.setDerecho(extraido.nuevaRaiz);
+
+            // Último paso: balancear el resultado
+            res = new Resultado<>(balancear(n), true);
 
             // Paso 3: eliminar recursivamente el menor del derecho.
             // Como el candidato puede estar a cualquier nivel del subárbol derecho, la recursión
             // garantiza encontrarlo y eliminarlo aplicando los casos 1 o 2 (porque tiene a lo sumo
             // 1 hijo derecho), balanceando todo el camino de vuelta.
-            Resultado<T> resCandidato = eliminarAux(n.getDerecho(), candidato);
-            n.setDerecho(resCandidato.nodo);
-
-            // Paso 4: balancear el resultado
-            res = new Resultado<>(balancear(n), true);
+            // Resultado<T> resCandidato = eliminarAux(n.getDerecho(), candidato);
+            // n.setDerecho(resCandidato.nodo);
         }
 
         return res;
     }
 
-    /**
-     * Método privado. Recorre el subárbol hacia la izquierda hasta encontrar el nodo más pequeño y
-     * retorna su elemento. Se usa en el Caso 3 de eliminación para encontrar el candidato sucesor.
-     * Precondición: n no es null.
-     *
-     * @param n raíz del subárbol donde buscar el mínimo
-     * @return el elemento mínimo del subárbol
+    // /**
+    //  * Método privado. Recorre el subárbol hacia la izquierda hasta encontrar el nodo más pequeño y
+    //  * retorna su elemento. Se usa en el Caso 3 de eliminación para encontrar el candidato sucesor.
+    //  * Precondición: n no es null.
+    //  *
+    //  * @param n raíz del subárbol donde buscar el mínimo
+    //  * @return el elemento mínimo del subárbol
+    //  */
+    // private T obtenerMinimo(NodoAVL<T> n) {
+    //     NodoAVL<T> actual = n;
+    //     while (actual.getIzquierdo() != null) {
+    //         actual = actual.getIzquierdo();
+    //     }
+    //     return actual.getElem();
+    // }
+    
+    /*
+     * Se implementó esta clase para optimizar la búsqueda y eliminación del nodo mínimo en el caso
+     * 3 de eliminación, evitando recorrer dos veces el subárbol derecho (una para encontrar el
+     * mínimo con obtenerMinimo() y otra para eliminarlo con eliminarAux()) 
      */
-    private T obtenerMinimo(NodoAVL<T> n) {
-        NodoAVL<T> actual = n;
-        while (actual.getIzquierdo() != null) {
-            actual = actual.getIzquierdo();
+
+    /**
+     * Estructura utilizada para retornar el valor mínimo y la nueva raíz del subárbol después de
+     * eliminar el nodo mínimo. Se usa en el Caso 3 de eliminación.
+     */
+    private static class ResultadoMinimo<T> {
+        T minimo; // el valor mínimo encontrado
+        NodoAVL<T> nuevaRaiz; // nueva raíz del subárbol sin el mínimo
+
+        ResultadoMinimo(T minimo, NodoAVL<T> nuevaRaiz) {
+            this.minimo = minimo;
+            this.nuevaRaiz = nuevaRaiz;
         }
-        return actual.getElem();
+    }
+
+    /**
+     * Extrae el mínimo del subárbol: lo encuentra, lo elimina (caso 1 o 2), y retorna su valor
+     * junto con la nueva raíz del subárbol. Balancea en el camino de vuelta.
+     * 
+     * @param n el nodo raíz del subárbol donde buscar el mínimo (no null)
+     * @return Resultado con el valor mínimo encontrado y la nueva raíz del subárbol sin ese mínimo
+     */
+    private ResultadoMinimo<T> extraerMinimo(NodoAVL<T> n) {
+        ResultadoMinimo<T> res;
+        if (n.getIzquierdo() == null) {
+            // Encontramos el mínimo: es n
+            // Caso 1 o 2: su nueva raíz es su hijo derecho (puede ser null)
+            res = new ResultadoMinimo<>(n.getElem(), n.getDerecho());
+        } else {
+            // seguir buscando a la izquierda
+            res = extraerMinimo(n.getIzquierdo());
+            n.setIzquierdo(res.nuevaRaiz);
+
+            // Balancear nuevaRaiz y actualizar resultado
+            res.nuevaRaiz = balancear(n);
+        }
+        return res;
     }
 
     /*
