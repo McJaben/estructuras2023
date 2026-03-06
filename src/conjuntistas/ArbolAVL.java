@@ -227,7 +227,139 @@ public class ArbolAVL<T extends Comparable<T>> {
         return h; // nueva raíz del subárbol
     }
 
-    // TODO: método eliminar() de AVL
+    /**
+     * Elimina un elemento del árbol AVL manteniendo el balance. La eliminación es O(log n) porque
+     * el árbol permanece balanceado.
+     *
+     * @param elem el elemento a eliminar
+     * @return true si se eliminó, false si no se encontró
+     */
+    public boolean eliminar(T elem) {
+        Resultado<T> resultado = eliminarAux(this.raiz, elem);
+        this.raiz = resultado.nodo;
+        return resultado.exito;
+    }
+
+    /**
+     * Elimina un elemento del árbol AVL manteniendo el balance.
+     * 
+     * Estrategia (igual que inserción): 
+     * 1. Descender recursivamente hasta encontrar el elemento 
+     * 2. Al encontrarlo, aplicar los 3 casos de eliminación ABB 
+     * 3. A la vuelta de la recursión: reconectar, recalcular altura y balancear
+     * 
+     * @param n nodo actual del subárbol
+     * @param elem elemento a eliminar
+     * @return Resultado con nueva raíz del subárbol y true si se eliminó
+     */
+    private Resultado<T> eliminarAux(NodoAVL<T> n, T elem) {
+        Resultado<T> res;
+
+        if (n == null) {
+            // Caso base: elemento no encontrado
+            res = new Resultado<>(null, false);
+        } else {
+            int comparacion = elem.compareTo(n.getElem());
+
+            if (comparacion == 0) {
+                // Elemento encontrado: aplicar casos de eliminación
+                res = eliminarNodo(n);
+
+            } else if (comparacion < 0) {
+                // Buscar en izquierda
+                res = eliminarAux(n.getIzquierdo(), elem);
+                n.setIzquierdo(res.nodo);
+
+                // A la vuelta: balancear si hubo eliminación
+                if (res.exito) {
+                    res.nodo = balancear(n);
+                } else {
+                    res.nodo = n;
+                }
+
+            } else {
+                // Buscar en derecha
+                res = eliminarAux(n.getDerecho(), elem);
+                n.setDerecho(res.nodo);
+
+                // A la vuelta: balancear si hubo eliminación
+                if (res.exito) {
+                    res.nodo = balancear(n);
+                } else {
+                    res.nodo = n;
+                }
+            }
+        }
+
+        return res;
+    }
+
+    /**
+     * Elimina el nodo dado aplicando los 3 casos de eliminación ABB. Retorna la nueva raíz del
+     * subárbol que reemplaza a n.
+     * 
+     * Casos: 
+     * 1. Hoja: retorna null 
+     * 2. Un hijo: retorna ese hijo 
+     * 3. Dos hijos: reemplaza por el menor del derecho, elimina recursivamente ese candidato 
+     * y retorna n (modificado)
+     * 
+     * @param n el nodo a eliminar (no null)
+     * @return Resultado con nueva raíz del subárbol y true (siempre se elimina este nodo)
+     */
+    private Resultado<T> eliminarNodo(NodoAVL<T> n) {
+        Resultado<T> res;
+
+        if (n.getIzquierdo() == null && n.getDerecho() == null) {
+            // Caso 1: nodo hoja
+            res = new Resultado<>(null, true);
+
+        } else if (n.getIzquierdo() == null) {
+            // Caso 2: sólo tiene hijo derecho -> sube el hijo derecho
+            res = new Resultado<>(n.getDerecho(), true);
+
+        } else if (n.getDerecho() == null) {
+            // Caso 2: sólo tiene hijo izquierdo -> sube el hijo izquierdo
+            res = new Resultado<>(n.getIzquierdo(), true);
+
+        } else {
+            // Caso 3: dos hijos. Estrategia: reemplazar por el MENOR del subárbol derecho
+
+            // Paso 1: encontrar el menor del derecho
+            T candidato = obtenerMinimo(n.getDerecho());
+
+            // Paso 2: copiar su valor al nodo actual
+            n.setElem(candidato);
+
+            // Paso 3: eliminar recursivamente el menor del derecho.
+            // Como el candidato puede estar a cualquier nivel del subárbol derecho, la recursión
+            // garantiza encontrarlo y eliminarlo aplicando los casos 1 o 2 (porque tiene a lo sumo
+            // 1 hijo derecho), balanceando todo el camino de vuelta.
+            Resultado<T> resCandidato = eliminarAux(n.getDerecho(), candidato);
+            n.setDerecho(resCandidato.nodo);
+
+            // Paso 4: balancear el resultado
+            res = new Resultado<>(balancear(n), true);
+        }
+
+        return res;
+    }
+
+    /**
+     * Método privado. Recorre el subárbol hacia la izquierda hasta encontrar el nodo más pequeño y
+     * retorna su elemento. Se usa en el Caso 3 de eliminación para encontrar el candidato sucesor.
+     * Precondición: n no es null.
+     *
+     * @param n raíz del subárbol donde buscar el mínimo
+     * @return el elemento mínimo del subárbol
+     */
+    private T obtenerMinimo(NodoAVL<T> n) {
+        NodoAVL<T> actual = n;
+        while (actual.getIzquierdo() != null) {
+            actual = actual.getIzquierdo();
+        }
+        return actual.getElem();
+    }
 
     /*
      * Devuelve verdadero si el elemento recibido por parámetro está en el árbol y falso en caso
