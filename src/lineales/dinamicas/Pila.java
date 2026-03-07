@@ -9,7 +9,7 @@ package lineales.dinamicas;
  */
 public class Pila {
 
-    Nodo tope;
+    private Nodo tope;
 
     public Pila() {
         // crea y devuelve la pila vacía
