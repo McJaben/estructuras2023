@@ -43,7 +43,6 @@ public class ArbolAVL<T extends Comparable<T>> {
     }
 
 
-    // TODO: método insertar() de AVL y testeo
     /**
      * Inserta un elemento en el árbol AVL manteniendo el balance. La inserción es O(log n) porque
      * el árbol permanece balanceado.
@@ -586,6 +585,7 @@ public class ArbolAVL<T extends Comparable<T>> {
         this.raiz = null;
     }
 
+    // TODO: Comentar toString() a la hora de entregar el TP
     /**
      * Genera y devuelve una cadena de caracteres que indica cuál es la raíz del árbol y quiénes son
      * los hijos de cada nodo.
