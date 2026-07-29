@@ -10,7 +10,8 @@ public class TestingCola {
      * @author Catedra Estructuras de Datos
      *
      */
-    static String sOk = "OK!", sErr = "ERROR";
+    static String sOk = "\u001B[32m OK! \u001B[0m"; // mensaje OK! en verde
+	static String sErr = " \u001B[31m ERROR \u001B[0m"; // mensaje ERROR en rojo
 
     public static void main(String[] arg) {
         testCola();
