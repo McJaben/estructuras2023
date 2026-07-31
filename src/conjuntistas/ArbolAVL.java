@@ -4,11 +4,12 @@ import lineales.dinamicas.Lista;
 import lineales.dinamicas.Cola;
 
 /**
- * @author Benjamín Morales <benjamin.morales at est.fi.uncoma.edu.ar> Clase Árbol Binario AVL. Este
- *         tipo de árboles, como se mantienen balanceados, se puede asegurar que en el peor de los
- *         casos son de orden O(log n). Si bien las operaciones de inserción y eliminación tienen un
- *         costo extra (el balanceo), si el cálculo de la altura se hace de manera constante, el
- *         orden de insertar o eliminar se mantiene en O(log n)
+ * @author Benjamín Morales <benjamin.morales at est.fi.uncoma.edu.ar>
+ * 
+ *         Clase Árbol Binario AVL. Este tipo de árboles, como se mantienen balanceados, se puede
+ *         asegurar que en el peor de los casos son de orden O(log n). Si bien las operaciones de
+ *         inserción y eliminación tienen un costo extra (el balanceo), si el cálculo de la altura
+ *         se hace de manera constante, el orden de insertar o eliminar se mantiene en O(log n)
  */
 
 public class ArbolAVL<T extends Comparable<T>> {
@@ -35,7 +36,7 @@ public class ArbolAVL<T extends Comparable<T>> {
     private static class Resultado<T> {
         NodoAVL<T> nodo; // nueva raíz del subárbol (posiblemente modificada por rotaciones)
         boolean exito; // indica si la operación modificó el árbol (true) o no (false)
-
+        
         Resultado(NodoAVL<T> nodo, boolean exito) {
             this.nodo = nodo;
             this.exito = exito;
@@ -268,25 +269,16 @@ public class ArbolAVL<T extends Comparable<T>> {
                 // Buscar en izquierda
                 res = eliminarAux(n.getIzquierdo(), elem);
                 n.setIzquierdo(res.nodo);
-
-                // A la vuelta: balancear si hubo eliminación
-                if (res.exito) {
-                    res.nodo = balancear(n);
-                } else {
-                    res.nodo = n;
-                }
-
             } else {
                 // Buscar en derecha
                 res = eliminarAux(n.getDerecho(), elem);
                 n.setDerecho(res.nodo);
-
-                // A la vuelta: balancear si hubo eliminación
-                if (res.exito) {
-                    res.nodo = balancear(n);
-                } else {
-                    res.nodo = n;
-                }
+            }
+            // A la vuelta: balancear si hubo eliminación
+            if (res.exito) {
+                res.nodo = balancear(n);
+            } else {
+                res.nodo = n;
             }
         }
 
@@ -585,7 +577,37 @@ public class ArbolAVL<T extends Comparable<T>> {
         this.raiz = null;
     }
 
-    // TODO: Comentar toString() a la hora de entregar el TP
+    /**
+     * Recorre la rama correspondiente y devuelve el elemento almacenado en el árbol.
+     * 
+     * @param elem el elemento a buscar
+     * @return el elemento encontrado o null si no se encuentra en el árbol
+     */
+    public T obtenerElemento(T elem) {
+        return obtenerElementoAux(this.raiz, elem);
+    }
+
+    private T obtenerElementoAux(NodoAVL<T> nodo, T elem) {
+        T resultado = null;
+
+        if (nodo != null) {
+            int comp = elem.compareTo(nodo.getElem());
+            if (comp == 0) {
+                // Caso base: lo encontramos
+                resultado = nodo.getElem();
+            } else if (comp < 0) {
+                // Es menor: buscamos solo en el subárbol izquierdo
+                resultado = obtenerElementoAux(nodo.getIzquierdo(), elem);
+            } else {
+                // Es mayor: buscamos solo en el subárbol derecho
+                resultado = obtenerElementoAux(nodo.getDerecho(), elem);
+            }
+        }
+
+        return resultado;
+    }
+
+    // No comento toString() porque se utilizará para la clase que imprime logs del sistema
     /**
      * Genera y devuelve una cadena de caracteres que indica cuál es la raíz del árbol y quiénes son
      * los hijos de cada nodo.
@@ -602,10 +624,11 @@ public class ArbolAVL<T extends Comparable<T>> {
     }
 
     private String toStringAux(NodoAVL<T> nodo) {
-        // método Privado que recorre el árbol por niveles y va guardando los
-        // elementos de cada nodo y sus hijos en un String para luego retornarlo
+        // Método privado que recorre el árbol por niveles y va guardando los
+        // elementos de cada nodo y sus hijos en un String para luego retornarlo.
+        // El formato es "nodo\n  - HI: ...\n  - HD: ..." para mejorar legibilidad.
         String cadena = "";
-        // si el arbol está vacío, esto no se ejecuta y devuelve una cadena vacía
+        // si el árbol está vacío, esto no se ejecuta y devuelve una cadena vacía
         if (nodo != null) {
             int elementosEnNivel = 1; // Número de elementos en el nivel actual
             Cola cola = new Cola();
@@ -614,28 +637,35 @@ public class ArbolAVL<T extends Comparable<T>> {
             // Mientras la cola no sea vacía
             while (!cola.esVacia()) {
                 int elementosSigNivel = 0; // Número de elementos en el siguiente nivel
+
                 // Recorremos todos los nodos del nivel actual y los insertamos en la lista
                 for (int i = 0; i < elementosEnNivel; i++) {
                     // Obtengo el nodo actual de la cola
+                    // Si la clase Cola fuera genérica (<T>), no haría falta este cast ni se lanzaría el warning en el IDE
                     @SuppressWarnings("unchecked")
                     NodoAVL<T> actual = (NodoAVL<T>) cola.obtenerFrente();
                     // Sacamos el nodo actual de la cola
                     cola.sacar();
-                    cadena += actual.getElem();
-                    // Agregamos los hijos del nodo actual a la cola, si existen
+
+                    // Nodo actual
+                    cadena += actual.getElem() + "\n";
+
+                    // HI
                     if (actual.getIzquierdo() != null) {
                         cola.poner(actual.getIzquierdo());
-                        cadena += " HI: " + actual.getIzquierdo().getElem();
+                        cadena += "  - HI: " + actual.getIzquierdo().getElem() + "\n";
                         elementosSigNivel++;
                     } else {
-                        cadena += " HI: -";
+                        cadena += "  - HI: -\n";
                     }
+
+                    // HD
                     if (actual.getDerecho() != null) {
                         cola.poner(actual.getDerecho());
-                        cadena += " HD: " + actual.getDerecho().getElem() + "\n";
+                        cadena += "  - HD: " + actual.getDerecho().getElem() + "\n";
                         elementosSigNivel++;
                     } else {
-                        cadena += " HD: - \n";
+                        cadena += "  - HD: -\n";
                     }
                 }
                 // Actualizamos el número de elementos

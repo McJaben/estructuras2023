@@ -1,6 +1,7 @@
 package grafo;
 
 /**
+ * @author Benjamín Morales <benjamin.morales at est.fi.uncoma.edu.ar>
  * Nodo Adyacente para el TDA Grafo etiquetado.
  * Cada NodoAdy representa una ruta aérea entre dos ciudades.
  *
