@@ -51,7 +51,7 @@ public class Lista {
 
     /**
      * Deletes the element at the position 'pos'. Preconditions: list not empty and
-     * valid position (pos >= 1 and pos <= length(list) + 1).
+     * valid position (pos >= 1 and pos <= length(list)).
      * Returns true if the deletion was succesful, false otherwise.
      */
     public boolean eliminar(int pos) {
@@ -82,7 +82,6 @@ public class Lista {
     /**
      * Returns the element in the 'pos' position. Precondition: valid position.
      */
-
     public Object recuperar(int pos) {
         Object elem = null;
 
@@ -125,7 +124,6 @@ public class Lista {
                     i++;
                 }
             }
-
         }
 
         return position;
@@ -149,7 +147,7 @@ public class Lista {
     public Lista clone() {
         Lista clon = new Lista(); // creates an empty list
 
-        if (!this.esVacia()) { // if the list isn't empty
+        if (this.cabecera != null) { // if the list isn't empty
             Nodo aux = this.cabecera;
             Nodo ultimo;
             Nodo nuevo = new Nodo(aux.getElem(), null);
@@ -212,19 +210,20 @@ public class Lista {
     // Resolving exercise 1 from "Simulation of the first partial exam".
     /*
      * a) Add to the ADD Lista the operation obenerMultiplos(int num) that receives
-     * a number and returns a new list that contains all the elements of the
-     * multiples of NUM, in the same order found, making a single route of the
-     * original structures and copy ; and without using other TDA operations.
+     * a number and returns a new list that contains all the elements in positions
+     * multiple of NUM, in the same order found, making a single route of the
+     * original structures and copy; and without using other TDA operations.
      */
     public Lista obtenerMultiplos(int num) {
         Lista copy = new Lista();
+        int largo = this.longitud();
 
         // Verifies that list is not empty and the position 'num' is valid
-        if (this.cabecera != null && num >= 1 && num <= this.longitud()) {
+        if (this.cabecera != null && num >= 1 && num <= largo) {
             int pos = num;
             int i = 1;
             Nodo actual = this.cabecera; // Auxiliary node, used to travel the original list
-            while (pos <= this.longitud()) {
+            while (pos <= largo) {
                 while (i < pos) {
                     actual = actual.getEnlace();
                     i++;
