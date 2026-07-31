@@ -9,7 +9,7 @@ package lineales.dinamicas;
 
 public class Lista {
 
-    Nodo cabecera;
+    private Nodo cabecera;
 
     public Lista() {
         cabecera = null;

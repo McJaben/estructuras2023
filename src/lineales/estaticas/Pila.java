@@ -26,11 +26,12 @@ public class Pila {
     }
 
     // de aplicacion
+
+    /*
+     * Pone el elemento nuevoElem en el tope de la pila. Si se pudo apilar,
+     * devuelve true, y si no, false.
+     */
     public boolean apilar(Object nuevoElem) {
-        /*
-         * Pone el elemento nuevoElem en el tope de la pila. Si se pudo apilar,
-         * devuelve true, y si no, false.
-         */
         boolean exito = false; // Pila llena, tope = TAMANIO -1
 
         if (this.tope < TAMANIO - 1) { // TAMANIO es estática (de clase)
@@ -43,11 +44,11 @@ public class Pila {
         return exito;
     }
 
+    /*
+     * Saca el elemento del tope de la pila. Devuelve true si la pila tenía
+     * elementos al momento de desapilar y falso en caso de que esté vacía.
+     */
     public boolean desapilar() {
-        /*
-         * Saca el elemento del tope de la pila. Devuelve true si la pila tenía
-         * elementos al momento de desapilar y falso en caso de que esté vacía.
-         */
         boolean exito = false;
         if (this.tope != -1) {
             this.arreglo[this.tope] = null;
@@ -79,13 +80,12 @@ public class Pila {
         }
     }
 
+    /*
+     * Devuelve una copia exacta de los datos en la estructura original, y
+     * respetando el orden de los mismos en otra estructura del mismo tipo.
+     */
     @Override
     public Pila clone() {
-        /*
-         * Devuelve una copia exacta de los datos en la estructura original, y
-         * respetando el orden de los mismos en otra estructura del mismo tipo.
-         */
-
         Pila clon = new Pila();
         clon.tope = this.tope;
 

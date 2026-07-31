@@ -26,7 +26,7 @@ public class Cola {
      */
     public boolean poner(Object nuevoElem) {
         boolean exito = false;
-        boolean estaLlena = ((this.fin + 1) % TAMANIO) == this.frente; // Si está llena = true, si no, false.
+        boolean estaLlena = ((this.fin + 1) % TAMANIO) == this.frente;
 
         if (!estaLlena) {
             // Cuando la cola no está llena, agrego elemento en fin y actualizo posicion fin

@@ -9,7 +9,7 @@ package lineales.dinamicas;
  */
 public class Pila {
 
-    Nodo tope;
+    private Nodo tope;
 
     public Pila() {
         // crea y devuelve la pila vacía
@@ -29,17 +29,15 @@ public class Pila {
         return true;
     }
 
+    /*
+     * Saca el elemento del tope de la pila. Devuelve true si la pila tenía
+     * elementos al momento de desapilar y falso en caso de que esté vacía.
+     */
     public boolean desapilar() {
-        /*
-         * Saca el elemento del tope de la pila. Devuelve true si la pila tenía
-         * elementos al momento de desapilar y falso en caso de que esté vacía.
-         */
         boolean exito = false;
         if (this.tope != null) {
-            /*
-             * Enlazo el tope al siguiente nodo, como si fuera un puente. De esta
-             * manera, el garbage collector se lleva al antiguo frente al no estar apuntado.
-             */
+            // Enlazo el tope al siguiente nodo, como si fuera un puente. De esta
+            // manera, el garbage collector se lleva al antiguo frente al no estar apuntado.
             this.tope = this.tope.getEnlace();
             exito = true;
         }
@@ -65,22 +63,21 @@ public class Pila {
         this.tope = null;
     }
 
+    /*
+     * Devuelve una copia exacta de los datos en la estructura original,
+     * respetando el orden de los mismos en otra estructura del mismo tipo.
+     * En la pila clon siempre voy recorriendo desde un elemento atrás que 
+     * en la pila original, copiando desde el tope y respetando el orden.
+     */
     @Override
     public Pila clone() {
-        /*
-         * Devuelve una copia exacta de los datos en la estructura original, y
-         * respetando el orden de los mismos en otra estructura del mismo tipo.
-         * En la pila clon siempre voy recorriendo desde un elemento atrás que 
-         * en la pila original, copiando desde el tope y respetando el orden.
-         */
-
         Pila clon = new Pila();
         Nodo aux = this.tope;
         Nodo nuevo;
         Nodo ultimo = null;
 
         // Manipulo la estructura de manera directa y eficiente.
-        if (this.tope != null) { // Se ejecuta si la pila no esté vacía
+        if (this.tope != null) { // Se ejecuta si la pila no está vacía
             nuevo = new Nodo(aux.getElem(), null);
             clon.tope = nuevo;
 
@@ -123,10 +120,8 @@ public class Pila {
                 cadena += cadenaNodoRecursivo(nodo.getEnlace()) + nodo.getElem().toString();
             } else {
                 if (nodo.getEnlace() != null) {
-                    /*
-                     * Si hay nodos después del actual, sigo con el llamado recursivo
-                     * y voy concatenando los elementos seguidos de una coma
-                     */
+                    // Si hay nodos después del actual, sigo con el llamado recursivo
+                    // y voy concatenando los elementos seguidos de una coma
                     cadena += cadenaNodoRecursivo(nodo.getEnlace()) + nodo.getElem().toString() + ",";
                 } else {
                     // En el último nodo guardo su elemento como String, seguido de una coma

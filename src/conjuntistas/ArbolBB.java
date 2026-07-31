@@ -1,5 +1,6 @@
 package conjuntistas;
 
+import lineales.dinamicas.Cola;
 import lineales.dinamicas.Lista;
 
 /**
@@ -12,11 +13,11 @@ public class ArbolBB<T extends Comparable<T>> {
      * Con esta cabecera estoy declarando que el tipo T implementa la interfaz
      * Comparable. Luego, en la firma de los métodos digo que los elementos son
      * de tipo T, que ya establecí que pueden compararse entre sí.
-     * Con esto elimino los warnings de "raw type", le aseguro al compilador 
+     * Con esto elimino los warnings de "raw type", le aseguro al compilador
      * que los objetos son comparables, mantiene activo el chequeo de tipos y,
      * por lo tanto, evita que se generen errores en tiempo de ejecución.
      */
-    
+
     // Atributos
     private NodoABB<T> raiz;
 
@@ -44,11 +45,11 @@ public class ArbolBB<T extends Comparable<T>> {
     private boolean insertarAux(NodoABB<T> n, T elemento) {
         // precondicion: n no es nulo
         boolean exito = true;
-
-        if ((elemento.compareTo(n.getElem()) == 0)) {
+        int comparacion = elemento.compareTo(n.getElem());
+        if ((comparacion == 0)) {
             // Reportar error: Elemento repetido
             exito = false;
-        } else if (elemento.compareTo(n.getElem()) < 0) {
+        } else if (comparacion < 0) {
             // el elemento es menor que n.getElem()
             // si tiene HI baja a la izquierda, sino agrega elemento
             if (n.getIzquierdo() != null) {
@@ -82,10 +83,11 @@ public class ArbolBB<T extends Comparable<T>> {
     private boolean perteneceAux(NodoABB<T> n, T elemento) {
         boolean exito = false;
         if (n != null) {
-            if ((elemento.compareTo(n.getElem()) == 0)) {
+            int comparacion = elemento.compareTo(n.getElem());
+            if ((comparacion == 0)) {
                 // Elemento encontrado
                 exito = true;
-            } else if (elemento.compareTo(n.getElem()) < 0) {
+            } else if (comparacion < 0) {
                 // elemento es menor que n.getElem()
                 // busca a la izquierda de n
                 exito = perteneceAux(n.getIzquierdo(), elemento);
@@ -157,7 +159,7 @@ public class ArbolBB<T extends Comparable<T>> {
                     this.raiz = null; // El nodo a eliminar es la raíz (Caso especial del caso 1)
                 } else {
                     // Verifico si nodo buscado es HI o HD de su padre.
-                    //Si buscador es mayor = 'd' (HD), si es menor = 'i' (HI)
+                    // Si buscador es mayor = 'd' (HD), si es menor = 'i' (HI)
                     char pos;
                     if (buscado.compareTo(padre.getElem()) > 0) {
                         pos = 'd';
@@ -197,7 +199,7 @@ public class ArbolBB<T extends Comparable<T>> {
             }
         } else if (caso == 2) { // Caso 2 - nodo es hoja
             if (pos == 'i') { // Si nodo es HI de su padre
-                if (n.getIzquierdo() != null) { 
+                if (n.getIzquierdo() != null) {
                     padre.setIzquierdo(n.getIzquierdo()); // Si nodo n tiene HI
                 } else {
                     padre.setIzquierdo(n.getDerecho()); // Si nodo n tiene HD
@@ -206,12 +208,12 @@ public class ArbolBB<T extends Comparable<T>> {
                 if (n.getIzquierdo() != null) { // Si nodo n tiene HI
                     padre.setDerecho(n.getIzquierdo());
                 } else {
-                    padre.setDerecho(n.getDerecho()); 
+                    padre.setDerecho(n.getDerecho());
                 }
             }
         } else {
 
-         // caso 3 - Nodo tiene 3 hijos -- TESTEAR/MODIFICAR
+            // caso 3 - Nodo tiene 3 hijos -- TESTEAR/MODIFICAR
             NodoABB<T> padreCandidato = obtenerPadreCandidato(n);
             NodoABB<T> candidato = null;
             if (padreCandidato.getIzquierdo() != null) {
@@ -254,37 +256,113 @@ public class ArbolBB<T extends Comparable<T>> {
     }
 
     /*
-     * 
+     * Recorre el árbol completo y devuelve una lista ordenada con los elementos que
+     * se encuentran almacenados en él
      */
     public Lista listar() {
         Lista lis = new Lista();
-        // Implementar
+        NodoABB<T> aux = this.raiz;
+        if (aux != null) {
+            int posInicial = 0; // posicion inicial al insertar en la lista
+            this.listarAux(lis, aux, posInicial);
+        }
         return lis;
     }
 
     /*
+     * Método auxiliar y privado, que recorre la estructura de forma recursiva.
+     * list: lista a manipular
+     * n: nodo
+     * pos: posición del último elemento insertado
+     * Retorna entero: posición del
+     */
+    private int listarAux(Lista list, NodoABB<T> n, int pos) {
+        int aux = pos;
+        if (n != null) {
+            // Si tiene HI, sigo recorriendo por la rama izquierda
+            if (n.getIzquierdo() != null) {
+                aux = this.listarAux(list, n.getIzquierdo(), pos);
+            }
+            aux++; // Incremento la posición
+            list.insertar(n.getElem(), aux);
+            if (n.getDerecho() != null) {
+                aux = this.listarAux(list, n.getDerecho(), aux);
+            }
+        }
+        return aux;
+    }
+
+    /*
+     * Recorre parte del árbol (sólo lo necesario) y devuelve una lista ordenada
+     * con los elementos que se encuentran almacenados en él.
      */
     public Lista listarRango(T minElem, T maxElem) {
         Lista lis = new Lista();
-        // Implementar
+        NodoABB<T> raiz = this.raiz;
+        if (raiz != null) {
+            this.listarRangoAux(lis, raiz, minElem, maxElem);
+        }
         return lis;
     }
 
     /*
-     * 
+     * Método auxiliar y privado, que recorre la estructura de forma recursiva.
+     * list: lista a manipular
+     * n: nodo
+     */
+    private void listarRangoAux(Lista list, NodoABB<T> n, T min, T max) {
+        if (n != null) {
+            T valorNodo = n.getElem();
+
+            // Si n es mayor a min, recorrer HI
+            if (valorNodo.compareTo(min) > 0) {
+                this.listarRangoAux(list, n.getIzquierdo(), min, max);
+            }
+
+            // Si n está dentro del rango [min, max], insertar n
+            if (valorNodo.compareTo(min) >= 0 && valorNodo.compareTo(max) <= 0) {
+                list.insertar(valorNodo, list.longitud() + 1);
+            }
+
+            // Si n es menor a max, recorrer HD
+            if (valorNodo.compareTo(max) < 0) {
+                this.listarRangoAux(list, n.getDerecho(), min, max);
+            }
+        }
+    }
+
+    /*
+     * Recorre la rama correspondiente y devuelve el elemento más pequeño almacenado
+     * en el árbol.
+     * Si el árbol está vacío, devuelve null
      */
     public T minimoElem() {
         T elem = null;
-        // Implementar
+        // Como es un árbol ordenado, el menor de los elementos es el que se encuentra más a la izquierda
+        NodoABB<T> n = this.raiz;
+
+        while (n != null) {
+            elem = n.getElem();
+            n = n.getIzquierdo();
+        }
+
         return elem;
     }
 
     /*
-     * 
+     * Recorre la rama correspondiente y devuelve el elemento más grande almacenado
+     * en el árbol.
      */
     public T maximoElem() {
         T elem = null;
-        // Implementar
+        // Como es un árbol ordenado, el mayor de los elementos es el que se encuentra más a la derecha
+        NodoABB<T> n = this.raiz;
+        
+        while (n != null) {
+            elem = n.getElem();
+            n = n.getDerecho();
+        }
+
         return elem;
     }
 
@@ -296,4 +374,69 @@ public class ArbolBB<T extends Comparable<T>> {
         return this.raiz == null;
     }
 
+    /*
+     * Vacía el árbol.
+     */
+    public void vaciar() {
+        this.raiz = null;
+    }
+
+    /**
+     * Genera y devuelve una cadena de caracteres que indica cuál es la raíz del árbol y quiénes son
+     * los hijos de cada nodo.
+     */
+    @Override
+    public String toString() {
+        String cadena;
+        if (this.raiz != null) {
+            cadena = toStringAux(this.raiz);
+        } else {
+            cadena = "Árbol vacío";
+        }
+        return cadena;
+    }
+
+    private String toStringAux(NodoABB<T> nodo) {
+        // método Privado que recorre el árbol por niveles y va guardando los
+        // elementos de cada nodo y sus hijos en un String para luego retornarlo
+        String cadena = "";
+        // si el arbol está vacío, esto no se ejecuta y devuelve una cadena vacía
+        if (nodo != null) {
+            int elementosEnNivel = 1; // Número de elementos en el nivel actual
+            Cola cola = new Cola();
+            cola.poner(this.raiz);
+
+            // Mientras la cola no sea vacía
+            while (!cola.esVacia()) {
+                int elementosSigNivel = 0; // Número de elementos en el siguiente nivel
+                // Recorremos todos los nodos del nivel actual y los insertamos en la lista
+                for (int i = 0; i < elementosEnNivel; i++) {
+                    // Obtengo el nodo actual de la cola
+                    @SuppressWarnings("unchecked")
+                    NodoABB<T> actual = (NodoABB<T>) cola.obtenerFrente();
+                    // Sacamos el nodo actual de la cola
+                    cola.sacar();
+                    cadena += actual.getElem();
+                    // Agregamos los hijos del nodo actual a la cola, si existen
+                    if (actual.getIzquierdo() != null) {
+                        cola.poner(actual.getIzquierdo());
+                        cadena += " HI: " + actual.getIzquierdo().getElem();
+                        elementosSigNivel++;
+                    } else {
+                        cadena += " HI: -";
+                    }
+                    if (actual.getDerecho() != null) {
+                        cola.poner(actual.getDerecho());
+                        cadena += " HD: " + actual.getDerecho().getElem() + "\n";
+                        elementosSigNivel++;
+                    } else {
+                        cadena += " HD: - \n";
+                    }
+                }
+                // Actualizamos el número de elementos
+                elementosEnNivel = elementosSigNivel;
+            }
+        }
+        return cadena;
+    }
 }

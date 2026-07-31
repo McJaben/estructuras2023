@@ -1,7 +1,6 @@
 package tests.jerarquicas;
 
 import jerarquicas.dinamicas.ArbolBin;
-import lineales.dinamicas.Lista;
 
 /**
  *
