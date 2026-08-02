@@ -67,6 +67,35 @@ public class ArbolBin {
         return resultado;
     }
 
+    /**
+     * Dado un elemento elemNuevo y la posición numérica de su padre en el árbol en preorden, agrega
+     * elemNuevo como hijo izquierdo o derecho del elemento cuya posición en preorden dentro del
+     * árbol sea la dada, y según lo indique el parámetro posHijo (I) o (D). Para que la inserción
+     * sea exitosa, el padre debe existir en la posición dada y debe tener libre su hijo posHijo.
+     * Devuelve true si la inserción fue exitosa, false en caso contrario.
+     */
+    public boolean insertarPorPosicion(Object elemNuevo, int posPadre, char posHijo) {
+        boolean exito = false;
+        NodoArbol aux = this.raiz;
+
+        if (aux != null && posPadre >= 1) {
+            NodoArbol nodoPadre = this.obtenerNodoPosicionPreorden(posPadre);
+            if (nodoPadre != null) { // Si el padre existe en la posición dada
+                // Inserto elemNuevo como HI o HD sólo si esa posición esté libre en el padre
+                if (posHijo == 'I' && nodoPadre.getIzquierdo() == null) {
+                    nodoPadre.setIzquierdo(new NodoArbol(elemNuevo, null, null));
+                    exito = true;
+                }
+                if (posHijo == 'D' && nodoPadre.getDerecho() == null) {
+                    nodoPadre.setDerecho(new NodoArbol(elemNuevo, null, null));
+                    exito = true;
+                }
+            }
+        }
+
+        return exito;
+    }
+
     // Devuelve falso si hay al menos un elem en el árbol. Caso contrario, false.
     public boolean esVacio() {
         return this.raiz == null;
@@ -187,6 +216,33 @@ public class ArbolBin {
             }
         }
         return nodoPadre;
+    }
+
+    /**
+     * Devuelve el nodo que está en la posición 'pos' en el árbol en preorden. Retorna el nodo o
+     * null si no lo encuentra.
+     */
+    private NodoArbol obtenerNodoPosicionPreorden(int pos) {
+        int[] contador = {0};
+        return this.obtenerNodoPosicionPreordenAux(this.raiz, pos, contador);
+    }
+
+    private NodoArbol obtenerNodoPosicionPreordenAux(NodoArbol nodo, int pos, int[] contador) {
+        NodoArbol resultado = null;
+        if (nodo != null) {
+            // visita al elemento en el nodo
+            contador[0]++;
+            if (contador[0] == pos) {
+                resultado = nodo;
+            } else {
+                // recorre a sus hijos en preorden
+                resultado = obtenerNodoPosicionPreordenAux(nodo.getIzquierdo(), pos, contador);
+                if (resultado == null && contador[0] < pos) {
+                    resultado = obtenerNodoPosicionPreordenAux(nodo.getDerecho(), pos, contador);
+                }
+            }
+        }
+        return resultado;
     }
 
     /**

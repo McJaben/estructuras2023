@@ -41,6 +41,7 @@ public class TestBinario {
 
                 ArbolBin a = new ArbolBin();
                 ArbolBin b = new ArbolBin();
+                ArbolBin c = new ArbolBin();
 
                 System.out.println(ANSI_YELLOW_BACKGROUND
                                 + "--------------------------------------------------------------------------------------------------------"
@@ -56,6 +57,8 @@ public class TestBinario {
                 System.out.println("Listar inorden vacio: " + a.listarInorden().toString());
                 System.out.println("Listar posorden vacio: " + a.listarPosorden().toString());
                 System.out.println("Listar por niveles vacio: " + a.listarNiveles().toString());
+                // System.out.println("Obtener nodo en posición 1 de árbol vacío (debe dar null): "
+                //                 + ((a.obtenerNodoPosicionPreorden(1) == null) ? sOk : sErr));
                 System.out.println("Altura de arbol vacio (debe dar -1):  " + a.altura());
                 System.out.println("Intento vaciar arbol vacio ");
                 a.vaciar();
@@ -233,6 +236,19 @@ public class TestBinario {
                 System.out.println("\n");
                 System.out.println("Listar por niveles.\n Tiene que dar: [ 10 - 9 - 15 - 7 - 3 - 12 - 20 - 10 ]  "
                                 + a.listarNiveles().toString());
+                // System.out.println("\n");
+                // System.out.println("Obtener nodo en posición 1 del preorden. Tiene que dar 10: "
+                //                 + (((int) a.obtenerNodoPosicionPreorden(1) == 10) ? sOk : sErr));
+                // System.out.println("Obtener nodo en posición 4 del preorden. Tiene que dar 3: "
+                //                 + (((int) a.obtenerNodoPosicionPreorden(4) == 3) ? sOk : sErr));
+                // System.out.println("Obtener nodo en posición 5 del preorden. Tiene que dar 10: "
+                //                 + (((int) a.obtenerNodoPosicionPreorden(5) == 10) ? sOk : sErr));
+                // System.out.println("Obtener nodo en posición 8 del preorden. Tiene que dar 20: "
+                //                 + (((int) a.obtenerNodoPosicionPreorden(8) == 20) ? sOk : sErr));
+                // System.out.println("Obtener nodo en posición inexistente. Tiene que dar null: "
+                //                 + ((a.obtenerNodoPosicionPreorden(9) == null) ? sOk : sErr));
+                // System.out.println("Obtener nodo en posición inválida. Tiene que dar null: "
+                //                 + ((a.obtenerNodoPosicionPreorden(0) == null) ? sOk : sErr));
                 System.out.println("\n\n");
                 System.out.println(ANSI_YELLOW_BACKGROUND
                                 + "----------------------------------------------------------------------------------------------------------"
@@ -326,6 +342,33 @@ public class TestBinario {
                 System.out.println("Obtener descendientes de 12. \n Tiene que dar: [40]" + " --> "
                                 + a.obtenerDescendientes(12).toString());
                 System.out.println("");
+
+                System.out.println("\n\n*****************************************");
+                System.out.println("*    Test de INSERTAR POR POSICIÓN      *");
+                System.out.println("*****************************************\n");
+                System.out.println("Inserto en árbol vacío. Tiene que fallar: "
+                                + ((!c.insertarPorPosicion(5, 1, 'I')) ? sOk : sErr));
+                c.insertar(10, null, 'I');
+                c.insertar(9, 10, 'I');
+                c.insertar(7, 9, 'I');
+                c.insertar(15, 10, 'D');
+                System.out.println("Preorden inicial: " + c.listarPreorden().toString());
+                System.out.println("Inserto el 3 como hijo D del nodo en posición 2: "
+                                + ((c.insertarPorPosicion(3, 2, 'D')) ? sOk : sErr));
+                System.out.println("Inserto el 12 como hijo I del nodo en posición 5: "
+                                + ((c.insertarPorPosicion(12, 5, 'I')) ? sOk : sErr));
+                System.out.println("Inserto el 20 como hijo D del nodo en posición 5: "
+                                + ((c.insertarPorPosicion(20, 5, 'D')) ? sOk : sErr));
+                System.out.println("Inserto en posición de padre inexistente. Tiene que fallar: "
+                                + ((!c.insertarPorPosicion(30, 8, 'I')) ? sOk : sErr));
+                System.out.println("Inserto en posición de padre inválida. Tiene que fallar: "
+                                + ((!c.insertarPorPosicion(30, 0, 'I')) ? sOk : sErr));
+                System.out.println("Inserto con carácter de hijo inválido. Tiene que fallar: "
+                                + ((!c.insertarPorPosicion(30, 1, 'X')) ? sOk : sErr));
+                System.out.println("Inserto en posición de hijo ocupada. Tiene que fallar: "
+                                + ((!c.insertarPorPosicion(30, 2, 'D')) ? sOk : sErr));
+                System.out.println("Preorden final. Tiene que dar [10,9,7,3,15,12,20]: "
+                                + ((c.listarPreorden().toString().equals("[10,9,7,3,15,12,20]")) ? sOk : sErr));
         }
 
 }

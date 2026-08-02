@@ -26,8 +26,8 @@ public class Lista {
         // Detects and reports invalid position error
         boolean exito = false;
         int largo = this.longitud() + 1;
-        boolean condInsercion = (pos >= 1) && (pos <= largo); // Verifies that 'pos' position is valid
-        if (condInsercion) {
+        
+        if ((pos >= 1) && (pos <= largo)) { // Verifies that 'pos' position is valid
             if (pos == 1) { // Inserting in the first position
                 Nodo nuevoNodo = new Nodo(elem, this.cabecera);
                 this.cabecera = nuevoNodo;
