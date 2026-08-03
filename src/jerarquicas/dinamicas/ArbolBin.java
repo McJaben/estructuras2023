@@ -459,7 +459,7 @@ public class ArbolBin {
 
     /**
      * Devuelve una lista con todos los elementos almacenados en las hojas del árbol
-     * listadas de izquierda a derecha.
+     * listados de izquierda a derecha.
      */
     public Lista frontera() {
         Lista list = new Lista();
@@ -469,8 +469,7 @@ public class ArbolBin {
 
     /**
      * Método PRIVADO que recorre el árbol en preorden y almacena las hojas del
-     * mismo
-     * en una lista.
+     * mismo en una lista.
      */
     private void fronteraAux(NodoArbol nodo, Lista list) {
         if (nodo != null) {

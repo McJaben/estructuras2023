@@ -258,20 +258,20 @@ public class TestBinario {
                 System.out.println("\n\n**********************************");
                 System.out.println("*      Test de FRONTERA          *");
                 System.out.println("**********************************\n");
-                System.out.println("Frontera de original.\n Tiene que dar: [ 7 - 10 - 12 - 20 ]  "
+                System.out.println("Frontera de original.\n Tiene que dar: [ 7 - 10 - 12 - 20 ]  " + "--> "
                                 + a.frontera().toString());
                 System.out.println("");
                 System.out.println("Inserto el 40 como hijo D de 12 " + ((a.insertar(40, 12, 'D')) ? sOk : sErr));
                 System.out.println("");
-                System.out.println("Frontera de original modificado.\n Tiene que dar: [ 7 - 10 - 40 - 20 ]  "
+                System.out.println("Frontera de original modificado.\n Tiene que dar: [ 7 - 10 - 40 - 20 ]  " + "--> "
                                 + a.frontera().toString());
                 System.out.println("");
-                System.out.println("Frontera de clon que está vacio.\n Tiene que dar: [ ]  " + b.frontera().toString());
+                System.out.println("Frontera de clon que está vacio.\n Tiene que dar: [ ]  --> " + b.frontera().toString());
                 System.out.println("");
                 System.out.println("Inserto el 50 en el clon " + ((b.insertar(50, null, 'D')) ? sOk : sErr));
                 System.out.println("");
                 System.out.println(
-                                "Frontera de clon con solo raiz.\n Tiene que dar: [ 50 ]  " + b.frontera().toString());
+                                "Frontera de clon con solo raiz.\n Tiene que dar: [ 50 ]  " + "--> " + b.frontera().toString());
 
                 System.out.println("\n\n");
                 System.out.println(ANSI_YELLOW_BACKGROUND
