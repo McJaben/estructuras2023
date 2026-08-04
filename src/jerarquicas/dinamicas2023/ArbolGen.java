@@ -594,7 +594,7 @@ public class ArbolGen {
          */
         actual.insertar(n.getElem(), actual.longitud() + 1); // inserta el elemento actual en la lista
 
-        if (gradoSubarbol(n.getElem()) == 0) { // Caso base: n es hoja
+        if (n.getHijoIzquierdo() == null) { // Caso base: n es hoja
             if (actual.longitud() > resultado.longitud()) {
                 // si la lista actual es más larga, devuelve un clon de actual
                 resultado = actual.clone();

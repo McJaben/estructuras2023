@@ -203,6 +203,40 @@ public class TestArbolGen {
                 System.out.println(sYellow
                                 + "\n---------------------------------------------------------------------------------------------------------------\n"
                                 + sReset);
+                System.out.println(sMagenta + "********************************");
+                System.out.println("* Probando grado y gradoSubarbol *");
+                System.out.println("********************************" + sReset);
+
+                System.out.println("Grado del árbol completo. Tiene que dar 3 ---> " + arbol.grado()
+                                + ((arbol.grado() == 3) ? sOk : sErr));
+                System.out.println("Grado del subárbol con raíz 20. Tiene que dar 2 ---> " + arbol.gradoSubarbol(20)
+                                + ((arbol.gradoSubarbol(20) == 2) ? sOk : sErr));
+                System.out.println("Grado del subárbol con raíz 25. Tiene que dar 3 ---> " + arbol.gradoSubarbol(25)
+                                + ((arbol.gradoSubarbol(25) == 3) ? sOk : sErr));
+                System.out.println("Grado del subárbol con raíz 30. Tiene que dar 3 ---> " + arbol.gradoSubarbol(30)
+                                + ((arbol.gradoSubarbol(30) == 3) ? sOk : sErr));
+                System.out.println("Grado del subárbol con raíz en la hoja 45. Tiene que dar 0 ---> "
+                                + arbol.gradoSubarbol(45)
+                                + ((arbol.gradoSubarbol(45) == 0) ? sOk : sErr));
+                System.out.println("Grado de un subárbol inexistente. Tiene que dar -1 ---> "
+                                + arbol.gradoSubarbol(2024)
+                                + ((arbol.gradoSubarbol(2024) == -1) ? sOk : sErr));
+
+                ArbolGen arbolVacioGrado = new ArbolGen();
+                System.out.println("Grado de un árbol vacío. Tiene que dar -1 ---> " + arbolVacioGrado.grado()
+                                + ((arbolVacioGrado.grado() == -1) ? sOk : sErr));
+
+                ArbolGen arbolHojaGrado = new ArbolGen();
+                arbolHojaGrado.insertar(10, 1);
+                System.out.println("Grado de un árbol que sólo tiene raíz. Tiene que dar 0 ---> " + arbolHojaGrado.grado()
+                                + ((arbolHojaGrado.grado() == 0) ? sOk : sErr));
+                System.out.println("Grado del subárbol cuya raíz es la hoja 10. Tiene que dar 0 ---> "
+                                + arbolHojaGrado.gradoSubarbol(10)
+                                + ((arbolHojaGrado.gradoSubarbol(10) == 0) ? sOk : sErr));
+
+                System.out.println(sYellow
+                                + "\n---------------------------------------------------------------------------------------------------------------\n"
+                                + sReset);
                 System.out.println(sMagenta + "*******************************");
                 System.out.println("*     Probando recorridos     *");
                 System.out.println("*******************************" + sReset);
