@@ -104,6 +104,7 @@ public class TestArbolGen {
                 System.out.println("Consulto la altura del árbol, debería dar 3 " + "---> " + arbol.altura());
                 System.out.println("Chequeo si el árbol es vacío, debería dar" + sErr + "--->"
                                 + ((arbol.esVacio()) ? sOk : sErr));
+
                 System.out.println(sYellow
                                 + "\n---------------------------------------------------------------------------------------------------------------\n"
                                 + sReset);
@@ -302,6 +303,36 @@ public class TestArbolGen {
                 System.out.println("Listar entre niveles con niv1 = 4 y niv2 = 5 debería dar lista vacia:"
                                 + "\n --> " + arbol.listarEntreNiveles(4, 5));
                                 System.out.println("\n");
+
+                System.out.println(sYellow
+                                + "\n---------------------------------------------------------------------------------------------------------------\n"
+                                + sReset);
+                System.out.println(sMagenta + "********************************");
+                System.out.println("* Probando insertarPorPosicion *");
+                System.out.println("*      en un árbol nuevo       *");
+                System.out.println("********************************" + sReset);
+
+                ArbolGen arbolPorPosicion = new ArbolGen();
+                arbolPorPosicion.insertar(10, 1);
+                arbolPorPosicion.insertar(20, 10);
+                arbolPorPosicion.insertar(30, 10);
+                arbolPorPosicion.insertar(40, 20);
+                System.out.println("Recorrido en preorden antes de insertar. Debería dar [10,20,40,30]:\n --> "
+                                + arbolPorPosicion.listarPreorden().toString());
+                System.out.println("Inserto 99 como hijo del nodo en posición 4 del preorden (elemento 30). Debería dar"
+                                + sOk + "--->"
+                                + ((arbolPorPosicion.insertarPorPosicion(99, 4)) ? sOk : sErr));
+                System.out.println("\nEl árbol nuevo debería quedar así:"
+                                + "\n10 -> 20, 30"
+                                + "\n20 -> 40"
+                                + "\n30 -> 99\n");
+                System.out.println("Imprimiendo árbol nuevo:");
+                System.out.println(arbolPorPosicion.toString());
+                System.out.println("Recorrido en preorden después de insertar. Debería dar [10,20,40,30,99]:\n --> "
+                                + arbolPorPosicion.listarPreorden().toString()
+                                + ((arbolPorPosicion.listarPreorden().toString().equals("[10,20,40,30,99]"))
+                                                ? sOk
+                                                : sErr));
         }
 
 }

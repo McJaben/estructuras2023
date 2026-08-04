@@ -80,36 +80,31 @@ public class ArbolGen {
     }
 
     /*
-     * Inserta un elemento 'elemNuevo' como hijo del nodo padre que se encuentra
-     * en la posición 'posPadre' del árbol en preorden. Precondición: debe existir
-     * un nodo en el árbol en la posición dada. Devuelve verdadero si puedo agregar
-     * al elemento y falso en caso contrario.
+     * Inserta un elemento 'elemNuevo' como hijo del nodo padre que se encuentra en la posición
+     * 'posPadre' del árbol en preorden. Precondición: debe existir un nodo en el árbol en la
+     * posición dada. Devuelve verdadero si puedo agregar al elemento y falso en caso contrario.
      */
     public boolean insertarPorPosicion(Object elemNuevo, int posPadre) {
         boolean exito = false;
         // Verifica árbol no vacío y posición válida (mayor o igual a 1)
         if (this.raiz != null && posPadre >= 1) {
-            int[] posActual = { 1 };
-            NodoGen nodoBuscado = obtenerNodoPos(raiz, posPadre, posActual);
-            if (nodoBuscado != null) {
-                // probando que encontró al nodo adecuado
-                Object elem = nodoBuscado.getElem();
-                System.out.println(elem.toString());
+            int[] posActual = {1};
+            NodoGen nodoPadre = obtenerNodoPos(raiz, posPadre, posActual);
+            if (nodoPadre != null) {
                 // Crea un nuevo nodo con el elemento a insertar y enlaces nulos
                 NodoGen nuevoNodo = new NodoGen(elemNuevo, null, null);
-
-                // Inserta al elemNuevo como hijo del nodoBuscado
-                if (nodoBuscado.getHijoIzquierdo() == null) {
+                // Inserta al elemNuevo como hijo del nodoPadre
+                if (nodoPadre.getHijoIzquierdo() == null) {
                     // Si no tiene hijos, inserto el elemNuevo como HEI
-                    nodoBuscado.setHijoIzquierdo(nuevoNodo);
+                    nodoPadre.setHijoIzquierdo(nuevoNodo);
                 } else {
-                    // Si el nodoBuscado tiene hijos, recorre los hermanos derechos del HEI
+                    // Si el nodoPadre tiene hijos, recorre los hermanos derechos del HEI
                     // hasta el último
-                    NodoGen ultimoHermano = nodoBuscado.getHijoIzquierdo();
+                    NodoGen ultimoHermano = nodoPadre.getHijoIzquierdo();
                     while (ultimoHermano.getHermanoDerecho() != null) {
                         ultimoHermano = ultimoHermano.getHermanoDerecho();
                     }
-                    // Inserto al nuevoNodo al final de los hermanos derechos del nodoBuscado
+                    // Inserto al nuevoNodo al final de los hermanos derechos del nodoPadre
                     ultimoHermano.setHermanoDerecho(nuevoNodo);
                 }
                 exito = true;
@@ -379,8 +374,7 @@ public class ArbolGen {
         if (nodo != null) {
             NodoGen hijo = nodo.getHijoIzquierdo();
             while (hijo != null) { // (1)
-                listarPosordenAux(hijo, lis);
-                ; // (1.1)
+                listarPosordenAux(hijo, lis); // (1.1)
                 hijo = hijo.getHermanoDerecho();
             }
             lis.insertar(nodo.getElem(), lis.longitud() + 1); // (2)
