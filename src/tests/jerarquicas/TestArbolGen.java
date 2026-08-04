@@ -187,14 +187,18 @@ public class TestArbolGen {
                 System.out.println(sMagenta + "*******************************");
                 System.out.println("*   Probando método nivel()   *");
                 System.out.println("*******************************" + sReset);
-                System.out.println("Consulto el nivel de raíz. Tiene que dar 0 y" + sOk + "--->"
-                                + (((int) arbol.nivel(20) == 0) ? sOk : sErr));
-                System.out.println("Consulto el nivel de elemento 45. Tiene que dar 3 y" + sOk + "--->"
-                                + (((int) arbol.nivel(45) == 3) ? sOk : sErr));
-                System.out.println("Consulto el nivel de elemento 17. Tiene que dar 2 y" + sOk + "--->"
-                                + (((int) arbol.nivel(17) == 2) ? sOk : sErr));
-                System.out.println("Consulto el nivel de elemento inexistente. Tiene que dar -1 y" + sOk + "--->"
-                                + (((int) arbol.nivel(2024) == -1) ? sOk : sErr));
+                System.out.println("Consulto el nivel de raíz. Tiene que dar 0 y" + sOk + "---> "
+                                + arbol.nivel(20) + (((int) arbol.nivel(20) == 0) ? sOk : sErr));
+                System.out.println("Consulto el nivel de elemento 45. Tiene que dar 3 y" + sOk + "---> "
+                                + arbol.nivel(45) + (((int) arbol.nivel(45) == 3) ? sOk : sErr));
+                System.out.println("Consulto el nivel de elemento 17. Tiene que dar 2 y" + sOk + "---> "
+                                + arbol.nivel(17) + (((int) arbol.nivel(17) == 2) ? sOk : sErr));
+                System.out.println("Consulto el nivel de elemento 39. Tiene que dar 2 y" + sOk + "---> "
+                                + arbol.nivel(39) + (((int) arbol.nivel(39) == 2) ? sOk : sErr));
+                System.out.println("Consulto el nivel de elemento 25. Tiene que dar 1 y" + sOk + "---> "
+                                + arbol.nivel(25) + (((int) arbol.nivel(25) == 1) ? sOk : sErr));
+                System.out.println("Consulto el nivel de elemento inexistente. Tiene que dar -1 y" + sOk + "---> "
+                                + arbol.nivel(2024) + (((int) arbol.nivel(2024) == -1) ? sOk : sErr));
 
                 System.out.println(sYellow
                                 + "\n---------------------------------------------------------------------------------------------------------------\n"
