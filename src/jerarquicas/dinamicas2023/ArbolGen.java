@@ -176,7 +176,7 @@ public class ArbolGen {
     public Lista ancestros(Object elem) {
         Lista ancestros = new Lista();
         ancestrosAux(this.raiz, elem, ancestros);
-        ancestros = invertirLista(ancestros);
+        // ancestros = invertirLista(ancestros);
         return ancestros;
     }
 
@@ -197,24 +197,24 @@ public class ArbolGen {
                 }
 
                 if (encontrado) {
-                    lis.insertar(nodo.getElem(), lis.longitud() + 1);
+                    lis.insertar(nodo.getElem(), 1); // insertar en posición 1 de Lista es O(1)
                 }
             }
         }
         return encontrado;
     }
 
-    private Lista invertirLista(Lista lis) {
-        Lista nueva = new Lista();
-        int i = lis.longitud();
-        int k = 1;
-        while (i > 0) {
-            nueva.insertar(lis.recuperar(i), k);
-            i--;
-            k++;
-        }
-        return nueva;
-    }
+    // private Lista invertirLista(Lista lis) {
+    //     Lista nueva = new Lista();
+    //     int i = lis.longitud();
+    //     int k = 1;
+    //     while (i > 0) {
+    //         nueva.insertar(lis.recuperar(i), k);
+    //         i--;
+    //         k++;
+    //     }
+    //     return nueva;
+    // }
 
     // Devuelve true si el árbol es vacío, falso en caso contrario.
     public boolean esVacio() {
