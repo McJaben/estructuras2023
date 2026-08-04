@@ -73,9 +73,9 @@ public class TestArbolGen {
                                 + (((int) arbol.nivel(19) == 1) ? sOk : sErr));
                 System.out.println("Inserto el 13 como hijo de 19 " + ((arbol.insertar(13, 19)) ? sOk : sErr));
                 System.out.println("Inserto el 17 como hijo de 19 " + ((arbol.insertar(17, 19)) ? sOk : sErr));
-                System.out.println("La altura del árbol deberia dar 2:  " + arbol.altura());
+                System.out.println("La altura del árbol deberia dar 2: " + "---> " + arbol.altura() + ((arbol.altura() == 2) ? sOk : sErr));
                 System.out.println("Busco el nivel de elemento 13. Tiene que dar 2 y" + sOk + " ---> "
-                                + (((int) arbol.nivel(13) == 2) ? sOk : sErr));
+                                + arbol.nivel(13) + (((int) arbol.nivel(13) == 2) ? sOk : sErr));
                 System.out.println("Inserto el 25 como hijo de 20 " + ((arbol.insertar(25, 20)) ? sOk : sErr));
                 System.out.println("Inserto el 30 como hijo de 25 " + ((arbol.insertar(30, 25)) ? sOk : sErr));
                 System.out.println("Inserto el 35 como hijo de 25 " + ((arbol.insertar(35, 25)) ? sOk : sErr));
