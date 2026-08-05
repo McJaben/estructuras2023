@@ -237,6 +237,60 @@ public class TestArbolGen {
                 System.out.println(sYellow
                                 + "\n---------------------------------------------------------------------------------------------------------------\n"
                                 + sReset);
+                System.out.println(sMagenta + "****************************************");
+                System.out.println("* Probando listaQueJustificaLaAltura() *");
+                System.out.println("****************************************" + sReset);
+
+                System.out.println("\nÁrbol principal utilizado para la prueba:");
+                System.out.println(arbol.toString());
+                Lista listaAltura = arbol.listaQueJustificaLaAltura();
+                System.out.println("Lista que justifica la altura 3 del árbol. Tiene que dar [20,19,13,20]:\n --> "
+                                + listaAltura.toString()
+                                + ((listaAltura.toString().equals("[20,19,13,20]")) ? sOk : sErr));
+
+                System.out.println("\nÁrbol vacío utilizado para la prueba:");
+                System.out.println(arbolVacioGrado.toString());
+                Lista listaAlturaArbolVacio = arbolVacioGrado.listaQueJustificaLaAltura();
+                System.out.println("Lista que justifica la altura de un árbol vacío. Tiene que dar []:\n --> "
+                                + listaAlturaArbolVacio.toString()
+                                + ((listaAlturaArbolVacio.toString().equals("[]")) ? sOk : sErr));
+
+                System.out.println("\nÁrbol con una única raíz utilizado para la prueba:");
+                System.out.println(arbolHojaGrado.toString());
+                Lista listaAlturaArbolHoja = arbolHojaGrado.listaQueJustificaLaAltura();
+                System.out.println("Lista que justifica la altura de un árbol que sólo tiene raíz. Tiene que dar [10]:\n --> "
+                                + listaAlturaArbolHoja.toString()
+                                + ((listaAlturaArbolHoja.toString().equals("[10]")) ? sOk : sErr));
+
+                ArbolGen arbolAlturasDistintas = new ArbolGen();
+                arbolAlturasDistintas.insertar(100, 1);
+                arbolAlturasDistintas.insertar(200, 100);
+                arbolAlturasDistintas.insertar(300, 100);
+                arbolAlturasDistintas.insertar(400, 200);
+                arbolAlturasDistintas.insertar(500, 300);
+                arbolAlturasDistintas.insertar(600, 500);
+                System.out.println("\nÁrbol con ramas de distintas alturas:");
+                System.out.println(arbolAlturasDistintas.toString());
+                Lista listaRamaMasProfunda = arbolAlturasDistintas.listaQueJustificaLaAltura();
+                System.out.println("La rama más profunda no es la primera. Tiene que dar [100,300,500,600]:\n --> "
+                                + listaRamaMasProfunda.toString()
+                                + ((listaRamaMasProfunda.toString().equals("[100,300,500,600]")) ? sOk : sErr));
+
+                System.out.println("\nAgrego 700 y 800 a la primera rama para que pase a ser la más profunda.");
+                arbolAlturasDistintas.insertar(700, 400);
+                arbolAlturasDistintas.insertar(800, 700);
+                System.out.println("Árbol luego de las inserciones:");
+                System.out.println(arbolAlturasDistintas.toString());
+                Lista listaNuevaRamaMasProfunda = arbolAlturasDistintas.listaQueJustificaLaAltura();
+                System.out.println("La lista debe actualizarse y dar [100,200,400,700,800]:\n --> "
+                                + listaNuevaRamaMasProfunda.toString()
+                                + ((listaNuevaRamaMasProfunda.toString().equals("[100,200,400,700,800]"))
+                                                ? sOk
+                                                : sErr));
+
+                System.out.println(sYellow
+                                + "\n---------------------------------------------------------------------------------------------------------------\n"
+                                + sReset);
                 System.out.println(sMagenta + "*******************************");
                 System.out.println("*     Probando recorridos     *");
                 System.out.println("*******************************" + sReset);

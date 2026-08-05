@@ -611,7 +611,7 @@ public class ArbolGen {
 
         // elimina el último elemento agregado antes de retroceder en el arbol
         actual.eliminar(actual.longitud());
-        return resultado; // cambiar
+        return resultado;
     }
 
     /*
@@ -620,7 +620,7 @@ public class ArbolGen {
      */
     public boolean verificarCamino(Lista lis) {
         boolean exito = false;
-        if (lis != null) {
+        if (lis != null && this.raiz != null && !lis.esVacia()) {
             exito = verificarCaminoAux(this.raiz, lis, 1);
         }
         return exito;
