@@ -682,4 +682,30 @@ public class ArbolGen {
         }
     }
 
+    public Lista caminoAHojaMasCercana() {
+        Lista resultado = new Lista();
+        if (this.raiz != null) {
+            resultado = caminoAHojaMasCercanaAux(this.raiz, new Lista(), resultado);
+        }
+        return resultado;
+    }
+
+    private Lista caminoAHojaMasCercanaAux(NodoGen n, Lista actual, Lista res) {
+        actual.insertar(n.getElem(), actual.longitud() + 1);
+
+        if(n.getHijoIzquierdo() == null) {
+            if (actual.longitud() < res.longitud() || res.esVacia()) {
+                res = actual.clone();
+            }
+        } else {
+            NodoGen h = n.getHijoIzquierdo();
+            while(h != null && (actual.longitud() < res.longitud() || res.esVacia())) {
+                res = caminoAHojaMasCercanaAux(h, actual, res);
+                h = h.getHermanoDerecho();
+            }
+        }
+        actual.eliminar(actual.longitud());
+        return res;
+    }
+
 }
