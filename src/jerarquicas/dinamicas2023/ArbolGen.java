@@ -708,4 +708,54 @@ public class ArbolGen {
         return res;
     }
 
+    public boolean jerarquizar(Object elem) {
+    boolean exito = false;
+    if (raiz != null && !raiz.getElem().equals(elem) && raiz.getHijoIzquierdo() != null) {
+        // si árbol no vacío, elemento distinto de raíz y nodo padre distinto de raíz, inicio llamado recursivo
+        exito = jerarquizarAux(raiz.getHijoIzquierdo(), elem);
+    }
+    return exito;
+}
+
+private boolean jerarquizarAux(NodoGen n, Object elem) {
+    boolean exito = false;
+    NodoGen buscado = null;
+    NodoGen ultHermano = null;
+
+    if (n.getHijoIzquierdo() != null) {
+        NodoGen h = n.getHijoIzquierdo();
+        while (h != null && !exito) {
+            if (h.getElem().equals(elem)) {
+                buscado = h;
+                exito = true;
+            } else {
+                ultHermano = h;
+                h = h.getHermanoDerecho();
+            }
+        }
+    }
+
+    if (exito) { // Si encontré al nodo buscado, aplico lógica para jerarquizar
+        if (ultHermano != null) {
+            // el nodo buscado tiene hermano getHijoIzquierdo
+            ultHermano.setHermanoDerecho(buscado.getHermanoDerecho());
+        } else {
+            // el nodo buscado es HEI del padre
+            n.setHijoIzquierdo(buscado.getHermanoDerecho());
+        }
+        // jerarquizo
+        buscado.setHermanoDerecho(n.getHermanoDerecho());
+        n.setHermanoDerecho(buscado);
+    } else { // si no encontré al nodo buscado, continúo el recorrido
+        if (n.getHermanoDerecho() != null) { // si tiene HD, continúo recorrido por HD
+            exito = jerarquizarAux(n.getHermanoDerecho(), elem);
+        }
+        if (!exito && n.getHijoIzquierdo() != null) {
+            exito = jerarquizarAux(n.getHijoIzquierdo(), elem);
+        }
+    }
+
+    return exito;
+}
+
 }

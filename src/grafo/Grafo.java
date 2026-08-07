@@ -219,21 +219,35 @@ public class Grafo<T, E> {
      */
     public boolean insertarArco(T origen, T destino, E etiqueta) {
         boolean exito = false;
-        NodoVert<T, E> nOrigen = this.ubicarVertice(origen);
-        NodoVert<T, E> nDestino = this.ubicarVertice(destino);
-        boolean existeArco = false;
-        if (nOrigen != null && nDestino != null) {
-            NodoAdy<T, E> ady = nOrigen.getPrimerAdy();
-            while (!existeArco && ady != null) {
-                if (ady.getVertice().getElem().equals(destino)) {
-                    existeArco = true;
+        if (!origen.equals(destino)) {
+            NodoVert<T, E> aux = this.inicio;
+            NodoVert<T, E> nOrigen = null;
+            NodoVert<T, E> nDestino = null;
+            // Se buscan ambos vértices en una sola pasada.
+            while (aux != null && (nOrigen == null || nDestino == null)) {
+                if (aux.getElem().equals(origen)) {
+                    nOrigen = aux;
                 }
-                ady = ady.getSigAdyacente();
+                if (aux.getElem().equals(destino)) {
+                    nDestino = aux;
+                }
+                aux = aux.getSigVertice();
             }
-            if (!existeArco) {
-                this.enlazarAdyacente(nOrigen, nDestino, etiqueta);
-                this.enlazarAdyacente(nDestino, nOrigen, etiqueta); // no dirigido
-                exito = true;
+
+            boolean existeArco = false;
+            if (nOrigen != null && nDestino != null) {
+                NodoAdy<T, E> ady = nOrigen.getPrimerAdy();
+                while (!existeArco && ady != null) {
+                    if (ady.getVertice().getElem().equals(destino)) {
+                        existeArco = true;
+                    }
+                    ady = ady.getSigAdyacente();
+                }
+                if (!existeArco) {
+                    this.enlazarAdyacente(nOrigen, nDestino, etiqueta);
+                    this.enlazarAdyacente(nDestino, nOrigen, etiqueta); // no dirigido
+                    exito = true;
+                }
             }
         }
         return exito;
