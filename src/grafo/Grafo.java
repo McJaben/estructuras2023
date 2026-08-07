@@ -725,6 +725,84 @@ public class Grafo<T, E> {
         return sb.toString();
     }
 
+    // * Práctica de ejercicio de final de 2018:
+
+    /*
+     * Devuelve el primer camino que encuentra que sale del vértice origen y llega al vértice
+     * destino y que tenga peso (suma de los pesos de las aristas que lo conforman) menor o igual a
+     * pesoMax. Se utiliza la implementación dinámica de Grafo Etiquetado (no dirigido). La etiqueta
+     * es de tipo int
+     */
+    public Lista caminoDePesoMenorA(T origen, T destino, int pesoMax) {
+        Lista camino = new Lista();
+        NodoVert<T, E> nodoOrigen = null;
+        NodoVert<T, E> nodoDestino = null;
+        NodoVert<T, E> aux = this.inicio;
+
+        while (aux != null && (nodoOrigen == null || nodoDestino == null)) {
+            if (aux.getElem().equals(origen)) {
+                nodoOrigen = aux;
+            }
+
+            if (aux.getElem().equals(destino)) {
+                nodoDestino = aux;
+            }
+
+            aux = aux.getSigVertice();
+        }
+
+        if (nodoOrigen != null && nodoDestino != null) {
+            camino.insertar(origen, 1);
+            boolean encontrado = caminoDePesoMenorAAux(nodoOrigen, nodoDestino, pesoMax, 0, camino);
+            if (!encontrado) {
+                camino.vaciar();
+            }
+        }
+        return camino;
+    }
+
+    private boolean caminoDePesoMenorAAux(NodoVert<T, E> actual, NodoVert<T, E> destino,
+            int pesoMax, int pesoAcum, Lista caminoActual) {
+        // Evalúo caso base: si llega a destino, valido el camino según el peso
+        boolean encontrado = actual.getElem().equals(destino.getElem()) && (pesoAcum <= pesoMax);
+
+        if (!encontrado) {
+            // Continuar recorrido: obtener el primer adyacente del nodo actual
+            NodoAdy<T, E> ady = actual.getPrimerAdy();
+
+            while (ady != null && !encontrado) {
+                // Mientras exista nodo adyacente y no se haya encontrado aún el camino buscado
+                NodoVert<T, E> vecino = ady.getVertice();
+                int vecinoElem = (int) vecino.getElem();
+                int pesoArco = (int) ady.getEtiqueta();
+                int pesoNuevo = pesoAcum + pesoArco;
+
+                /*
+                 * Se poda si el peso excede el máximo y se evitan ciclos buscando solamente caminos
+                 * simples.
+                 */
+                if (pesoNuevo <= pesoMax && caminoActual.localizar(vecinoElem) < 0) {
+                    caminoActual.insertar(vecinoElem, caminoActual.longitud() + 1);
+
+                    encontrado = this.caminoDePesoMenorAAux(vecino, destino, pesoMax, pesoNuevo,
+                            caminoActual);
+
+                    /*
+                     * Si esta rama fracasó, retiro al vecino del caminoActual (backtracking) para
+                     * explorar otras ramas
+                     */
+                    if (!encontrado) {
+                        caminoActual.eliminar(caminoActual.longitud());
+                    }
+                }
+                ady = ady.getSigAdyacente();
+            }
+        }
+
+        return encontrado;
+    }
+
+
 
     // /**
     //  * Muestra todas las ciudades y sus rutas con el tiempo en minutos.
